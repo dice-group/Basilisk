@@ -1,5 +1,4 @@
 """Console script for basilisk."""
-import sys
 import click
 
 import basilisk

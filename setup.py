@@ -7,7 +7,7 @@ from setuptools import setup, find_packages
 with open('README.md') as readme_file:
     readme = readme_file.read()
 
-requirements = ['Click>=7.0', 'flask>=1.1.2']
+requirements = ['Click>=7.0', 'flask>=1.1.2', 'docker>=4.3.1']
 
 setup_requirements = ['pytest-runner', ]
 

@@ -1,3 +1,3 @@
 # Basilisk
 
-Continous benchmarking tool for RDF triple stores.
+Continous benchmarking platform for RDF triple stores.

@@ -12,7 +12,7 @@ import java.io.IOException;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-public class DockerHubChecker {
+public class DockerHubCheckingService {
     public void check()
     {
         DockerClientConfig standard = DefaultDockerClientConfig.createDefaultConfigBuilder().build();

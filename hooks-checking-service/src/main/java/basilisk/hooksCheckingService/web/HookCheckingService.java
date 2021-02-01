@@ -6,9 +6,9 @@ import java.io.IOException;
 
 public interface HookCheckingService {
 
-    public void checkForNewVersion() throws IOException;
+    public void performChecking() throws IOException;
 
-    public Hook getHook();
+
 
 
 }

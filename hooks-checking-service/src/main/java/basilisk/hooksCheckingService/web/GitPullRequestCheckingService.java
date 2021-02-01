@@ -1,48 +1,37 @@
 package basilisk.hooksCheckingService.web;
 
 import basilisk.hooksCheckingService.domain.Hooks.Hook;
-import org.eclipse.egit.github.core.PullRequest;
-import org.eclipse.egit.github.core.RepositoryId;
-import org.eclipse.egit.github.core.service.PullRequestService;
+import basilisk.hooksCheckingService.domain.HooksRepos.GitRepo;
+import basilisk.hooksCheckingService.repositories.GitHookRepository;
+import org.kohsuke.github.GHIssueState;
+import org.kohsuke.github.GHPullRequest;
+import org.kohsuke.github.GHRepository;
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
 
-public class GitPullRequestCheckingService implements GitCheckingService {
+public class GitPullRequestCheckingService extends GitCheckingService {
 
-    private GitPullRequestRepo gitRepo;
+    GitRepo gitRepo;
 
-
-
-    private void checkPullRequest(int id) throws IOException {
-        PullRequestService service = new PullRequestService();
-
-        if (gitRepo.isPrivate())
-            service.getClient().setCredentials(gitRepo.getRepoOwner(), gitRepo.getOAuthToken());
-        else
-            service.getClient().setUserAgent(gitRepo.getRepoOwner());
-
-        RepositoryId repo = new RepositoryId(gitRepo.getRepoOwner(), gitRepo.getRepoName());
-        PullRequest pullRequest = service.getPullRequest(repo, id);
-        pullRequest.getUpdatedAt();
-
+    public GitPullRequestCheckingService(GitRepo gitRepo, GitHookRepository gitHookRepository) {
+        super(gitHookRepository);
+        this.gitRepo = gitRepo;
     }
 
     @Override
     public void checkForNewVersion() throws IOException {
+        GHRepository repo = getRepoFromGH(gitRepo);
 
-        PullRequestService service = new PullRequestService();
+        List<GHPullRequest> pullRequests = repo.getPullRequests(GHIssueState.OPEN);
+        Iterator<GHPullRequest> iterator = pullRequests.iterator();
+        while (iterator.hasNext()) {
+            GHPullRequest pullRequest = iterator.next();
+            pullRequest.getUpdatedAt();
+        }
 
-        if (gitRepo.isPrivate())
-            service.getClient().setCredentials(gitRepo.getRepoOwner(), gitRepo.getOAuthToken());
-        else
-            service.getClient().setUserAgent(gitRepo.getRepoOwner());
 
-        RepositoryId repo = new RepositoryId(gitRepo.getRepoOwner(), gitRepo.getRepoName());
-        service.getPullRequests(repo, gitRepo.getPullRequestState());
     }
 
-    @Override
-    public Hook getHook() {
-        return null;
-    }
 }

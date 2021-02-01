@@ -1,6 +1,7 @@
 package basilisk.hooksCheckingService.web;
 
 import basilisk.hooksCheckingService.domain.HooksRepos.GitRepo;
+import basilisk.hooksCheckingService.messaging.HookMessageSender;
 import basilisk.hooksCheckingService.repositories.GitHookRepository;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
@@ -11,15 +12,19 @@ import java.io.IOException;
 public abstract class GitCheckingService implements HookCheckingService{
 
 
-    GitHookRepository gitHookRepository;
+    protected final GitHookRepository gitHookRepository;
+    protected final HookMessageSender hookMessageSender;
 
-    public GitCheckingService(GitHookRepository gitHookRepository) {
+    public GitCheckingService(GitHookRepository gitHookRepository, HookMessageSender hookMessageSender) {
         this.gitHookRepository = gitHookRepository;
+        this.hookMessageSender = hookMessageSender;
     }
 
     public void performChecking() throws IOException {
         checkForNewVersion();
     }
+
+
     protected abstract void checkForNewVersion() throws IOException;
 
 

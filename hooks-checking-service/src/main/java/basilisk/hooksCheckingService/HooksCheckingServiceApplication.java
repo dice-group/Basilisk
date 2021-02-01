@@ -2,6 +2,8 @@ package basilisk.hooksCheckingService;
 
 import basilisk.hooksCheckingService.domain.HooksRepos.GitBranchRepo;
 import basilisk.hooksCheckingService.domain.HooksRepos.GitRepo;
+import basilisk.hooksCheckingService.messaging.HookMessageSender;
+import basilisk.hooksCheckingService.messaging.HookMessageSenderDumpImpl;
 import basilisk.hooksCheckingService.repositories.GitHookRepository;
 import basilisk.hooksCheckingService.repositories.GitHookRepositoryImpl;
 import basilisk.hooksCheckingService.web.GitBranchCheckingService;
@@ -19,8 +21,9 @@ public class HooksCheckingServiceApplication {
 
         GitBranchRepo repo=new GitBranchRepo("Secure-Bank-And-ATms","Shaheen47",false,"","master");
         GitHookRepository gitHookRepository=new GitHookRepositoryImpl();
+        HookMessageSender hookMessageSender=new HookMessageSenderDumpImpl();
 
-        GitBranchCheckingService gitHubChecker=new GitBranchCheckingService(repo,gitHookRepository);
+        GitBranchCheckingService gitHubChecker=new GitBranchCheckingService(repo,gitHookRepository,hookMessageSender);
         gitHubChecker.performChecking();
     }
 

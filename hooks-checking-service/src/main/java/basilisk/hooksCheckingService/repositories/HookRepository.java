@@ -12,4 +12,8 @@ public interface HookRepository<Hook>{
 
     Hook getLatestHook();
 
+    void addNewHook(Hook hook);
+
+    Hook findBySha1Hash(String hash);
+
 }

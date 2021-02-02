@@ -10,8 +10,8 @@ import javax.persistence.Entity;
 
 @Getter
 @Setter
-//@Entity
-@DiscriminatorValue("branch")
+@Entity
+@DiscriminatorValue("yes")
 public class GitBranchRepo extends GitRepo {
 
     @Column(name = "branch")

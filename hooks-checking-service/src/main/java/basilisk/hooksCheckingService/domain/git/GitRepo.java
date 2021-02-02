@@ -13,6 +13,11 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "git_repo")
+@DiscriminatorColumn(
+        name="is_branch",
+        discriminatorType =DiscriminatorType.STRING)
+@DiscriminatorValue("no")
+
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class GitRepo extends BaseEntity {
 

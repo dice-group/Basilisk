@@ -7,6 +7,5 @@ import org.springframework.stereotype.Repository;
 /**
  * @author Fakhr Shaheen
  */
-@Repository
-public interface HookRepository<Hook> extends CrudRepository<Hook,Long> {
+public interface HookRepository<Hook>  {
 }

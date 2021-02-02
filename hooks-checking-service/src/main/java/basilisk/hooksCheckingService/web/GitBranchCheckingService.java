@@ -27,19 +27,19 @@ public class GitBranchCheckingService extends GitCheckingService {
         GHBranch branch = repo.getBranch(gitBranchRepo.getBranchName());
         GHCommit commit = repo.getCommit(branch.getSHA1());
         //check whether the hook is already saved
-        GitHook foundHook = gitHookRepository.findBySha1Hash(commit.getSHA1());
-        if(foundHook==null)
-        {
-            GitHook gitHook=new GitHook();
-            //save the hook
-            //gitHookRepository.addNewHook(gitHook);
-            //send the hook to the queue(or to the other service)
-            //hookMessageSender.sendHookMessage(gitHook);
-        }
-        else
-        {
-
-        }
+       // GitHook foundHook = gitHookRepository.findBySha1Hash(commit.getSHA1());
+//        if(foundHook==null)
+//        {
+//            GitHook gitHook=new GitHook();
+//            //save the hook
+//            //gitHookRepository.addNewHook(gitHook);
+//            //send the hook to the queue(or to the other service)
+//            //hookMessageSender.sendHookMessage(gitHook);
+//        }
+//        else
+//        {
+//
+//        }
 
 
     }

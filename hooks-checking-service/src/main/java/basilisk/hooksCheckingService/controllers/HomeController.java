@@ -1,7 +1,6 @@
 package basilisk.hooksCheckingService.controllers;
 
 import basilisk.hooksCheckingService.repositories.HookRepository;
-import basilisk.hooksCheckingService.repositories.HubRepoRepository;
 import basilisk.hooksCheckingService.web.HookCheckingService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

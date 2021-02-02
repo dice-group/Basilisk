@@ -25,7 +25,7 @@ public class GitRepo extends BaseEntity {
     @Column(name = "oAuth_token")
     private String OAuthToken;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "repo_id")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gitRepo")
     private Set<GitHook> hooks;
 
     public GitRepo(String repoName, String repoOwner, boolean isPrivate, String OAuthToken) {

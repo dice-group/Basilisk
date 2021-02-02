@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Repository
+
 public interface GitHookRepository extends HookRepository<GitHook>{
 
     public GitHook findBySha1Hash(String hash);

@@ -11,6 +11,12 @@ CREATE TABLE `git_repo`
     PRIMARY KEY (`id`)
 );
 
+-- ****************** SqlDBM: MySQL ******************;
+-- ***************************************************;
+
+
+-- ************************************** `git_hook`
+
 CREATE TABLE `git_hook`
 (
     `id`                   integer NOT NULL AUTO_INCREMENT ,
@@ -18,12 +24,13 @@ CREATE TABLE `git_hook`
     `commit_url`           varchar(100) NOT NULL ,
     `commit_sha1`          varchar(40) NOT NULL ,
     `commit_creation_date` datetime NOT NULL ,
-    `repo_d`               integer NOT NULL ,
+    `repo_id`               integer NOT NULL ,
 
     PRIMARY KEY (`id`),
-    KEY `fkIdx_28` (`repo_d`),
-    CONSTRAINT `FK_27` FOREIGN KEY `fkIdx_28` (`repo_d`) REFERENCES `git_repo` (`id`)
+    CONSTRAINT s FOREIGN KEY  (`repo_id`) REFERENCES `git_repo` (`id`)
 );
+
+
 
 
 

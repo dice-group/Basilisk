@@ -1,6 +1,6 @@
 package basilisk.hooksCheckingService.web;
 
-import basilisk.hooksCheckingService.domain.HubRepos.GitHubRepo;
+import basilisk.hooksCheckingService.domain.git.GitRepo;
 import basilisk.hooksCheckingService.messaging.HookMessageSender;
 import basilisk.hooksCheckingService.repositories.GitHookRepository;
 import org.kohsuke.github.GHIssueState;
@@ -13,9 +13,9 @@ import java.util.List;
 
 public class GitPullRequestCheckingService extends GitCheckingService {
 
-    GitHubRepo gitRepo;
+    GitRepo gitRepo;
 
-    public GitPullRequestCheckingService(GitHubRepo gitRepo, GitHookRepository gitHookRepository, HookMessageSender hookMessageSender) {
+    public GitPullRequestCheckingService(GitRepo gitRepo, GitHookRepository gitHookRepository, HookMessageSender hookMessageSender) {
         super(gitHookRepository, hookMessageSender);
         this.gitRepo = gitRepo;
     }

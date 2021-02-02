@@ -1,6 +1,6 @@
 package basilisk.hooksCheckingService.web;
 
-import basilisk.hooksCheckingService.domain.HubRepos.GitHubRepo;
+import basilisk.hooksCheckingService.domain.git.GitRepo;
 import basilisk.hooksCheckingService.messaging.HookMessageSender;
 import basilisk.hooksCheckingService.repositories.GitHookRepository;
 import org.kohsuke.github.GHRepository;
@@ -28,7 +28,7 @@ public abstract class GitCheckingService implements HookCheckingService{
     protected abstract void checkForNewVersion() throws IOException;
 
 
-    protected GHRepository getRepoFromGH(GitHubRepo gitRepo) throws IOException {
+    protected GHRepository getRepoFromGH(GitRepo gitRepo) throws IOException {
         GitHub github;
         if (gitRepo.isPrivate())
             github = new GitHubBuilder().withOAuthToken(gitRepo.getOAuthToken()).build();

@@ -1,7 +1,7 @@
 package basilisk.hooksCheckingService.web;
 
-import basilisk.hooksCheckingService.domain.Hooks.GitHook;
-import basilisk.hooksCheckingService.domain.HubRepos.GitBranchHubRepo;
+import basilisk.hooksCheckingService.domain.git.GitHook;
+import basilisk.hooksCheckingService.domain.git.GitBranchRepo;
 import basilisk.hooksCheckingService.messaging.HookMessageSender;
 import basilisk.hooksCheckingService.repositories.GitHookRepository;
 import org.kohsuke.github.*;
@@ -9,12 +9,11 @@ import org.kohsuke.github.*;
 import java.io.IOException;
 
 
-
 public class GitBranchCheckingService extends GitCheckingService {
 
-    GitBranchHubRepo gitBranchRepo;
+    GitBranchRepo gitBranchRepo;
 
-    public GitBranchCheckingService(GitBranchHubRepo gitBranchRepo, GitHookRepository gitHookRepository, HookMessageSender hookMessageSender) {
+    public GitBranchCheckingService(GitBranchRepo gitBranchRepo, GitHookRepository gitHookRepository, HookMessageSender hookMessageSender) {
         super(gitHookRepository, hookMessageSender);
         this.gitBranchRepo = gitBranchRepo;
     }
@@ -33,9 +32,9 @@ public class GitBranchCheckingService extends GitCheckingService {
         {
             GitHook gitHook=new GitHook();
             //save the hook
-            gitHookRepository.addNewHook(gitHook);
+            //gitHookRepository.addNewHook(gitHook);
             //send the hook to the queue(or to the other service)
-            hookMessageSender.sendHookMessage(gitHook);
+            //hookMessageSender.sendHookMessage(gitHook);
         }
         else
         {

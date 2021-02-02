@@ -11,7 +11,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
-@Table(name = "git_hooks")
+@Table(name = "git-hook")
 public class GitHook extends BaseEntity {
 
 

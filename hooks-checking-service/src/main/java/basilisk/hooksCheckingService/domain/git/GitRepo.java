@@ -12,6 +12,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@Table(name = "git-repo")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class GitRepo extends BaseEntity {
 

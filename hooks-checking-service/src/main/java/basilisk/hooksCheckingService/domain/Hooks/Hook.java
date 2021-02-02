@@ -1,7 +1,7 @@
 package basilisk.hooksCheckingService.domain.Hooks;
 
 
-import basilisk.hooksCheckingService.domain.HooksRepos.Repo;
+import basilisk.hooksCheckingService.domain.HubRepos.HubRepo;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,6 +20,6 @@ public class Hook {
     private Long id;
     private Date createdDate;
     @ManyToOne
-    private Repo repo;
+    private HubRepo hubRepo;
 
 }

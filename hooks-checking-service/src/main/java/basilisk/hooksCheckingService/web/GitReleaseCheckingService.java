@@ -1,6 +1,6 @@
 package basilisk.hooksCheckingService.web;
 
-import basilisk.hooksCheckingService.domain.HooksRepos.GitRepo;
+import basilisk.hooksCheckingService.domain.HubRepos.GitHubRepo;
 import basilisk.hooksCheckingService.messaging.HookMessageSender;
 import basilisk.hooksCheckingService.repositories.GitHookRepository;
 import org.kohsuke.github.*;
@@ -10,9 +10,9 @@ import java.io.IOException;
 
 public class GitReleaseCheckingService extends GitCheckingService{
 
-    GitRepo gitRepo;
+    GitHubRepo gitRepo;
 
-    public GitReleaseCheckingService(GitRepo gitRepo, GitHookRepository gitHookRepository, HookMessageSender hookMessageSender) {
+    public GitReleaseCheckingService(GitHubRepo gitRepo, GitHookRepository gitHookRepository, HookMessageSender hookMessageSender) {
         super(gitHookRepository, hookMessageSender);
         this.gitRepo=gitRepo;
     }

@@ -1,4 +1,4 @@
-package basilisk.hooksCheckingService.domain.HooksRepos;
+package basilisk.hooksCheckingService.domain.HubRepos;
 
 
 
@@ -13,7 +13,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-public class Repo {
+public class HubRepo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +22,7 @@ public class Repo {
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "repo")
     private Set<Hook> hooks;
 
-    public Repo()
+    public HubRepo()
     {;}
 
 }

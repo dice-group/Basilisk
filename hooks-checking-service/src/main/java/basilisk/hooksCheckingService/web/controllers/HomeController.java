@@ -1,4 +1,4 @@
-package basilisk.hooksCheckingService.controllers;
+package basilisk.hooksCheckingService.web.controllers;
 
 /**
  * @author Fakhr Shaheen

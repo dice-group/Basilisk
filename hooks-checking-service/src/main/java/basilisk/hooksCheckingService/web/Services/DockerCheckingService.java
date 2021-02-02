@@ -1,4 +1,4 @@
-package basilisk.hooksCheckingService.web;
+package basilisk.hooksCheckingService.web.Services;
 
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.core.DefaultDockerClientConfig;
@@ -12,7 +12,7 @@ import java.io.IOException;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-public class DockerHubCheckingService {
+public class DockerCheckingService {
     public void check()
     {
         DockerClientConfig standard = DefaultDockerClientConfig.createDefaultConfigBuilder().build();

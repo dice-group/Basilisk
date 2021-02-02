@@ -1,8 +1,8 @@
-package basilisk.hooksCheckingService.web;
+package basilisk.hooksCheckingService.web.Services;
 
 import java.io.IOException;
 
-public interface HookCheckingService {
+public interface CheckingService {
 
     public void performChecking() throws IOException;
 

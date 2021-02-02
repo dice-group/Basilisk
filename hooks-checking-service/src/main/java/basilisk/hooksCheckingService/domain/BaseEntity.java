@@ -1,6 +1,7 @@
 package basilisk.hooksCheckingService.domain;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.GeneratedValue;
@@ -17,10 +18,11 @@ import java.util.Date;
 @MappedSuperclass
 @Setter
 @Getter
+@NoArgsConstructor
 public class BaseEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Date creationDate;
+//    private Date creationDate;
 }

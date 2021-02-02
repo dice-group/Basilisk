@@ -15,4 +15,6 @@ public interface GitHookRepository extends CrudRepository<GitHook,Long> {
 //
 //    public Optional<GitHook> findTopByCreatedDateAnd();
 
+    public Optional<GitHook> findByCommitSha1(String sha1);
+
 }

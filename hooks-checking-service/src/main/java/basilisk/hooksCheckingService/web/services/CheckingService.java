@@ -1,4 +1,4 @@
-package basilisk.hooksCheckingService.web.Services;
+package basilisk.hooksCheckingService.web.services;
 
 import java.io.IOException;
 

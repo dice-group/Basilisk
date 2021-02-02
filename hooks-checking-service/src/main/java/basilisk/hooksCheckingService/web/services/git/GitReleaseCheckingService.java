@@ -1,10 +1,10 @@
-package basilisk.hooksCheckingService.web.Services;
+package basilisk.hooksCheckingService.web.services.git;
 
+import basilisk.hooksCheckingService.domain.git.GitBranchRepo;
 import basilisk.hooksCheckingService.domain.git.GitRepo;
 import basilisk.hooksCheckingService.messaging.HookMessageSender;
 import basilisk.hooksCheckingService.repositories.GitHookRepository;
 import basilisk.hooksCheckingService.repositories.GitRepoRepository;
-import org.kohsuke.github.*;
 
 
 import java.io.IOException;
@@ -17,7 +17,7 @@ public class GitReleaseCheckingService extends GitCheckingService{
     }
 
     @Override
-    public void checkForNewVersion() throws IOException {
+    public void checkForNewVersion(GitRepo gitRepo) throws IOException {
 //        //get the repo from github
 //        GHRepository repo = getRepoFromGH(gitRepo);
 //

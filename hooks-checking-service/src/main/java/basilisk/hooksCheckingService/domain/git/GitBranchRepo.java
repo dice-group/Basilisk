@@ -4,12 +4,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 
 @Getter
 @Setter
-@Entity
+//@Entity
+@DiscriminatorValue("branch")
 public class GitBranchRepo extends GitRepo {
 
     @Column(name = "branch")

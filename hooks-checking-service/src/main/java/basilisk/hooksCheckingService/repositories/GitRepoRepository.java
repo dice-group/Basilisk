@@ -1,5 +1,6 @@
 package basilisk.hooksCheckingService.repositories;
 
+
 import basilisk.hooksCheckingService.domain.git.GitRepo;
 import org.springframework.data.repository.CrudRepository;
 
@@ -9,4 +10,5 @@ import org.springframework.data.repository.CrudRepository;
 
 
 public interface GitRepoRepository extends CrudRepository<GitRepo,Long> {
+
 }

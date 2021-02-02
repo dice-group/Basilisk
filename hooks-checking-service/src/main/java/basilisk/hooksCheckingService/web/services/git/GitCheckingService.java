@@ -1,14 +1,17 @@
-package basilisk.hooksCheckingService.web.Services;
+package basilisk.hooksCheckingService.web.services.git;
 
+import basilisk.hooksCheckingService.domain.git.GitBranchRepo;
 import basilisk.hooksCheckingService.domain.git.GitRepo;
 import basilisk.hooksCheckingService.messaging.HookMessageSender;
 import basilisk.hooksCheckingService.repositories.GitHookRepository;
 import basilisk.hooksCheckingService.repositories.GitRepoRepository;
+import basilisk.hooksCheckingService.web.services.CheckingService;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
 
 import java.io.IOException;
+import java.util.Iterator;
 
 public abstract class GitCheckingService implements CheckingService {
 
@@ -24,11 +27,22 @@ public abstract class GitCheckingService implements CheckingService {
     }
 
     public void performChecking() throws IOException {
-        checkForNewVersion();
+
+        Iterable<GitRepo> gitRepos = gitRepoRepository.findAll();
+        Iterator<GitRepo> repoIterator=gitRepos.iterator();
+        //for each git repo
+        while (repoIterator.hasNext())
+        {
+            GitRepo gitrepo =repoIterator.next();
+            //do the logic for checking
+            checkForNewVersion(gitrepo);
+            //
+        }
+
     }
 
 
-    protected abstract void checkForNewVersion() throws IOException;
+    protected abstract void checkForNewVersion(GitRepo gitrepo) throws IOException;
 
 
     protected GHRepository getRepoFromGH(GitRepo gitRepo) throws IOException {
@@ -42,6 +56,7 @@ public abstract class GitCheckingService implements CheckingService {
 
         return repo;
     }
+
 
 
 

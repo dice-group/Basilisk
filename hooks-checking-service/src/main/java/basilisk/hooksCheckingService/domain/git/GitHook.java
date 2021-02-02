@@ -2,14 +2,16 @@ package basilisk.hooksCheckingService.domain.git;
 
 
 import basilisk.hooksCheckingService.domain.BaseEntity;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "git_hook")
 public class GitHook extends BaseEntity {
@@ -29,6 +31,5 @@ public class GitHook extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "repo_id")
     private GitRepo gitRepo;
-
 
 }

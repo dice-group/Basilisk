@@ -18,7 +18,7 @@ public class Hook {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Date createdDate;
+    private Date hookCreationDate;
     @ManyToOne
     private HubRepo hubRepo;
 

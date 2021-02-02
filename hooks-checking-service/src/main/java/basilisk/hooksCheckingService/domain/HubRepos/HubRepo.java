@@ -19,7 +19,7 @@ public class HubRepo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "repo")
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "hubRepo")
     private Set<Hook> hooks;
 
     public HubRepo()

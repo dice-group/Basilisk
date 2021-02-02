@@ -2,16 +2,17 @@ package basilisk.hooksCheckingService.repositories;
 
 
 import basilisk.hooksCheckingService.domain.git.GitHook;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
 
 
-public interface GitHookRepository extends HookRepository<GitHook>{
+public interface GitHookRepository extends CrudRepository<GitHook,Long> {
 
-    public GitHook findBySha1Hash(String hash);
+//    public GitHook findBySha1Hash(String hash);
+//
+//    public GitHook getLatestHook();
+//
+//    public Optional<GitHook> findTopByCreatedDateAnd();
 
-    public GitHook getLatestHook();
-
-    public Optional<GitHook> findTopByCreatedDateAnd();
 }

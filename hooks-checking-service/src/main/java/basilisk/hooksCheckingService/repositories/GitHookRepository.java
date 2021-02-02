@@ -17,4 +17,6 @@ public interface GitHookRepository extends CrudRepository<GitHook,Long> {
 
     public Optional<GitHook> findByCommitSha1(String sha1);
 
+    Iterable<GitHook> findAllByType(String type);
+
 }

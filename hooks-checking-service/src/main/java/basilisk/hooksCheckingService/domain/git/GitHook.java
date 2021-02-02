@@ -11,7 +11,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
-@Table(name = "git-hook")
+@Table(name = "git_hook")
 public class GitHook extends BaseEntity {
 
 
@@ -19,15 +19,15 @@ public class GitHook extends BaseEntity {
     @Column(name = "type")
     private GitHookType type;
 
-    @Column(name = "commit-creation-date")
+    @Column(name = "commit_creation_date")
     private Date commitCreationDate;
-    @Column(name = "commit-sha1")
+    @Column(name = "commit_sha1")
     private String commitSha1;
     @Column(name = "url")
     private String commitUrl;
 
     @ManyToOne
-    @JoinColumn(name = "repo-id")
+    @JoinColumn(name = "repo_id")
     private GitRepo gitRepo;
 
 

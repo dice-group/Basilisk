@@ -12,7 +12,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table(name = "git-repo")
+@Table(name = "git_repo")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class GitRepo extends BaseEntity {
 
@@ -20,12 +20,12 @@ public class GitRepo extends BaseEntity {
     private String repoName;
     @Column(name = "owner")
     private String repoOwner;
-    @Column(name = "is-private")
+    @Column(name = "is_private")
     private boolean isPrivate;
-    @Column(name = "oAuth-token")
+    @Column(name = "oAuth_token")
     private String OAuthToken;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "hubRepo")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "repo_id")
     private Set<GitHook> hooks;
 
     public GitRepo(String repoName, String repoOwner, boolean isPrivate, String OAuthToken) {

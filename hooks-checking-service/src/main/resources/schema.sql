@@ -8,7 +8,7 @@ CREATE TABLE `git_repo`
     `oAuth_token` varchar(200) NULL ,
     `branch`      varchar(100) NULL ,
     `is_branch`   varchar(3) NOT NULL ,
-        `type`    enum('release','pull_request','branch') NOT NULL ,
+    `type`    enum('release','pull_request','branch') NOT NULL ,
 
     PRIMARY KEY (`id`)
 );
@@ -22,7 +22,6 @@ CREATE TABLE `git_repo`
 CREATE TABLE `git_hook`
 (
     `id`                   integer NOT NULL AUTO_INCREMENT ,
-    `type`                 enum('release','pullrequest','branchcommit') NOT NULL ,
     `commit_url`           varchar(100) NOT NULL ,
     `commit_sha1`          varchar(40) NOT NULL ,
     `commit_creation_date` datetime NOT NULL ,

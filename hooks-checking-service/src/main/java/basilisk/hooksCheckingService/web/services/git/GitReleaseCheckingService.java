@@ -30,7 +30,7 @@ public class GitReleaseCheckingService extends GitCheckingService{
     @Override
     public void checkForNewVersion(GitRepo gitRepo) throws IOException {
         //get the repo from github
-        GHRepository repo = getRepoFromGH(gitRepo);
+        GHRepository repo = getRepoFromGitHub(gitRepo);
 
         //get latest release
         GHRelease release=repo.getLatestRelease();

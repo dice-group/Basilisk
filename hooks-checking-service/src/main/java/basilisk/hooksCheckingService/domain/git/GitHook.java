@@ -16,11 +16,6 @@ import java.util.Date;
 @Table(name = "git_hook")
 public class GitHook extends BaseEntity {
 
-
-    @Enumerated(value = EnumType.STRING)
-    @Column(name = "type")
-    private GitType type;
-
     @Column(name = "commit_creation_date")
     private Date commitCreationDate;
     @Column(name = "commit_sha1")

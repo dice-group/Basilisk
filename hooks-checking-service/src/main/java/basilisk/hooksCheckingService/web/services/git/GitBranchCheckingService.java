@@ -31,7 +31,7 @@ public class GitBranchCheckingService extends GitCheckingService {
     @Override
     protected void checkForNewVersion(GitRepo gitRepo) throws IOException {
 
-        GHRepository repo = getRepoFromGH(gitRepo);
+        GHRepository repo = getRepoFromGitHub(gitRepo);
 
         //get latest commit on the branch
         GHBranch branch = repo.getBranch("master");

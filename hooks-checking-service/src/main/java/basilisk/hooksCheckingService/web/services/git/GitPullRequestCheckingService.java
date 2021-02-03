@@ -29,7 +29,7 @@ public class GitPullRequestCheckingService extends GitCheckingService {
 
     @Override
     public void checkForNewVersion(GitRepo gitRepo) throws IOException {
-        GHRepository repo = getRepoFromGH(gitRepo);
+        GHRepository repo = getRepoFromGitHub(gitRepo);
 
         List<GHPullRequest> pullRequests = repo.getPullRequests(GHIssueState.OPEN);
         Iterator<GHPullRequest> iterator = pullRequests.iterator();

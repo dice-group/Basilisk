@@ -13,6 +13,10 @@ import org.kohsuke.github.GitHubBuilder;
 import java.io.IOException;
 import java.util.Iterator;
 
+/***
+ * @author Fakhr Shaheen
+ * This class follows the templte method pattern to difine a common steps that will be followed by all child classes
+ */
 public abstract class GitCheckingService implements CheckingService {
 
 
@@ -47,7 +51,7 @@ public abstract class GitCheckingService implements CheckingService {
     protected abstract void checkForNewVersion(GitRepo gitrepo) throws IOException;
 
 
-    protected GHRepository getRepoFromGH(GitRepo gitRepo) throws IOException {
+    protected GHRepository getRepoFromGitHub(GitRepo gitRepo) throws IOException {
         GitHub github;
         if (gitRepo.isPrivate())
             github = new GitHubBuilder().withOAuthToken(gitRepo.getOAuthToken()).build();

@@ -1,6 +1,7 @@
 package basilisk.hooksCheckingService.web.services.git;
 
 
+import basilisk.hooksCheckingService.domain.git.GitBranchRepo;
 import basilisk.hooksCheckingService.domain.git.GitHook;
 import basilisk.hooksCheckingService.domain.git.GitType;
 import basilisk.hooksCheckingService.domain.git.GitRepo;
@@ -31,10 +32,11 @@ public class GitBranchCheckingService extends GitCheckingService {
     @Override
     protected void checkForNewVersion(GitRepo gitRepo) throws IOException {
 
+        GitBranchRepo gitBranchRepo=(GitBranchRepo)gitRepo;
         GHRepository repo = getRepoFromGitHub(gitRepo);
 
         //get latest commit on the branch
-        GHBranch branch = repo.getBranch("master");
+        GHBranch branch = repo.getBranch(gitBranchRepo.getBranchName());
         GHCommit commit = repo.getCommit(branch.getSHA1());
 
 
@@ -49,7 +51,7 @@ public class GitBranchCheckingService extends GitCheckingService {
         {
             //add it to the database and send it as message
             GitHook gitHook=GitHook.builder().gitRepo(gitRepo).commitCreationDate(commit.getCommitDate()).commitSha1(commit.getSHA1()).
-                    commitUrl(commit.getHtmlUrl().toString()).type(GitType.branch).build();
+                    commitUrl(commit.getHtmlUrl().toString()).build();
 
             gitHookRepository.save(gitHook);
 

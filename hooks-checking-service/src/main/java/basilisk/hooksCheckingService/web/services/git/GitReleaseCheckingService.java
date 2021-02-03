@@ -47,7 +47,7 @@ public class GitReleaseCheckingService extends GitCheckingService{
         {
             //add it to the database and send it as message
             GitHook gitHook=GitHook.builder().gitRepo(gitRepo).commitCreationDate(commit.getCommitDate()).commitSha1(commit.getSHA1()).
-                    commitUrl(commit.getHtmlUrl().toString()).type(GitType.release).build();
+                    commitUrl(commit.getHtmlUrl().toString()).build();
 
             gitHookRepository.save(gitHook);
 

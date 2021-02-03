@@ -2,7 +2,6 @@ package basilisk.hooksCheckingService.domain.git;
 
 
 import basilisk.hooksCheckingService.domain.BaseEntity;
-import basilisk.hooksCheckingService.domain.git.GitHook;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,6 +28,10 @@ public class GitRepo extends BaseEntity {
     private boolean isPrivate;
     @Column(name = "oAuth_token")
     private String OAuthToken;
+
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "type")
+    private GitType type;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gitRepo")
     private Set<GitHook> hooks;

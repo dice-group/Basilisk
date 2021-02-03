@@ -28,9 +28,10 @@ public abstract class GitCheckingService implements CheckingService {
 
     public void performChecking() throws IOException {
 
-        Iterable<GitRepo> gitRepos = gitRepoRepository.findAll();
+        //get the github repos
+        Iterable<GitRepo> gitRepos = getRelatedGitRepos();
+        //go through them
         Iterator<GitRepo> repoIterator=gitRepos.iterator();
-        //for each git repo
         while (repoIterator.hasNext())
         {
             GitRepo gitrepo =repoIterator.next();
@@ -41,6 +42,7 @@ public abstract class GitCheckingService implements CheckingService {
 
     }
 
+    protected abstract Iterable<GitRepo> getRelatedGitRepos();
 
     protected abstract void checkForNewVersion(GitRepo gitrepo) throws IOException;
 

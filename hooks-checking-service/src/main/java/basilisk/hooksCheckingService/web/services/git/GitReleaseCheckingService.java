@@ -1,8 +1,7 @@
 package basilisk.hooksCheckingService.web.services.git;
 
-import basilisk.hooksCheckingService.domain.git.GitBranchRepo;
 import basilisk.hooksCheckingService.domain.git.GitHook;
-import basilisk.hooksCheckingService.domain.git.GitHookType;
+import basilisk.hooksCheckingService.domain.git.GitType;
 import basilisk.hooksCheckingService.domain.git.GitRepo;
 import basilisk.hooksCheckingService.messaging.HookMessageSender;
 import basilisk.hooksCheckingService.repositories.GitHookRepository;
@@ -21,6 +20,12 @@ public class GitReleaseCheckingService extends GitCheckingService{
     public GitReleaseCheckingService(GitRepoRepository gitRepoRepository, GitHookRepository gitHookRepository, HookMessageSender hookMessageSender) {
         super(gitRepoRepository, gitHookRepository, hookMessageSender);
     }
+
+    @Override
+    protected Iterable<GitRepo> getRelatedGitRepos() {
+        return gitRepoRepository.findAllByType(GitType.release);
+    }
+
 
     @Override
     public void checkForNewVersion(GitRepo gitRepo) throws IOException {
@@ -42,7 +47,7 @@ public class GitReleaseCheckingService extends GitCheckingService{
         {
             //add it to the database and send it as message
             GitHook gitHook=GitHook.builder().gitRepo(gitRepo).commitCreationDate(commit.getCommitDate()).commitSha1(commit.getSHA1()).
-                    commitUrl(commit.getHtmlUrl().toString()).type(GitHookType.Release).build();
+                    commitUrl(commit.getHtmlUrl().toString()).type(GitType.release).build();
 
             gitHookRepository.save(gitHook);
 

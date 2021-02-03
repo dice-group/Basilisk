@@ -7,6 +7,8 @@ CREATE TABLE `git_repo`
     `is_private`  bit NOT NULL ,
     `oAuth_token` varchar(200) NULL ,
     `branch`      varchar(100) NULL ,
+    `is_branch`   varchar(3) NOT NULL ,
+        `type`    enum('release','pull_request','branch') NOT NULL ,
 
     PRIMARY KEY (`id`)
 );

@@ -19,7 +19,7 @@ public class GitHook extends BaseEntity {
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "type")
-    private GitHookType type;
+    private GitType type;
 
     @Column(name = "commit_creation_date")
     private Date commitCreationDate;

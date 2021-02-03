@@ -3,6 +3,7 @@ package basilisk.hooksCheckingService.domain.git;
 /**
  * @author Fakhr Shaheen
  */
-public enum GitHookType {
-    Release,PullRequest,BranchCommit
+public enum GitType {
+    release,pull_request,branch
+
 }

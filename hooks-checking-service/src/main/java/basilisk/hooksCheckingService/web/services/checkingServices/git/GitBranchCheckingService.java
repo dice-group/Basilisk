@@ -1,4 +1,4 @@
-package basilisk.hooksCheckingService.web.services.git;
+package basilisk.hooksCheckingService.web.services.checkingServices.git;
 
 
 import basilisk.hooksCheckingService.domain.git.GitBranchRepo;
@@ -32,25 +32,21 @@ public class GitBranchCheckingService extends GitCheckingService {
     @Override
     protected void checkForNewVersion(GitRepo gitRepo) throws IOException {
 
-        GitBranchRepo gitBranchRepo=(GitBranchRepo)gitRepo;
+        GitBranchRepo gitBranchRepo = (GitBranchRepo) gitRepo;
         GHRepository repo = getRepoFromGitHub(gitRepo);
 
         //get latest commit on the branch
         GHBranch branch = repo.getBranch(gitBranchRepo.getBranchName());
-        GHCommit commit = repo.getCommit(branch.getSHA1());
 
+        //  check whether the hook is already saved
+        Optional<GitHook> foundHook = gitHookRepository.findByCommitSha1(branch.getSHA1());
 
-     //  check whether the hook is already saved
-        Optional<GitHook> foundHook = gitHookRepository.findByCommitSha1(commit.getSHA1());
-
-        if(foundHook.isPresent())
-        {
+        if (foundHook.isPresent()) {
             //ToDo nothing so far
-        }
-        else
-        {
-            //add it to the database and send it as message
-            GitHook gitHook=GitHook.builder().gitRepo(gitRepo).commitCreationDate(commit.getCommitDate()).commitSha1(commit.getSHA1()).
+        } else {
+            //save the hook and send it as event
+            GHCommit commit = repo.getCommit(branch.getSHA1());
+            GitHook gitHook = GitHook.builder().gitRepo(gitRepo).commitCreationDate(commit.getCommitDate()).commitSha1(commit.getSHA1()).
                     commitUrl(commit.getHtmlUrl().toString()).build();
 
             gitHookRepository.save(gitHook);

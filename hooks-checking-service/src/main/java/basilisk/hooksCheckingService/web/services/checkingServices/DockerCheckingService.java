@@ -1,4 +1,4 @@
-package basilisk.hooksCheckingService.web.services;
+package basilisk.hooksCheckingService.web.services.checkingServices;
 
 import com.github.dockerjava.core.DefaultDockerClientConfig;
 import com.github.dockerjava.core.DockerClientConfig;

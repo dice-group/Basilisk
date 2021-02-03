@@ -1,4 +1,4 @@
-package basilisk.hooksCheckingService.web.services.git;
+package basilisk.hooksCheckingService.web.services.checkingServices.git;
 
 import basilisk.hooksCheckingService.domain.git.GitRepo;
 import basilisk.hooksCheckingService.domain.git.GitType;

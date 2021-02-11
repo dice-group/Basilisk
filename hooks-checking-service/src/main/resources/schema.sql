@@ -28,8 +28,51 @@ CREATE TABLE `git_hook`
     `repo_id`               integer NOT NULL ,
 
     PRIMARY KEY (`id`),
-    CONSTRAINT s FOREIGN KEY  (`repo_id`) REFERENCES `git_repo` (`id`)
+    CONSTRAINT s1 FOREIGN KEY  (`repo_id`) REFERENCES `git_repo` (`id`)
 );
+
+
+-- ****************** SqlDBM: MySQL ******************;
+-- ***************************************************;
+
+
+-- ************************************** `docker_repo`
+
+CREATE TABLE `docker_repo`
+(
+    `id`         integer NOT NULL AUTO_INCREMENT ,
+    `name`       varchar(45) NOT NULL ,
+    `owner`      varchar(45) NULL ,
+    `is_private` bit NOT NULL ,
+
+    PRIMARY KEY (`id`)
+);
+
+-- ****************** SqlDBM: MySQL ******************;
+-- ***************************************************;
+
+
+-- ************************************** `docker_hook`
+
+CREATE TABLE `docker_hook`
+(
+    `id`                  integer NOT NULL AUTO_INCREMENT ,
+    `tag`                 varchar(100) NOT NULL ,
+    `digest`              varchar(64) NOT NULL ,
+    `url`                 varchar(100) NOT NULL ,
+    `image_creation_date` datetime NOT NULL ,
+    `repo_id`             integer NOT NULL ,
+
+    PRIMARY KEY (`id`),
+    CONSTRAINT s2 FOREIGN KEY (`repo_id`) REFERENCES `docker_repo` (`id`)
+);
+
+
+
+
+
+
+
 
 
 

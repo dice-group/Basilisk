@@ -1,5 +1,6 @@
 package basilisk.hooksCheckingService.web.services.checkingServices.git;
 
+import basilisk.hooksCheckingService.core.exception.GithubException;
 import basilisk.hooksCheckingService.domain.git.GitRepo;
 import basilisk.hooksCheckingService.domain.git.GitType;
 import basilisk.hooksCheckingService.messaging.HookMessageSender;
@@ -28,15 +29,22 @@ public class GitPullRequestCheckingService extends GitCheckingService {
 
 
     @Override
-    public void checkForNewVersion(GitRepo gitRepo) throws IOException {
-        GHRepository repo = getRepoFromGitHub(gitRepo);
+    public void checkForNewVersion(GitRepo gitRepo) throws GithubException {
+        try {
 
-        List<GHPullRequest> pullRequests = repo.getPullRequests(GHIssueState.OPEN);
-        Iterator<GHPullRequest> iterator = pullRequests.iterator();
-        while (iterator.hasNext()) {
-            GHPullRequest pullRequest = iterator.next();
-            pullRequest.getUpdatedAt();
+            GHRepository repo = getRepoFromGitHub(gitRepo);
 
+            List<GHPullRequest> pullRequests = repo.getPullRequests(GHIssueState.OPEN);
+            Iterator<GHPullRequest> iterator = pullRequests.iterator();
+            while (iterator.hasNext()) {
+                GHPullRequest pullRequest = iterator.next();
+                pullRequest.getUpdatedAt();
+
+            }
+        }
+        catch (IOException e)
+        {
+            throw new GithubException();
         }
     }
 }

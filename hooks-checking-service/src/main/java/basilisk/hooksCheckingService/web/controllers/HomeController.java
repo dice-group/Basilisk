@@ -17,26 +17,15 @@ import java.io.IOException;
 
 @RestController
 public class HomeController {
-    private GitHookRepository gitHookRepository;
-    private GitRepoRepository gitRepoRepository;
-    private CheckingService checkingService;
     private ContinuesCheckingService continuesCheckingService;
 
-    public HomeController(GitHookRepository gitHookRepository, GitRepoRepository gitRepoRepository, CheckingService checkingService,ContinuesCheckingService continuesCheckingService) {
-        this.gitHookRepository = gitHookRepository;
-        this.gitRepoRepository = gitRepoRepository;
-        this.checkingService = checkingService;
+    public HomeController(ContinuesCheckingService continuesCheckingService) {
         this.continuesCheckingService=continuesCheckingService;
     }
 
-    @GetMapping("/index")
-    public String getIndexPage() throws IOException {
-        checkingService.performChecking();
-        return "";
-    }
 
     @GetMapping("/start")
-    public String start() throws IOException, InterruptedException {
+    public String start() throws InterruptedException {
         continuesCheckingService.check();
         return "";
     }

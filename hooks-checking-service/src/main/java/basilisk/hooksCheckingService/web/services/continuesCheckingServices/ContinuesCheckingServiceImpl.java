@@ -1,6 +1,7 @@
 package basilisk.hooksCheckingService.web.services.continuesCheckingServices;
 
 import basilisk.hooksCheckingService.core.TimingStrategy;
+import basilisk.hooksCheckingService.core.exception.GithubException;
 import basilisk.hooksCheckingService.web.services.checkingServices.CheckingService;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,11 +28,18 @@ public class ContinuesCheckingServiceImpl implements ContinuesCheckingService{
     TimingStrategy timingStrategy;
 
     @Override
-    public void check() throws IOException, InterruptedException {
+    public void check() throws InterruptedException {
         while (true)
         {
             timingStrategy.sleep();
-            checkingService.performChecking();
+            try {
+                checkingService.performChecking();
+            }
+            catch (GithubException e)
+            {
+                //ToDo log
+                System.out.println("not valid git thing");
+            }
         }
     }
 }

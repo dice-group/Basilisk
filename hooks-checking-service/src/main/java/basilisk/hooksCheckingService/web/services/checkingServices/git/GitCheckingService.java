@@ -1,5 +1,6 @@
 package basilisk.hooksCheckingService.web.services.checkingServices.git;
 
+import basilisk.hooksCheckingService.core.exception.GithubException;
 import basilisk.hooksCheckingService.domain.git.GitRepo;
 import basilisk.hooksCheckingService.messaging.HookMessageSender;
 import basilisk.hooksCheckingService.repositories.GitHookRepository;
@@ -29,7 +30,7 @@ public abstract class GitCheckingService implements CheckingService {
         this.hookMessageSender = hookMessageSender;
     }
 
-    public void performChecking() throws IOException {
+    public void performChecking() throws GithubException {
 
         //get the github repos
         Iterable<GitRepo> gitRepos = getRelatedGitRepos();
@@ -47,7 +48,7 @@ public abstract class GitCheckingService implements CheckingService {
 
     protected abstract Iterable<GitRepo> getRelatedGitRepos();
 
-    protected abstract void checkForNewVersion(GitRepo gitrepo) throws IOException;
+    protected abstract void checkForNewVersion(GitRepo gitrepo) throws GithubException;
 
 
     protected GHRepository getRepoFromGitHub(GitRepo gitRepo) throws IOException {

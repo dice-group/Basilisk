@@ -1,6 +1,7 @@
 package basilisk.hooksCheckingService.web.services.checkingServices.git;
 
 
+import basilisk.hooksCheckingService.core.exception.GithubException;
 import basilisk.hooksCheckingService.domain.git.GitBranchRepo;
 import basilisk.hooksCheckingService.domain.git.GitHook;
 import basilisk.hooksCheckingService.domain.git.GitType;
@@ -30,27 +31,34 @@ public class GitBranchCheckingService extends GitCheckingService {
 
 
     @Override
-    protected void checkForNewVersion(GitRepo gitRepo) throws IOException {
+    protected void checkForNewVersion(GitRepo gitRepo) throws GithubException {
 
-        GitBranchRepo gitBranchRepo = (GitBranchRepo) gitRepo;
-        GHRepository repo = getRepoFromGitHub(gitRepo);
+        try {
 
-        //get latest commit on the branch
-        GHBranch branch = repo.getBranch(gitBranchRepo.getBranchName());
+            GitBranchRepo gitBranchRepo = (GitBranchRepo) gitRepo;
+            GHRepository repo = getRepoFromGitHub(gitRepo);
 
-        //  check whether the hook is already saved
-        Optional<GitHook> foundHook = gitHookRepository.findByCommitSha1(branch.getSHA1());
+            //get latest commit on the branch
+            GHBranch branch = repo.getBranch(gitBranchRepo.getBranchName());
 
-        if (foundHook.isPresent()) {
-            //ToDo nothing so far
-        } else {
-            //save the hook and send it as event
-            GHCommit commit = repo.getCommit(branch.getSHA1());
-            GitHook gitHook = GitHook.builder().gitRepo(gitRepo).commitCreationDate(commit.getCommitDate()).commitSha1(commit.getSHA1()).
-                    commitUrl(commit.getHtmlUrl().toString()).build();
+            //  check whether the hook is already saved
+            Optional<GitHook> foundHook = gitHookRepository.findByCommitSha1(branch.getSHA1());
 
-            gitHookRepository.save(gitHook);
+            if (foundHook.isPresent()) {
+                //ToDo nothing so far
+            } else {
+                //save the hook and send it as event
+                GHCommit commit = repo.getCommit(branch.getSHA1());
+                GitHook gitHook = GitHook.builder().gitRepo(gitRepo).commitCreationDate(commit.getCommitDate()).commitSha1(commit.getSHA1()).
+                        commitUrl(commit.getHtmlUrl().toString()).build();
 
+                gitHookRepository.save(gitHook);
+
+            }
+        }
+        catch (IOException e)
+        {
+            throw new GithubException();
         }
 
 

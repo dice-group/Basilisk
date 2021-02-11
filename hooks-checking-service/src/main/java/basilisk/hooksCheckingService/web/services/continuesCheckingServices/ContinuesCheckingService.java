@@ -7,5 +7,5 @@ import java.io.IOException;
  */
 public interface ContinuesCheckingService {
 
-    public void check() throws IOException, InterruptedException;
+    public void check() throws InterruptedException;
 }

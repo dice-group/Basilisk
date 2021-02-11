@@ -12,12 +12,8 @@ import basilisk.hooksCheckingService.repositories.GitRepoRepository;
 import org.kohsuke.github.GHBranch;
 import org.kohsuke.github.GHCommit;
 import org.kohsuke.github.GHRepository;
-import org.springframework.stereotype.Component;
-
-import java.io.IOException;
 import java.util.Optional;
 
-@Component
 public class GitBranchCheckingService extends GitCheckingService {
 
     public GitBranchCheckingService(GitRepoRepository gitRepoRepository, GitHookRepository gitHookRepository, HookMessageSender hookMessageSender) {

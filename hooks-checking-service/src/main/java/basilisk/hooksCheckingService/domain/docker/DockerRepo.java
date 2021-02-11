@@ -1,7 +1,6 @@
 package basilisk.hooksCheckingService.domain.docker;
 
 import basilisk.hooksCheckingService.domain.BaseEntity;
-import basilisk.hooksCheckingService.domain.git.GitHook;
 import lombok.*;
 
 import javax.persistence.*;

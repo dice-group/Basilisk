@@ -2,6 +2,7 @@ package basilisk.hooksCheckingService.web.services.checkingServices.docker;
 
 import basilisk.hooksCheckingService.core.exception.DockerhubException;
 import basilisk.hooksCheckingService.domain.docker.DockerRepo;
+import basilisk.hooksCheckingService.messaging.HookMessageSender;
 import basilisk.hooksCheckingService.repositories.DockeHookRepository;
 import basilisk.hooksCheckingService.repositories.DockerRepoRepository;
 import basilisk.hooksCheckingService.web.services.checkingServices.CheckingService;
@@ -19,6 +20,14 @@ public class DockerhubCheckingService implements CheckingService {
 
     DockeHookRepository dockeHookRepository;
     DockerRepoRepository dockerRepoRepository;
+    HookMessageSender hookMessageSender;
+
+    public DockerhubCheckingService( DockerRepoRepository dockerRepoRepository,DockeHookRepository dockeHookRepository, HookMessageSender hookMessageSender) {
+        this.dockeHookRepository = dockeHookRepository;
+        this.dockerRepoRepository = dockerRepoRepository;
+        this.hookMessageSender=hookMessageSender;
+    }
+
     @Override
     public void performChecking() {
         //get the dockerhub repos

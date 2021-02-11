@@ -54,7 +54,7 @@ public class GitReleaseCheckingService extends GitCheckingService {
             }
 
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new GithubException();
         }
     }

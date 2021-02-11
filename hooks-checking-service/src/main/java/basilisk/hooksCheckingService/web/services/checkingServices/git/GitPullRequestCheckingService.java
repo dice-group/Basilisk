@@ -42,7 +42,7 @@ public class GitPullRequestCheckingService extends GitCheckingService {
 
             }
         }
-        catch (IOException e)
+        catch (Exception e)
         {
             throw new GithubException();
         }

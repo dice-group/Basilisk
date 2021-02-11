@@ -36,14 +36,8 @@ public class ContinuesCheckingServiceImpl implements ContinuesCheckingService{
         while (is_running)
         {
             timingStrategy.sleep();
-            try {
-                checkingService.performChecking();
-            }
-            catch (GithubException e)
-            {
-                //ToDo log
-                System.out.println("not valid git thing");
-            }
+            checkingService.performChecking();
+
         }
     }
 

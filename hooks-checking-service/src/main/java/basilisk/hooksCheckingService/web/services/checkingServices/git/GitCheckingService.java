@@ -30,7 +30,7 @@ public abstract class GitCheckingService implements CheckingService {
         this.hookMessageSender = hookMessageSender;
     }
 
-    public void performChecking() throws GithubException {
+    public void performChecking() {
 
         //get the github repos
         Iterable<GitRepo> gitRepos = getRelatedGitRepos();
@@ -40,7 +40,14 @@ public abstract class GitCheckingService implements CheckingService {
         {
             GitRepo gitrepo =repoIterator.next();
             //do the logic for checking
-            checkForNewVersion(gitrepo);
+            try {
+                checkForNewVersion(gitrepo);
+            }
+            catch (GithubException e)
+            {
+                //ToDo log
+                System.out.println("not valid git thing");
+            }
             //
         }
 

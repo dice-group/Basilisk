@@ -6,7 +6,7 @@ import basilisk.hooksCheckingService.core.exception.GithubException;
 public interface CheckingService {
 
 
-    public void performChecking() throws GithubException;
+    public void performChecking() ;
 
 
 

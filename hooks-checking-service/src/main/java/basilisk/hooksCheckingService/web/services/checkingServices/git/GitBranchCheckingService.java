@@ -56,7 +56,7 @@ public class GitBranchCheckingService extends GitCheckingService {
 
             }
         }
-        catch (IOException e)
+        catch (Exception e)
         {
             throw new GithubException();
         }

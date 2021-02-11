@@ -1,5 +1,7 @@
 package basilisk.hooksCheckingService.web.services.continuesCheckingServices;
 
+import org.springframework.scheduling.annotation.Async;
+
 import java.io.IOException;
 
 /**
@@ -7,5 +9,10 @@ import java.io.IOException;
  */
 public interface ContinuesCheckingService {
 
-    public void check() throws InterruptedException;
+    @Async
+    public void start() throws InterruptedException;
+
+    public void stop();
+
+    public boolean isRunning();
 }

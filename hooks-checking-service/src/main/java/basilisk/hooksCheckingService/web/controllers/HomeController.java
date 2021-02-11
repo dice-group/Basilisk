@@ -26,7 +26,23 @@ public class HomeController {
 
     @GetMapping("/start")
     public String start() throws InterruptedException {
-        continuesCheckingService.check();
-        return "";
+        if(continuesCheckingService.isRunning())
+            return "already running";
+        else
+        {
+            continuesCheckingService.start();
+            return "started";
+        }
+    }
+
+    @GetMapping("/stop")
+    public String stop() {
+        if(! continuesCheckingService.isRunning())
+            return "The service is not running";
+        else
+        {
+            continuesCheckingService.stop();
+            return "The service is stopped";
+        }
     }
 }

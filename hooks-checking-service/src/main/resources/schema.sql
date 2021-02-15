@@ -28,7 +28,7 @@ CREATE TABLE `git_hook`
     `repo_id`               integer NOT NULL ,
 
     PRIMARY KEY (`id`),
-    CONSTRAINT s1 FOREIGN KEY  (`repo_id`) REFERENCES `git_repo` (`id`)
+    CONSTRAINT s FOREIGN KEY  (`repo_id`) REFERENCES `git_repo` (`id`)
 );
 
 
@@ -64,7 +64,7 @@ CREATE TABLE `docker_hook`
     `repo_id`             integer NOT NULL ,
 
     PRIMARY KEY (`id`),
-    CONSTRAINT s2 FOREIGN KEY (`repo_id`) REFERENCES `docker_repo` (`id`)
+    CONSTRAINT d FOREIGN KEY (`repo_id`) REFERENCES `docker_repo` (`id`)
 );
 
 

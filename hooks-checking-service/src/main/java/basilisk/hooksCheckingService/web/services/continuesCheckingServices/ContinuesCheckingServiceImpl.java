@@ -3,6 +3,7 @@ package basilisk.hooksCheckingService.web.services.continuesCheckingServices;
 import basilisk.hooksCheckingService.core.TimingStrategy;
 import basilisk.hooksCheckingService.core.exception.GithubException;
 import basilisk.hooksCheckingService.web.services.checkingServices.CheckingService;
+import basilisk.hooksCheckingService.web.services.checkingServices.docker.DockerhubCheckingService;
 import basilisk.hooksCheckingService.web.services.checkingServices.git.GitBranchCheckingService;
 import basilisk.hooksCheckingService.web.services.checkingServices.git.GitPullRequestCheckingService;
 import basilisk.hooksCheckingService.web.services.checkingServices.git.GitReleaseCheckingService;
@@ -24,17 +25,20 @@ public class ContinuesCheckingServiceImpl implements ContinuesCheckingService {
     public ContinuesCheckingServiceImpl(GitBranchCheckingService gitBranchCheckingService
             , GitReleaseCheckingService gitReleaseCheckingService
             , GitPullRequestCheckingService gitPullRequestCheckingService
+            , DockerhubCheckingService dockerhubCheckingService
             , TimingStrategy timingStrategy) {
 
         this.gitBranchCheckingService = gitBranchCheckingService;
         this.gitReleaseCheckingService = gitReleaseCheckingService;
         this.gitPullRequestCheckingService = gitPullRequestCheckingService;
+        this.dockerhubCheckingService=dockerhubCheckingService;
         this.timingStrategy = timingStrategy;
     }
 
     GitBranchCheckingService gitBranchCheckingService;
     GitReleaseCheckingService gitReleaseCheckingService;
     GitPullRequestCheckingService gitPullRequestCheckingService;
+    DockerhubCheckingService dockerhubCheckingService;
     @Setter
     @Getter
     TimingStrategy timingStrategy;
@@ -49,6 +53,7 @@ public class ContinuesCheckingServiceImpl implements ContinuesCheckingService {
             gitBranchCheckingService.performChecking();
             gitReleaseCheckingService.performChecking();
             gitPullRequestCheckingService.performChecking();
+            dockerhubCheckingService.performChecking();
 
         }
     }

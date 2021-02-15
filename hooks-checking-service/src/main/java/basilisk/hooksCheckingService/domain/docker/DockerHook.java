@@ -19,13 +19,13 @@ import java.util.Date;
 @Table(name = "docker_hook")
 public class DockerHook extends BaseEntity {
 
-    @Column(columnDefinition="tag")
+    @Column(name="tag")
     private String tag;
-    @Column(columnDefinition = "digest")
+    @Column(name = "digest")
     String digest;
-    @Column(columnDefinition="url")
+    @Column(name="url")
     String url;
-    @Column(columnDefinition="creation_date")
+    @Column(name="creation_date")
     Date creationDate;
 
     @ManyToOne

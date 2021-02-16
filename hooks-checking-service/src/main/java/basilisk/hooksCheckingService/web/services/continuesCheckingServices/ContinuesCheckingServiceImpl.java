@@ -5,6 +5,7 @@ import basilisk.hooksCheckingService.core.exception.GithubException;
 import basilisk.hooksCheckingService.web.services.checkingServices.CheckingService;
 import basilisk.hooksCheckingService.web.services.checkingServices.docker.DockerhubCheckingService;
 import basilisk.hooksCheckingService.web.services.checkingServices.git.GitBranchCheckingService;
+import basilisk.hooksCheckingService.web.services.checkingServices.git.GitCheckingService;
 import basilisk.hooksCheckingService.web.services.checkingServices.git.GitPullRequestCheckingService;
 import basilisk.hooksCheckingService.web.services.checkingServices.git.GitReleaseCheckingService;
 import lombok.Getter;
@@ -22,9 +23,9 @@ import java.io.IOException;
 @Component
 public class ContinuesCheckingServiceImpl implements ContinuesCheckingService {
 
-    public ContinuesCheckingServiceImpl(GitBranchCheckingService gitBranchCheckingService
-            , GitReleaseCheckingService gitReleaseCheckingService
-            , GitPullRequestCheckingService gitPullRequestCheckingService
+    public ContinuesCheckingServiceImpl(GitCheckingService gitBranchCheckingService
+            , GitCheckingService gitReleaseCheckingService
+            , GitCheckingService gitPullRequestCheckingService
             , DockerhubCheckingService dockerhubCheckingService
             , TimingStrategy timingStrategy) {
 
@@ -35,9 +36,9 @@ public class ContinuesCheckingServiceImpl implements ContinuesCheckingService {
         this.timingStrategy = timingStrategy;
     }
 
-    GitBranchCheckingService gitBranchCheckingService;
-    GitReleaseCheckingService gitReleaseCheckingService;
-    GitPullRequestCheckingService gitPullRequestCheckingService;
+    GitCheckingService gitBranchCheckingService;
+    GitCheckingService gitReleaseCheckingService;
+    GitCheckingService gitPullRequestCheckingService;
     DockerhubCheckingService dockerhubCheckingService;
     @Setter
     @Getter

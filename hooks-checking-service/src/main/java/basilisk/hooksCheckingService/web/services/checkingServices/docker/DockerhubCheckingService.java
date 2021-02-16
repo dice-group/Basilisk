@@ -48,7 +48,10 @@ public class DockerhubCheckingService implements CheckingService {
     }
 
     private String checkForNewVersion(DockerRepo dockerRepo) throws DockerhubException {
-        String result=DockerHubRestProxy.getTages(dockerRepo.getRepoName());
-        return result;
+//        DockerHubRestProxy dockerHubRestProxy;
+//         result=dockerHubRestProxy.getTages(dockerRepo.getRepoName());
+//        return result;
+
+        return "Hi";
     }
 }

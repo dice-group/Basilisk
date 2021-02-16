@@ -1,8 +1,8 @@
 package basilisk.hooksCheckingService.domain.docker;
 
+
 import basilisk.hooksCheckingService.domain.BaseEntity;
 import lombok.*;
-
 import javax.persistence.*;
 import java.util.Date;
 

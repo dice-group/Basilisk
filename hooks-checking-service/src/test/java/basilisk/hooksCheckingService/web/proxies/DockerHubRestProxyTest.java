@@ -1,9 +1,9 @@
 package basilisk.hooksCheckingService.web.proxies;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.json.JsonTest;
 import org.springframework.boot.test.context.SpringBootTest;
 
 /**
@@ -15,17 +15,19 @@ class DockerHubRestProxyTest {
 
 
     @Autowired
-    ObjectMapper objectMapper;
-
-    @Autowired
     DockerHubRestProxy dockerHubRestProxy;
 
     @Test
-    void gettag()
-    {
-        String json=dockerHubRestProxy.getTages("dicegroup/tentris_server");
-//        objectMapper.readValue(json,)
-        System.out.println(json);
+    void getMySqltag() {
+        var result=dockerHubRestProxy.getTages("library","mysql");
+        System.out.println(result.getDockerTages().toString());
     }
+
+    @Test
+    void getTentrisServertag() {
+        var result=dockerHubRestProxy.getTages("dicegroup","tentris_server");
+        System.out.println(result.getDockerTages().toString());
+    }
+
 
 }

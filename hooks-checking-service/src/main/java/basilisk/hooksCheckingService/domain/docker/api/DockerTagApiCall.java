@@ -1,4 +1,4 @@
-package basilisk.hooksCheckingService.domain.docker;
+package basilisk.hooksCheckingService.domain.docker.api;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "previous",
         "results"
 })
-public class DockerCall {
+public class DockerTagApiCall {
 
     @JsonProperty("count")
     private Integer count;
@@ -26,7 +26,7 @@ public class DockerCall {
     @JsonProperty("previous")
     private String previous;
     @JsonProperty("results")
-    private List<DockerTag> results = null;
+    private List<DockerApiTag> dockerTags = null;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -61,13 +61,13 @@ public class DockerCall {
     }
 
     @JsonProperty("results")
-    public List<DockerTag> getResults() {
-        return results;
+    public List<DockerApiTag> getDockerTages() {
+        return dockerTags;
     }
 
     @JsonProperty("results")
-    public void setResults(List<DockerTag> results) {
-        this.results = results;
+    public void setDockerTages(List<DockerApiTag> results) {
+        this.dockerTags = results;
     }
 
     @JsonAnyGetter

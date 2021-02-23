@@ -1,4 +1,4 @@
-package basilisk.hooksCheckingService.domain.docker;
+package basilisk.hooksCheckingService.domain.docker.api;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "last_pushed"
 })
 
-public class DockerImage {
+public class DockerApiImage {
 
     @JsonProperty("architecture")
     private String architecture;

@@ -1,5 +1,5 @@
 
-package basilisk.hooksCheckingService.domain.docker;
+package basilisk.hooksCheckingService.domain.docker.api;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "tag_last_pulled",
         "tag_last_pushed"
 })
-public class DockerTag {
+public class DockerApiTag {
 
     @JsonProperty("creator")
     private Integer creator;
@@ -37,7 +37,7 @@ public class DockerTag {
     @JsonProperty("image_id")
     private Object imageId;
     @JsonProperty("images")
-    private List<DockerImage> images = null;
+    private List<DockerApiImage> images = null;
     @JsonProperty("last_updated")
     private String lastUpdated;
     @JsonProperty("last_updater")
@@ -92,12 +92,12 @@ public class DockerTag {
     }
 
     @JsonProperty("images")
-    public List<DockerImage> getImages() {
+    public List<DockerApiImage> getImages() {
         return images;
     }
 
     @JsonProperty("images")
-    public void setImages(List<DockerImage> images) {
+    public void setImages(List<DockerApiImage> images) {
         this.images = images;
     }
 

@@ -1,14 +1,10 @@
 package basilisk.hooksCheckingService.web.proxies;
 
-import basilisk.hooksCheckingService.domain.docker.DockerCall;
-import basilisk.hooksCheckingService.domain.docker.DockerTag;
-import org.springframework.beans.factory.annotation.Autowired;
+import basilisk.hooksCheckingService.domain.docker.api.DockerTagApiCall;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.List;
 
 /**
  * @author Fakhr Shaheen
@@ -30,12 +26,12 @@ public class DockerHubRestProxy {
     private String apihost;
     private final RestTemplate restTemplate;
 
-    public String getTages(String repoName) {
+    public DockerTagApiCall getTages(String ownerName,String repoName) {
         String fooResourceUrl
-                = apihost + "/v2/repositories/" + repoName + "/tags/";
-        DockerCall response
-                = restTemplate.getForObject(fooResourceUrl, DockerCall.class);
-        return response.toString();
+                = apihost + "/v2/repositories/"+ownerName+"/" + repoName + "/tags";
+        DockerTagApiCall response
+                = restTemplate.getForObject(fooResourceUrl, DockerTagApiCall.class);
+        return response;
     }
 
 }

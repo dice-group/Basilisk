@@ -27,5 +27,5 @@ public class DockerRepo extends BaseEntity {
     @Column(name="is_private")
     private boolean isPrivate;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "dockerRepo")
-    private Set<DockerHook> dockerHooks;
+    private Set<DockerImage> dockerHooks;
 }

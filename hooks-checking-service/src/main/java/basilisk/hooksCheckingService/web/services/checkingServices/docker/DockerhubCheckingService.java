@@ -3,9 +3,8 @@ package basilisk.hooksCheckingService.web.services.checkingServices.docker;
 import basilisk.hooksCheckingService.core.exception.DockerhubException;
 import basilisk.hooksCheckingService.domain.docker.DockerRepo;
 import basilisk.hooksCheckingService.messaging.HookMessageSender;
-import basilisk.hooksCheckingService.repositories.DockeHookRepository;
+import basilisk.hooksCheckingService.repositories.DockerImageRepository;
 import basilisk.hooksCheckingService.repositories.DockerRepoRepository;
-import basilisk.hooksCheckingService.web.proxies.DockerHubRestProxy;
 import basilisk.hooksCheckingService.web.services.checkingServices.CheckingService;
 
 
@@ -17,12 +16,12 @@ import java.util.Iterator;
 public class DockerhubCheckingService implements CheckingService {
 
 
-    DockeHookRepository dockeHookRepository;
+    DockerImageRepository dockerImageRepository;
     DockerRepoRepository dockerRepoRepository;
     HookMessageSender hookMessageSender;
 
-    public DockerhubCheckingService(DockerRepoRepository dockerRepoRepository, DockeHookRepository dockeHookRepository, HookMessageSender hookMessageSender) {
-        this.dockeHookRepository = dockeHookRepository;
+    public DockerhubCheckingService(DockerRepoRepository dockerRepoRepository, DockerImageRepository dockerImageRepository, HookMessageSender hookMessageSender) {
+        this.dockerImageRepository = dockerImageRepository;
         this.dockerRepoRepository = dockerRepoRepository;
         this.hookMessageSender = hookMessageSender;
     }

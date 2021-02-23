@@ -54,18 +54,37 @@ CREATE TABLE `docker_repo`
 
 -- ************************************** `docker_hook`
 
-CREATE TABLE `docker_hook`
+CREATE TABLE `docker_image`
 (
     `id`                  integer NOT NULL AUTO_INCREMENT ,
-    `tag`                 varchar(100) NOT NULL ,
     `digest`              varchar(64) NOT NULL ,
-    `url`                 varchar(100) NOT NULL ,
-    `image_creation_date` datetime NOT NULL ,
+    `last_pushed` datetime NOT NULL ,
     `repo_id`             integer NOT NULL ,
 
     PRIMARY KEY (`id`),
     CONSTRAINT d FOREIGN KEY (`repo_id`) REFERENCES `docker_repo` (`id`)
 );
+
+
+-- ****************** SqlDBM: MySQL ******************;
+-- ***************************************************;
+
+
+-- ************************************** `docker_tag`
+
+CREATE TABLE `docker_tag`
+(
+    `id`          int NOT NULL AUTO_INCREMENT,
+    `name`        varchar(100) NOT NULL ,
+    `image_id`    integer NOT NULL ,
+    `last_pushed` datetime NOT NULL ,
+
+    PRIMARY KEY (`id`),
+    CONSTRAINT e FOREIGN KEY  (`image_id`) REFERENCES `docker_image` (`id`)
+);
+
+
+
 
 
 

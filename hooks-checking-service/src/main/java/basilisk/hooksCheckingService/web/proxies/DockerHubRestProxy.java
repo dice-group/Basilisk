@@ -14,16 +14,12 @@ import org.springframework.web.client.RestTemplate;
 @ConfigurationProperties(value = "proxies.docker")
 public class DockerHubRestProxy {
 
-    public void setApihost(String apihost) {
-        this.apihost = apihost;
-    }
-
 
         public DockerHubRestProxy(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplate = restTemplateBuilder.build();
     }
 
-    private String apihost;
+    private final String apihost="https://registry.hub.docker.com";
     private final RestTemplate restTemplate;
 
     public DockerTagApiCall getTages(String ownerName,String repoName) {

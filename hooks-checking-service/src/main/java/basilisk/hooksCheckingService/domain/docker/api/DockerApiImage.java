@@ -1,5 +1,6 @@
 package basilisk.hooksCheckingService.domain.docker.api;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -47,7 +48,7 @@ public class DockerApiImage {
     @JsonProperty("last_pulled")
     private String lastPulled;
     @JsonProperty("last_pushed")
-    private Object lastPushed;
+    private Date lastPushed;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -152,12 +153,12 @@ public class DockerApiImage {
     }
 
     @JsonProperty("last_pushed")
-    public Object getLastPushed() {
+    public Date getLastPushed() {
         return lastPushed;
     }
 
     @JsonProperty("last_pushed")
-    public void setLastPushed(Object lastPushed) {
+    public void setLastPushed(Date lastPushed) {
         this.lastPushed = lastPushed;
     }
 

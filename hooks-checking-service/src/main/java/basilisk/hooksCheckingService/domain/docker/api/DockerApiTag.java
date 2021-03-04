@@ -1,6 +1,7 @@
 
 package basilisk.hooksCheckingService.domain.docker.api;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,9 +56,9 @@ public class DockerApiTag {
     @JsonProperty("tag_status")
     private String tagStatus;
     @JsonProperty("tag_last_pulled")
-    private String tagLastPulled;
+    private Date tagLastPulled;
     @JsonProperty("tag_last_pushed")
-    private String tagLastPushed;
+    private Date tagLastPushed;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -182,22 +183,22 @@ public class DockerApiTag {
     }
 
     @JsonProperty("tag_last_pulled")
-    public String getTagLastPulled() {
+    public Date getTagLastPulled() {
         return tagLastPulled;
     }
 
     @JsonProperty("tag_last_pulled")
-    public void setTagLastPulled(String tagLastPulled) {
+    public void setTagLastPulled(Date tagLastPulled) {
         this.tagLastPulled = tagLastPulled;
     }
 
     @JsonProperty("tag_last_pushed")
-    public String getTagLastPushed() {
+    public Date getTagLastPushed() {
         return tagLastPushed;
     }
 
     @JsonProperty("tag_last_pushed")
-    public void setTagLastPushed(String tagLastPushed) {
+    public void setTagLastPushed(Date tagLastPushed) {
         this.tagLastPushed = tagLastPushed;
     }
 

@@ -54,42 +54,48 @@ public class DockerhubCheckingService implements CheckingService {
     }
 
     private void checkForNewVersion(DockerRepo dockerRepo) throws DockerhubException {
-        DockerHubRestProxy dockerHubRestProxy = new DockerHubRestProxy(new RestTemplateBuilder());
-        var result = dockerHubRestProxy.getTages(dockerRepo.getOwnerName(), dockerRepo.getRepoName());
-        for (DockerApiTag apiTag : result.getDockerTages()) {
+        try {
 
-            // check whether the image assigned to the tag exists
-            DockerImage dockerImage;
-            var savedDockerImage = dockerImageRepository.findByDigest(apiTag.getImages().get(0).getDigest());
-            //if the image assigned to the tag does not exists, create it.
-            if (savedDockerImage.isEmpty()) {
-                dockerImage = new DockerImage(apiTag.getImages().get(0).getDigest(),apiTag.getImages().get(0).getLastPushed(), dockerRepo, new HashSet<>());
-                dockerImageRepository.save(dockerImage);
-            } else {
-                dockerImage = savedDockerImage.get();
-            }
+            DockerHubRestProxy dockerHubRestProxy = new DockerHubRestProxy(new RestTemplateBuilder());
+            var retrievedTags = dockerHubRestProxy.getTages(dockerRepo.getOwnerName(), dockerRepo.getRepoName());
+            for (DockerApiTag apiTag : retrievedTags) {
 
-            // check whether the tag exists
-            var savedTag = dockerTagRepository.findDockerTagByName(apiTag.getName());
-            // If the tag is not stored
-            if (savedTag.isEmpty()) {
-                var x4=new DockerTag(apiTag.getName(), apiTag.getTagLastPushed(), dockerImage);
-                //Add the tag to the database
-                dockerTagRepository.save(new DockerTag(apiTag.getName(), apiTag.getTagLastPushed(), dockerImage));
-
-                // if the tag already exists
-            } else {
-                // If the image of the tag has not been changed then the tag is the same, do nothing.
-
-                if (savedTag.get().getDockerImage() == apiTag.getImageId()) {
+                // check whether the image assigned to the tag exists
+                DockerImage dockerImage;
+                var savedDockerImage = dockerImageRepository.findByDigest(apiTag.getImages().get(0).getDigest());
+                //if the image assigned to the tag does not exists, create it.
+                if (savedDockerImage.isEmpty()) {
+                    dockerImage = new DockerImage(apiTag.getImages().get(0).getDigest(), apiTag.getImages().get(0).getLastPushed(), dockerRepo, new HashSet<>());
+                    dockerImageRepository.save(dockerImage);
+                } else {
+                    dockerImage = savedDockerImage.get();
                 }
-                // Otherwise, the tag has been assigned with another image.
-                else
-                {
-                    savedTag.get().setDockerImage(dockerImage);
-                    dockerTagRepository.save(savedTag.get());
+
+                // check whether the tag exists
+                var savedTag = dockerTagRepository.findDockerTagByName(apiTag.getName());
+                // If the tag is not stored
+                if (savedTag.isEmpty()) {
+                    var x4 = new DockerTag(apiTag.getName(), apiTag.getTagLastPushed(), dockerImage);
+                    //Add the tag to the database
+                    dockerTagRepository.save(new DockerTag(apiTag.getName(), apiTag.getTagLastPushed(), dockerImage));
+
+                    // if the tag already exists
+                } else {
+                    // If the image of the tag has not been changed then the tag is the same, do nothing.
+
+                    if (savedTag.get().getDockerImage() == apiTag.getImageId()) {
+                    }
+                    // Otherwise, the tag has been assigned with another image.
+                    else {
+                        savedTag.get().setDockerImage(dockerImage);
+                        dockerTagRepository.save(savedTag.get());
+                    }
                 }
             }
+        }
+        catch (Exception e)
+        {
+            throw new DockerhubException();
         }
 
     }

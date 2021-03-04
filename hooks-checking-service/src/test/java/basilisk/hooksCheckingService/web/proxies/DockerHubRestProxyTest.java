@@ -20,13 +20,13 @@ class DockerHubRestProxyTest {
     @Test
     void getMySqltag() {
         var result=dockerHubRestProxy.getTages("library","mysql");
-        System.out.println(result.getDockerTages().toString());
+        System.out.println(result.toString());
     }
 
     @Test
     void getTentrisServertag() {
         var result=dockerHubRestProxy.getTages("dicegroup","tentris_server");
-        System.out.println(result.getDockerTages().toString());
+        System.out.println(result.toString());
     }
 
 

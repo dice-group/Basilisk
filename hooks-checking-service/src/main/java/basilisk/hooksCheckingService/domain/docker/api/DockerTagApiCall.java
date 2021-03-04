@@ -22,7 +22,7 @@ public class DockerTagApiCall {
     @JsonProperty("count")
     private Integer count;
     @JsonProperty("next")
-    private Object next;
+    private String next;
     @JsonProperty("previous")
     private String previous;
     @JsonProperty("results")
@@ -41,12 +41,12 @@ public class DockerTagApiCall {
     }
 
     @JsonProperty("next")
-    public Object getNext() {
+    public String getNext() {
         return next;
     }
 
     @JsonProperty("next")
-    public void setNext(Object next) {
+    public void setNext(String next) {
         this.next = next;
     }
 

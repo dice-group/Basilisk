@@ -5,7 +5,7 @@ import basilisk.hooksCheckingService.core.exception.MessageSendingExecption;
 import basilisk.hooksCheckingService.domain.docker.DockerImage;
 import basilisk.hooksCheckingService.domain.docker.DockerRepo;
 import basilisk.hooksCheckingService.domain.docker.DockerTag;
-import basilisk.hooksCheckingService.messaging.HookMessageSender;
+import basilisk.hooksCheckingService.messaging.MessagingHandler;
 import basilisk.hooksCheckingService.repositories.DockerImageRepository;
 import basilisk.hooksCheckingService.repositories.DockerRepoRepository;
 import basilisk.hooksCheckingService.repositories.DockerTagRepository;
@@ -14,7 +14,6 @@ import basilisk.hooksCheckingService.web.services.checkingServices.CheckingServi
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import basilisk.hooksCheckingService.domain.docker.api.*;
 
-import java.util.Date;
 import java.util.HashSet;
 
 
@@ -27,13 +26,13 @@ public class DockerhubCheckingService implements CheckingService {
     DockerImageRepository dockerImageRepository;
     DockerRepoRepository dockerRepoRepository;
     DockerTagRepository dockerTagRepository;
-    HookMessageSender hookMessageSender;
+    MessagingHandler messagingHandler;
 
-    public DockerhubCheckingService(DockerRepoRepository dockerRepoRepository, DockerImageRepository dockerImageRepository, DockerTagRepository dockerTagRepository, HookMessageSender hookMessageSender) {
+    public DockerhubCheckingService(DockerRepoRepository dockerRepoRepository, DockerImageRepository dockerImageRepository, DockerTagRepository dockerTagRepository, MessagingHandler messagingHandler) {
         this.dockerImageRepository = dockerImageRepository;
         this.dockerRepoRepository = dockerRepoRepository;
         this.dockerTagRepository = dockerTagRepository;
-        this.hookMessageSender = hookMessageSender;
+        this.messagingHandler = messagingHandler;
     }
 
     @Override
@@ -44,7 +43,7 @@ public class DockerhubCheckingService implements CheckingService {
         for (DockerRepo dockerRepo : dockerRepos) {
             //do the logic for checking
             try {
-                checkForNewVersion(dockerRepo);
+                checkForNewVersions(dockerRepo);
                 System.out.println();
             } catch (DockerhubException e) {
                 //ToDo log
@@ -54,7 +53,7 @@ public class DockerhubCheckingService implements CheckingService {
         }
     }
 
-    private void checkForNewVersion(DockerRepo dockerRepo) throws DockerhubException {
+    private void checkForNewVersions(DockerRepo dockerRepo) throws DockerhubException {
         try {
 
             DockerHubRestProxy dockerHubRestProxy = new DockerHubRestProxy(new RestTemplateBuilder());
@@ -71,7 +70,10 @@ public class DockerhubCheckingService implements CheckingService {
                     if(apiTag.getImages().get(0)==null || apiTag.getImages().get(0).getDigest()==null)
                         continue;
                     dockerImage = new DockerImage(apiTag.getImages().get(0).getDigest(), apiTag.getImages().get(0).getLastPushed(), dockerRepo, new HashSet<>());
+                    // save the image in the database
                     dockerImageRepository.save(dockerImage);
+                    // send it to the queue
+                    messagingHandler.send(dockerImage);
                 } else {
                     dockerImage = savedDockerImage.get();
                 }
@@ -84,8 +86,6 @@ public class DockerhubCheckingService implements CheckingService {
                     //Add the tag to the database
                     dockerTagRepository.save(new DockerTag(apiTag.getName(), apiTag.getTagLastPushed(), dockerImage));
 
-                    //ToDo send it
-                        hookMessageSender.send(dockerImage);
                     // if the tag already exists
                 } else {
                     // If the image of the tag has not been changed then the tag is the same, do nothing.

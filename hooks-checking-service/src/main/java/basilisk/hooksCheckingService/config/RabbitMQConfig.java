@@ -20,18 +20,29 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-    @Value("${hooksCheckingService.rabbitmq.queue}")
-    String queueName;
+    @Value("${hooksCheckingService.rabbitmq.dockerQueue}")
+    String dockerQueueName;
+
+    @Value("${hooksCheckingService.rabbitmq.gitQueue}")
+    String gitQueueName;
 
     @Value("${hooksCheckingService.rabbitmq.exchange}")
     String exchange;
 
-    @Value("${hooksCheckingService.rabbitmq.routingkey}")
-    private String routingkey;
+    @Value("${hooksCheckingService.rabbitmq.dockerRoutingkey}")
+    private String dockerRoutingkey;
+
+    @Value("${hooksCheckingService.rabbitmq.gitRoutingkey}")
+    private String gitRoutingkey;
 
     @Bean
-    Queue queue() {
-        return new Queue(queueName, false);
+    Queue dockerQueue() {
+        return new Queue(dockerQueueName, false);
+    }
+
+    @Bean
+    Queue gitQueue() {
+        return new Queue(gitQueueName, false);
     }
 
     @Bean
@@ -40,8 +51,13 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    Binding binding(Queue queue, DirectExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with(routingkey);
+    Binding dockerBinding(Queue dockerQueue, DirectExchange exchange) {
+        return BindingBuilder.bind(dockerQueue).to(exchange).with(dockerRoutingkey);
+    }
+
+    @Bean
+    Binding gitBinding(Queue gitQueue, DirectExchange exchange) {
+        return BindingBuilder.bind(gitQueue).to(exchange).with(gitRoutingkey);
     }
 
 

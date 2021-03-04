@@ -6,17 +6,19 @@ import basilisk.hooksCheckingService.domain.git.GitBranchRepo;
 import basilisk.hooksCheckingService.domain.git.GitHook;
 import basilisk.hooksCheckingService.domain.git.GitType;
 import basilisk.hooksCheckingService.domain.git.GitRepo;
-import basilisk.hooksCheckingService.messaging.HookMessageSender;
+import basilisk.hooksCheckingService.messaging.MessagingHandler;
 import basilisk.hooksCheckingService.repositories.GitHookRepository;
 import basilisk.hooksCheckingService.repositories.GitRepoRepository;
 import org.kohsuke.github.GHBranch;
 import org.kohsuke.github.GHCommit;
 import org.kohsuke.github.GHRepository;
+import org.springframework.messaging.MessagingException;
+
 import java.util.Optional;
 
 public class GitBranchCheckingService extends GitCheckingService {
 
-    public GitBranchCheckingService(GitRepoRepository gitRepoRepository, GitHookRepository gitHookRepository, HookMessageSender hookMessageSender) {
+    public GitBranchCheckingService(GitRepoRepository gitRepoRepository, GitHookRepository gitHookRepository, MessagingHandler hookMessageSender) {
         super(gitRepoRepository, gitHookRepository, hookMessageSender);
     }
 
@@ -49,8 +51,14 @@ public class GitBranchCheckingService extends GitCheckingService {
                         commitUrl(commit.getHtmlUrl().toString()).build();
 
                 gitHookRepository.save(gitHook);
+                //send it to the queue
+                messagingHandler.send(gitHook);
 
             }
+        }
+        catch (MessagingException e)
+        {
+            //ToDo
         }
         catch (Exception e)
         {

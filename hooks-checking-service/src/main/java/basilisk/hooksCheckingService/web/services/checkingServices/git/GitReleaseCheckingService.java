@@ -4,7 +4,7 @@ import basilisk.hooksCheckingService.core.exception.GithubException;
 import basilisk.hooksCheckingService.domain.git.GitHook;
 import basilisk.hooksCheckingService.domain.git.GitType;
 import basilisk.hooksCheckingService.domain.git.GitRepo;
-import basilisk.hooksCheckingService.messaging.HookMessageSender;
+import basilisk.hooksCheckingService.messaging.MessagingHandler;
 import basilisk.hooksCheckingService.repositories.GitHookRepository;
 import basilisk.hooksCheckingService.repositories.GitRepoRepository;
 import org.kohsuke.github.GHCommit;
@@ -12,13 +12,12 @@ import org.kohsuke.github.GHRelease;
 import org.kohsuke.github.GHRepository;
 
 
-import java.io.IOException;
 import java.util.Optional;
 
 public class GitReleaseCheckingService extends GitCheckingService {
 
 
-    public GitReleaseCheckingService(GitRepoRepository gitRepoRepository, GitHookRepository gitHookRepository, HookMessageSender hookMessageSender) {
+    public GitReleaseCheckingService(GitRepoRepository gitRepoRepository, GitHookRepository gitHookRepository, MessagingHandler hookMessageSender) {
         super(gitRepoRepository, gitHookRepository, hookMessageSender);
     }
 

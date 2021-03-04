@@ -1,6 +1,7 @@
 package basilisk.hooksCheckingService.web.services.checkingServices.docker;
 
 import basilisk.hooksCheckingService.core.exception.DockerhubException;
+import basilisk.hooksCheckingService.core.exception.MessageSendingExecption;
 import basilisk.hooksCheckingService.domain.docker.DockerImage;
 import basilisk.hooksCheckingService.domain.docker.DockerRepo;
 import basilisk.hooksCheckingService.domain.docker.DockerTag;
@@ -83,6 +84,8 @@ public class DockerhubCheckingService implements CheckingService {
                     //Add the tag to the database
                     dockerTagRepository.save(new DockerTag(apiTag.getName(), apiTag.getTagLastPushed(), dockerImage));
 
+                    //ToDo send it
+                        hookMessageSender.send(dockerImage);
                     // if the tag already exists
                 } else {
                     // If the image of the tag has not been changed then the tag is the same, do nothing.
@@ -96,6 +99,10 @@ public class DockerhubCheckingService implements CheckingService {
                     }
                 }
             }
+        }
+        catch (MessageSendingExecption e)
+        {
+
         }
         catch (Exception e)
         {

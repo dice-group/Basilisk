@@ -2,6 +2,8 @@ package basilisk.hooksCheckingService.domain.docker;
 
 
 import basilisk.hooksCheckingService.domain.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 import javax.persistence.*;
 import java.util.Date;
@@ -18,6 +20,7 @@ import java.util.Set;
 @Builder
 @Entity
 @Table(name = "docker_image")
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id", scope = DockerImage.class)
 public class DockerImage extends BaseEntity {
 
 
@@ -33,5 +36,11 @@ public class DockerImage extends BaseEntity {
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "dockerImage")
     private Set<DockerTag> tags;
+
+
+    @Override
+    public String toString() {
+        return "DockerImage [digest=" + digest + ", lastPushedDate=" + lastPushedDate + "]";
+    }
 
 }

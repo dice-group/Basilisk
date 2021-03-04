@@ -65,6 +65,10 @@ public class DockerhubCheckingService implements CheckingService {
                 var savedDockerImage = dockerImageRepository.findByDigest(apiTag.getImages().get(0).getDigest());
                 //if the image assigned to the tag does not exists, create it.
                 if (savedDockerImage.isEmpty()) {
+                    //check for an execption where a tag has no image
+                    //ToDo: inform the user or log the information
+                    if(apiTag.getImages().get(0)==null || apiTag.getImages().get(0).getDigest()==null)
+                        continue;
                     dockerImage = new DockerImage(apiTag.getImages().get(0).getDigest(), apiTag.getImages().get(0).getLastPushed(), dockerRepo, new HashSet<>());
                     dockerImageRepository.save(dockerImage);
                 } else {

@@ -5,7 +5,9 @@ package basilisk.hooksCheckingService.messaging;
  */
 
 import basilisk.hooksCheckingService.domain.docker.DockerImage;
-import org.springframework.amqp.core.AmqpTemplate;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -15,7 +17,7 @@ import org.springframework.stereotype.Component;
 public class RabbitmqMessager implements HookMessageSender{
 
     @Autowired
-    private AmqpTemplate rabbitTemplate;
+    private RabbitTemplate rabbitTemplate;
 
     @Value("${hooksCheckingService.rabbitmq.exchange}")
     private String exchange;
@@ -24,7 +26,7 @@ public class RabbitmqMessager implements HookMessageSender{
     private String routingkey;
 
     public void send(DockerImage dockerImage) {
-        rabbitTemplate.convertAndSend(exchange, routingkey, dockerImage.toString());
+        rabbitTemplate.convertAndSend(exchange, routingkey, dockerImage);
         System.out.println("Send msg = " + dockerImage);
 
     }

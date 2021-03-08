@@ -1,4 +1,4 @@
-package basilisk.hooksCheckingService.web.services.checkingServices;
+package basilisk.hooksCheckingService.services.checkingServices;
 
 public interface CheckingService {
 

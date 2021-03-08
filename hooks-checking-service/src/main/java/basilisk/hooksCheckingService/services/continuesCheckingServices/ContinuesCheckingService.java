@@ -1,8 +1,6 @@
-package basilisk.hooksCheckingService.web.services.continuesCheckingServices;
+package basilisk.hooksCheckingService.services.continuesCheckingServices;
 
 import org.springframework.scheduling.annotation.Async;
-
-import java.io.IOException;
 
 /**
  * @author Fakhr Shaheen

@@ -3,7 +3,7 @@ package basilisk.hooksCheckingService.config;
 import basilisk.hooksCheckingService.messaging.MessagingHandler;
 import basilisk.hooksCheckingService.repositories.GitHookRepository;
 import basilisk.hooksCheckingService.repositories.GitRepoRepository;
-import basilisk.hooksCheckingService.web.services.checkingServices.git.*;
+import basilisk.hooksCheckingService.services.checkingServices.git.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

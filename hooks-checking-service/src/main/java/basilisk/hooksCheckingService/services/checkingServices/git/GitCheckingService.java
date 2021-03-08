@@ -1,11 +1,11 @@
-package basilisk.hooksCheckingService.web.services.checkingServices.git;
+package basilisk.hooksCheckingService.services.checkingServices.git;
 
 import basilisk.hooksCheckingService.core.exception.GithubException;
 import basilisk.hooksCheckingService.domain.git.GitRepo;
 import basilisk.hooksCheckingService.messaging.MessagingHandler;
 import basilisk.hooksCheckingService.repositories.GitHookRepository;
 import basilisk.hooksCheckingService.repositories.GitRepoRepository;
-import basilisk.hooksCheckingService.web.services.checkingServices.CheckingService;
+import basilisk.hooksCheckingService.services.checkingServices.CheckingService;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;

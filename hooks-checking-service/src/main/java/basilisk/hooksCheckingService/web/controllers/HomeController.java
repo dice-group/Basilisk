@@ -1,15 +1,8 @@
 package basilisk.hooksCheckingService.web.controllers;
 
-import basilisk.hooksCheckingService.repositories.GitHookRepository;
-import basilisk.hooksCheckingService.repositories.GitRepoRepository;
-import basilisk.hooksCheckingService.web.services.checkingServices.CheckingService;
-import basilisk.hooksCheckingService.web.services.continuesCheckingServices.ContinuesCheckingService;
-import basilisk.hooksCheckingService.web.services.continuesCheckingServices.ContinuesCheckingServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import basilisk.hooksCheckingService.services.continuesCheckingServices.ContinuesCheckingService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.io.IOException;
 
 /**
  * @author Fakhr Shaheen

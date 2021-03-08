@@ -1,20 +1,12 @@
-package basilisk.hooksCheckingService.web.services.continuesCheckingServices;
+package basilisk.hooksCheckingService.services.continuesCheckingServices;
 
 import basilisk.hooksCheckingService.core.TimingStrategy;
-import basilisk.hooksCheckingService.core.exception.GithubException;
-import basilisk.hooksCheckingService.web.services.checkingServices.CheckingService;
-import basilisk.hooksCheckingService.web.services.checkingServices.docker.DockerhubCheckingService;
-import basilisk.hooksCheckingService.web.services.checkingServices.git.GitBranchCheckingService;
-import basilisk.hooksCheckingService.web.services.checkingServices.git.GitCheckingService;
-import basilisk.hooksCheckingService.web.services.checkingServices.git.GitPullRequestCheckingService;
-import basilisk.hooksCheckingService.web.services.checkingServices.git.GitReleaseCheckingService;
+import basilisk.hooksCheckingService.services.checkingServices.docker.DockerhubCheckingService;
+import basilisk.hooksCheckingService.services.checkingServices.git.GitCheckingService;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
 
 /**
  * @author Fakhr Shaheen

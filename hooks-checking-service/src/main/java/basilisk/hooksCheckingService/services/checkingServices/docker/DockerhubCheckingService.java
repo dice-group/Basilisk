@@ -1,4 +1,4 @@
-package basilisk.hooksCheckingService.web.services.checkingServices.docker;
+package basilisk.hooksCheckingService.services.checkingServices.docker;
 
 import basilisk.hooksCheckingService.core.exception.DockerhubException;
 import basilisk.hooksCheckingService.core.exception.MessageSendingExecption;
@@ -10,7 +10,7 @@ import basilisk.hooksCheckingService.repositories.DockerImageRepository;
 import basilisk.hooksCheckingService.repositories.DockerRepoRepository;
 import basilisk.hooksCheckingService.repositories.DockerTagRepository;
 import basilisk.hooksCheckingService.web.proxies.DockerHubRestProxy;
-import basilisk.hooksCheckingService.web.services.checkingServices.CheckingService;
+import basilisk.hooksCheckingService.services.checkingServices.CheckingService;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import basilisk.hooksCheckingService.domain.docker.api.*;
 

@@ -1,4 +1,4 @@
-package basilisk.hooksCheckingService.web.services.checkingServices.git;
+package basilisk.hooksCheckingService.services.checkingServices.git;
 
 
 import basilisk.hooksCheckingService.core.exception.GithubException;

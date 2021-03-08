@@ -11,7 +11,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GitBranchRepoPostDto extends GitRepoPostDto {
+public class GitBranchRepoDto extends GitRepoDto {
 
     @JsonProperty("branch_name")
     private String branchName;

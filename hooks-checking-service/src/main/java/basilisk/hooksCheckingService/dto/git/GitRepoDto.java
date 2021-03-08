@@ -1,11 +1,7 @@
-package basilisk.hooksCheckingService.dto.docker;
-
+package basilisk.hooksCheckingService.dto.git;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * @author Fakhr Shaheen
@@ -15,14 +11,16 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DockerRepoPostDto {
+@Builder
+public class GitRepoDto {
 
     @JsonProperty("repo_name")
     private String repoName;
-
-    @JsonProperty("owner_name")
-    private String ownerName;
-
+    @JsonProperty("repo_owner")
+    private String repoOwner;
     @JsonProperty("is_private")
     private boolean isPrivate;
+    @JsonProperty("oAuth_token")
+    private String OAuthToken;
+
 }

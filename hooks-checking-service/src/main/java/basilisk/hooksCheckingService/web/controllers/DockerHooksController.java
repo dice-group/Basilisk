@@ -2,9 +2,10 @@ package basilisk.hooksCheckingService.web.controllers;
 
 import basilisk.hooksCheckingService.domain.docker.DockerRepo;
 import basilisk.hooksCheckingService.dto.docker.DockerRepoDto;
-import basilisk.hooksCheckingService.repositories.DockerRepoRepository;
+import basilisk.hooksCheckingService.services.HooksServices.DockerHooksService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -15,36 +16,38 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("repositories/docker")
-public class DockerRepositoriesController {
+@RequestMapping("hooks/docker")
+public class DockerHooksController {
 
-    private DockerRepoRepository dockerRepoRepository;
+    private DockerHooksService dockerHooksService;
     private ModelMapper modelMapper;
 
-    public DockerRepositoriesController(DockerRepoRepository dockerRepoRepository, ModelMapper modelMapper) {
-        this.dockerRepoRepository = dockerRepoRepository;
+    public DockerHooksController(DockerHooksService dockerHooksService, ModelMapper modelMapper) {
+        this.dockerHooksService = dockerHooksService;
         this.modelMapper = modelMapper;
     }
 
     @GetMapping()
-    public List<DockerRepoDto> findAllDockerRepos() {
-        var repos= dockerRepoRepository.findAll();
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<DockerRepoDto>> getAllDockerRepos() {
+        var repos= dockerHooksService.findAllDockerRepos();
         List<DockerRepoDto> dockerRepoDtos=new ArrayList<>();
         for(DockerRepo repo:repos)
         {
             DockerRepoDto dockerRepoDto=modelMapper.map(repo,DockerRepoDto.class);
             dockerRepoDtos.add(dockerRepoDto);
         }
-        return dockerRepoDtos;
+        return new ResponseEntity<>(dockerRepoDtos,HttpStatus.OK);
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public void addDockerRepo(@RequestBody DockerRepoDto dockerRepoDto)
+    public ResponseEntity<DockerRepoDto> addDockerRepo(@RequestBody DockerRepoDto dockerRepoDto)
     {
         DockerRepo dockerRepo=modelMapper.map(dockerRepoDto,DockerRepo.class);
-        dockerRepoRepository.save(dockerRepo);
+        dockerHooksService.addDockerRepo(dockerRepo);
+        return new ResponseEntity<>(dockerRepoDto,HttpStatus.CREATED);
     }
 
 

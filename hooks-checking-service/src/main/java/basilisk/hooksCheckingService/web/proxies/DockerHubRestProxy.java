@@ -4,7 +4,6 @@ import basilisk.hooksCheckingService.domain.docker.api.DockerApiTag;
 import basilisk.hooksCheckingService.domain.docker.api.DockerTagApiCall;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ import java.util.List;
  * @author Fakhr Shaheen
  */
 
-@Component
+
 @ConfigurationProperties(value = "proxies.docker")
 public class DockerHubRestProxy {
 

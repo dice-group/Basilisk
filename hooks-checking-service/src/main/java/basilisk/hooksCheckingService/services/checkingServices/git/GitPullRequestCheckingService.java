@@ -28,8 +28,9 @@ public class GitPullRequestCheckingService extends GitCheckingService {
 
 
     @Override
-    public void checkForNewVersion(GitRepo gitRepo) throws GithubException {
+    public void checkRepo(GitRepo gitRepo) throws GithubException {
         try {
+            //ToDo : complete the logic for saving.
 
             GHRepository repo = getRepoFromGitHub(gitRepo);
 

@@ -14,7 +14,7 @@ import java.io.IOException;
 
 /***
  * @author Fakhr Shaheen
- * This class follows the templte method pattern to difine a common steps that will be followed by all child classes
+ * This class follows the templte method pattern to difine a common steps that will be followed by different git checking services.
  */
 public abstract class GitCheckingService implements CheckingService {
 
@@ -37,7 +37,7 @@ public abstract class GitCheckingService implements CheckingService {
         for (GitRepo gitrepo : gitRepos) {
             //do the logic for checking
             try {
-                checkForNewVersion(gitrepo);
+                checkRepo(gitrepo);
             } catch (GithubException e) {
                 //ToDo log
                 System.out.println("not valid git thing");
@@ -49,7 +49,12 @@ public abstract class GitCheckingService implements CheckingService {
 
     protected abstract Iterable<GitRepo> getRelatedGitRepos();
 
-    protected abstract void checkForNewVersion(GitRepo gitrepo) throws GithubException;
+    /**
+     * checks the git repo for new related content.
+     * @param gitrepo
+     * @throws GithubException
+     */
+    protected abstract void checkRepo(GitRepo gitrepo) throws GithubException;
 
 
     protected GHRepository getRepoFromGitHub(GitRepo gitRepo) throws IOException {

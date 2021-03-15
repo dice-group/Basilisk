@@ -133,7 +133,7 @@ public class DockerhubCheckingService implements CheckingService {
 
             // if the tag already exists
         } else {
-            // If the image of the tag has not been changed then the tag is the same, do nothing.
+            // If the image of the tag has not been changed then the tag is the same, do nothing for now.
             if (savedTag.get().getDockerImage() == apiTag.getImageId()) {
             }
             // Otherwise, the tag has been assigned with another image.

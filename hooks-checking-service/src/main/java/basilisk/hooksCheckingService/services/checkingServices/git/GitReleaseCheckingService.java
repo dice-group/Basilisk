@@ -28,7 +28,7 @@ public class GitReleaseCheckingService extends GitCheckingService {
 
 
     @Override
-    public void checkForNewVersion(GitRepo gitRepo) throws GithubException {
+    public void checkRepo(GitRepo gitRepo) throws GithubException {
         try {
 
             //get the repo from github
@@ -49,6 +49,7 @@ public class GitReleaseCheckingService extends GitCheckingService {
                         commitUrl(commit.getHtmlUrl().toString()).build();
 
                 gitHookRepository.save(gitHook);
+                messagingHandler.send(gitHook);
 
             }
 

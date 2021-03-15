@@ -8,7 +8,7 @@ import basilisk.jobsManagingService.domain.BaseEntity;
 
 
 
-public class Storage extends BaseEntity {
+public abstract class Storage extends BaseEntity {
 
-    private StorageType storageType;
+    protected String className;
 }

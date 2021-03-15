@@ -9,6 +9,7 @@ import java.util.List;
  */
 public class Task extends BaseEntity {
 
+
     private String className;
     private StressTestType stressTestType;
     private TaskQueryHandler queryHandler;

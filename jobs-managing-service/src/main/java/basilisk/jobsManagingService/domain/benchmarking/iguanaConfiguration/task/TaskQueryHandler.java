@@ -4,5 +4,7 @@ package basilisk.jobsManagingService.domain.benchmarking.iguanaConfiguration.tas
  * @author Fakhr Shaheen
  */
 public abstract class TaskQueryHandler {
+    protected String className;
+
 }
 

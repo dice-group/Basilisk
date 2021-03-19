@@ -8,4 +8,5 @@ public abstract class HttpTaskWorker extends TaskWorker{
     private String parameterName;
     private String responseType;
     private String language;
+
 }

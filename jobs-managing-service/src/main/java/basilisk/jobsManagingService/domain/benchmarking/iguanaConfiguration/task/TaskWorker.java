@@ -6,10 +6,19 @@ package basilisk.jobsManagingService.domain.benchmarking.iguanaConfiguration.tas
  */
 public abstract class TaskWorker {
 
-    private String className;
+    public TaskWorker(int threads, String queriesFile, String timeOut, int fixedLatency, int gaussianLatency) {
+        this.threads = threads;
+        this.queriesFile = queriesFile;
+        this.timeOut = timeOut;
+        this.fixedLatency = fixedLatency;
+        this.gaussianLatency = gaussianLatency;
+    }
+
     private int threads;
     private String queriesFile;
     private String timeOut;
     private int fixedLatency;
     private int gaussianLatency;
+
+    protected String className;
 }

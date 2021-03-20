@@ -1,7 +1,8 @@
-package basilisk.hooksCheckingService.web.proxies;
+package basilisk.hooksCheckingService.web.proxies.docker;
 
-import basilisk.hooksCheckingService.domain.docker.api.DockerApiTag;
-import basilisk.hooksCheckingService.domain.docker.api.DockerTagApiCall;
+
+import basilisk.hooksCheckingService.web.proxies.docker.DockerApiTag;
+import basilisk.hooksCheckingService.web.proxies.docker.DockerTagApiCall;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.web.client.RestTemplate;
@@ -22,6 +23,7 @@ public class DockerHubRestProxy {
         this.restTemplate = restTemplateBuilder.build();
     }
 
+    //ToDo move it to resource file
     private final String apihost = "https://registry.hub.docker.com";
     private final RestTemplate restTemplate;
 

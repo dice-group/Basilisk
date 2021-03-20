@@ -9,11 +9,10 @@ import basilisk.hooksCheckingService.messaging.MessagingHandler;
 import basilisk.hooksCheckingService.repositories.DockerImageRepository;
 import basilisk.hooksCheckingService.repositories.DockerRepoRepository;
 import basilisk.hooksCheckingService.repositories.DockerTagRepository;
-import basilisk.hooksCheckingService.web.proxies.DockerHubRestProxy;
+import basilisk.hooksCheckingService.web.proxies.docker.DockerHubRestProxy;
 import basilisk.hooksCheckingService.services.checkingServices.CheckingService;
+import basilisk.hooksCheckingService.web.proxies.docker.DockerApiTag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import basilisk.hooksCheckingService.domain.docker.api.*;
 
 import java.util.HashSet;
 

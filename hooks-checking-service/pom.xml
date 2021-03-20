@@ -8,13 +8,13 @@
         <version>2.4.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>org.aksw</groupId>
+    <groupId>org.dice.basilisk</groupId>
     <artifactId>hooks-checking-service</artifactId>
-    <version>2.4.2</version>
+    <version>0.1.0</version>
     <name>hooks-checking-service</name>
     <description>Service resposible for checking github and dockerhub for new content</description>
     <properties>
-        <java.version>15</java.version>
+        <java.version>11</java.version>
         <spring-cloud.version>2020.0.0</spring-cloud.version>
     </properties>
     <dependencies>

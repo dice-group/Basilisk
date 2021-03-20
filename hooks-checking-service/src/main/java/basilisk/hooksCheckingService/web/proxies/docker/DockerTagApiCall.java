@@ -1,4 +1,4 @@
-package basilisk.hooksCheckingService.domain.docker.api;
+package basilisk.hooksCheckingService.web.proxies.docker;
 
 import java.util.HashMap;
 import java.util.List;

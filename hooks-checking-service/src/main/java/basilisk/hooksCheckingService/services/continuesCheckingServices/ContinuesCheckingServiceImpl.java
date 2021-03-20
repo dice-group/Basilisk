@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-public class ContinuesCheckingServiceImpl implements ContinuesCheckingService {
+public class ContinuesCheckingServiceImpl implements ContinuousCheckingService {
 
     public ContinuesCheckingServiceImpl(GitCheckingService gitBranchCheckingService
             , GitCheckingService gitReleaseCheckingService

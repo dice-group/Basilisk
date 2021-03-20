@@ -65,7 +65,7 @@ public class DockerhubCheckingService implements CheckingService {
      */
     private void checkRepo(DockerRepo dockerRepo) throws DockerhubException {
 
-        var retrievedTags = dockerHubRestProxy.getTages(dockerRepo.getOwnerName(), dockerRepo.getRepoName());
+        var retrievedTags = dockerHubRestProxy.getTags(dockerRepo.getOwnerName(), dockerRepo.getRepoName());
         for (DockerApiTag apiTag : retrievedTags) {
 
             DockerImage dockerImage = null;

@@ -1,6 +1,6 @@
 package basilisk.hooksCheckingService.web.controllers;
 
-import basilisk.hooksCheckingService.services.continuesCheckingServices.ContinuesCheckingService;
+import basilisk.hooksCheckingService.services.continuesCheckingServices.ContinuousCheckingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("continuousChecking/")
 public class ContinuousCheckingController {
 
-    private ContinuesCheckingService continuesCheckingService;
+    private ContinuousCheckingService continuesCheckingService;
 
-    public ContinuousCheckingController(ContinuesCheckingService continuesCheckingService) {
+    public ContinuousCheckingController(ContinuousCheckingService continuesCheckingService) {
         this.continuesCheckingService = continuesCheckingService;
     }
 

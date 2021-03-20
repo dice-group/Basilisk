@@ -29,7 +29,7 @@ public class GitBranchCheckingService extends GitCheckingService {
 
 
     @Override
-    protected void checkForNewVersion(GitRepo gitRepo) throws GithubException {
+    protected void checkRepo(GitRepo gitRepo) throws GithubException {
 
         try {
 

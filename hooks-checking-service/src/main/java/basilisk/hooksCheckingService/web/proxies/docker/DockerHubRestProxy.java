@@ -1,7 +1,9 @@
-package basilisk.hooksCheckingService.web.proxies;
+package basilisk.hooksCheckingService.web.proxies.docker;
 
-import basilisk.hooksCheckingService.domain.docker.api.DockerApiTag;
-import basilisk.hooksCheckingService.domain.docker.api.DockerTagApiCall;
+
+import basilisk.hooksCheckingService.web.proxies.docker.DockerApiTag;
+import basilisk.hooksCheckingService.web.proxies.docker.DockerTagApiCall;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Component;
@@ -14,8 +16,7 @@ import java.util.List;
  * @author Fakhr Shaheen
  */
 
-@Component
-@ConfigurationProperties(value = "proxies.docker")
+
 public class DockerHubRestProxy {
 
 
@@ -23,10 +24,11 @@ public class DockerHubRestProxy {
         this.restTemplate = restTemplateBuilder.build();
     }
 
-    private final String apihost = "https://registry.hub.docker.com";
+    @Value("${proxies.docker.apihost}")
+    private String apihost;
     private final RestTemplate restTemplate;
 
-    public List<DockerApiTag> getTages(String ownerName, String repoName) {
+    public List<DockerApiTag> getTags(String ownerName, String repoName) {
         List<DockerApiTag> tags = new ArrayList<>();
         String fooResourceUrl
                 = apihost + "/v2/repositories/" + ownerName + "/" + repoName + "/tags";

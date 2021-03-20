@@ -1,4 +1,4 @@
-package basilisk.hooksCheckingService.web.controllers;
+package basilisk.hooksCheckingService.services.HooksServices;
 
 import basilisk.hooksCheckingService.domain.git.GitBranchRepo;
 import basilisk.hooksCheckingService.domain.git.GitRepo;
@@ -7,44 +7,43 @@ import basilisk.hooksCheckingService.dto.git.GitBranchRepoDto;
 import basilisk.hooksCheckingService.dto.git.GitRepoDto;
 import basilisk.hooksCheckingService.repositories.GitRepoRepository;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * @author Fakhr Shaheen
  */
 
-@RestController
-@RequestMapping("repositories/git")
-public class GitRepositoriesController {
+@Service
+public class GitHooksService {
 
     private GitRepoRepository gitRepoRepository;
     private ModelMapper modelMapper;
 
-    public GitRepositoriesController(GitRepoRepository gitRepoRepository, ModelMapper modelMapper) {
+
+    public GitHooksService(GitRepoRepository gitRepoRepository, ModelMapper modelMapper) {
         this.gitRepoRepository = gitRepoRepository;
         this.modelMapper=modelMapper;
     }
 
-
-
-    @GetMapping("/release")
-    public List<GitRepoDto> findAllGitReleaseRepos() {
-        var repos= gitRepoRepository.findAllByType(GitType.release);
+    public List<GitRepoDto> findAllGitReleaseRepos()
+    {
+        var repos=gitRepoRepository.findAllByType(GitType.release);
         List<GitRepoDto> gitRepoDtos=new ArrayList<>();
         for(GitRepo repo:repos)
         {
             GitRepoDto gitRepoDto=modelMapper.map(repo,GitRepoDto.class);
             gitRepoDtos.add(gitRepoDto);
         }
+
         return gitRepoDtos;
     }
 
-    @GetMapping("/pullRequest")
-    public List<GitRepoDto> findAllGitPullRequestRepos() {
+    public List<GitRepoDto> findAllGitPullRequestRepos()
+    {
         var repos= gitRepoRepository.findAllByType(GitType.pull_request);
         List<GitRepoDto> gitRepoDtos=new ArrayList<>();
         for(GitRepo repo:repos)
@@ -55,8 +54,8 @@ public class GitRepositoriesController {
         return gitRepoDtos;
     }
 
-    @GetMapping("/branch")
-    public List<GitBranchRepoDto> findAllGitBranchRepos() {
+    public List<GitBranchRepoDto> findAllGitBranchRepos()
+    {
         var repos= gitRepoRepository.findAllByType(GitType.branch);
         List<GitBranchRepoDto> gitRepoDtos=new ArrayList<>();
         for(GitRepo repo:repos)
@@ -68,36 +67,34 @@ public class GitRepositoriesController {
     }
 
 
-
-    @PostMapping(path = "/release",consumes = "application/json", produces = "application/json")
-    @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
-    public void addGitRepoForRelease(@RequestBody GitRepoDto gitRepoDto)
+    public GitRepoDto addGitRepoForRelease( GitRepoDto gitRepoDto)
     {
         GitRepo gitRepo = modelMapper.map(gitRepoDto, GitRepo.class);
-        gitRepo.setType(GitType.release);
-        gitRepoRepository.save(gitRepo);
+        GitRepo createdGitRepo=gitRepo;
+        createdGitRepo.setType(GitType.release);
+        gitRepoRepository.save(createdGitRepo);
+        GitRepoDto createdGitRepoDto = modelMapper.map(createdGitRepo, GitRepoDto.class);
+        return createdGitRepoDto;
     }
 
-    @PostMapping(path = "/pullRequest",consumes = "application/json", produces = "application/json")
-    @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
-    public void addGitRepoForPullRequest(@RequestBody GitRepoDto gitRepoDto)
+    public GitRepoDto addGitRepoForPullRequest(GitRepoDto gitRepoDto)
     {
         GitRepo gitRepo = modelMapper.map(gitRepoDto, GitRepo.class);
-        gitRepo.setType(GitType.pull_request);
-        gitRepoRepository.save(gitRepo);
+        GitRepo createdGitRepo=gitRepo;
+        createdGitRepo.setType(GitType.pull_request);
+        gitRepoRepository.save(createdGitRepo);
+        GitRepoDto createdGitRepoDto = modelMapper.map(createdGitRepo, GitRepoDto.class);
+        return createdGitRepoDto;
     }
 
-    @PostMapping(path = "/branch",consumes = "application/json", produces = "application/json")
-    @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
-    public void addGitRepoForPullBranch(@RequestBody GitBranchRepoDto gitBranchRepoPostDto)
+    public GitBranchRepoDto addGitRepoForBranch(GitBranchRepoDto gitBranchRepoPostDto)
     {
         GitRepo gitRepo = modelMapper.map(gitBranchRepoPostDto, GitBranchRepo.class);
-        gitRepo.setType(GitType.branch);
-        gitRepoRepository.save(gitRepo);
+        GitRepo createdGitRepo=gitRepo;
+        createdGitRepo.setType(GitType.branch);
+        gitRepoRepository.save(createdGitRepo);
+        GitBranchRepoDto createdGitRepoDto = modelMapper.map(createdGitRepo, GitBranchRepoDto.class);
+        return createdGitRepoDto;
+
     }
-
-
 }

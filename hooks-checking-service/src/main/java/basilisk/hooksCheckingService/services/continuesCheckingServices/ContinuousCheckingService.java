@@ -5,7 +5,7 @@ import org.springframework.scheduling.annotation.Async;
 /**
  * @author Fakhr Shaheen
  */
-public interface ContinuesCheckingService {
+public interface ContinuousCheckingService {
 
     @Async
     public void start() throws InterruptedException;

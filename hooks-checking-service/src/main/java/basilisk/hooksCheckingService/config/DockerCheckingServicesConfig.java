@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
  */
 
 @Configuration
-public class DockerConfig {
+public class DockerCheckingServicesConfig {
 
     @Bean
     public DockerhubCheckingService dockerhubCheckingService(DockerRepoRepository dockerRepoRepository, DockerImageRepository dockerImageRepository, DockerTagRepository dockerTagRepository, MessagingHandler hookMessageSender)

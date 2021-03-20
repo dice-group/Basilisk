@@ -8,7 +8,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableAsync
 public class HooksCheckingServiceApplication {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args)  {
         SpringApplication.run(HooksCheckingServiceApplication.class, args);
 
 

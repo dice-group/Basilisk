@@ -1,4 +1,4 @@
-package basilisk.jobsManagingService.domain.benchmarking.iguanaConfiguration;
+package basilisk.jobsManagingService.domain.benchmarking.iguanaConfiguration.storage;
 
 import basilisk.jobsManagingService.domain.BaseEntity;
 

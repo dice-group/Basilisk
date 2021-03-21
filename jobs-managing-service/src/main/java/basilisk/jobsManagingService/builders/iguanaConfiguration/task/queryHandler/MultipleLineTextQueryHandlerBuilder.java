@@ -9,7 +9,7 @@ import org.springframework.core.env.Environment;
 /**
  * @author Fakhr Shaheen
  */
-public class MultipleLineTextQueryHandler extends TaskQueryHandlerBuilder{
+public class MultipleLineTextQueryHandlerBuilder extends TaskQueryHandlerBuilder{
 
     @Value("${IguanaConfiguration.MutipleLineDefaultDelim}")
     private String delim;
@@ -17,11 +17,11 @@ public class MultipleLineTextQueryHandler extends TaskQueryHandlerBuilder{
     @Autowired
     private Environment env;
 
-    public MultipleLineTextQueryHandler() {
+    public MultipleLineTextQueryHandlerBuilder() {
         this.className=env.getProperty("IguanaConfiguration.ClassName.DelimInstancesQueryHandler");
     }
 
-    public MultipleLineTextQueryHandler setDelim(String delim)
+    public MultipleLineTextQueryHandlerBuilder setDelim(String delim)
     {
         this.delim=delim;
         return this;

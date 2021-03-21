@@ -13,10 +13,11 @@ import java.util.List;
 public class Task extends BaseEntity {
 
 
-    @Value("IguanaConfiguration.ClassName.TestType")
+    @Value("${IguanaConfiguration.ClassName.TestType}")
     private String className;
 
-    private StressTestType stressTestType;
+    private StressTestType restrictionType;
+    private int restrictionAmount;
 
     private TaskQueryHandler queryHandler;
     private List<TaskWorker> workers;

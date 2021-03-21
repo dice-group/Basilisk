@@ -1,6 +1,7 @@
 package basilisk.jobsManagingService.domain.benchmarking.iguanaConfiguration;
 
 import basilisk.jobsManagingService.domain.BaseEntity;
+import basilisk.jobsManagingService.domain.benchmarking.iguanaConfiguration.storage.Storage;
 import basilisk.jobsManagingService.domain.benchmarking.iguanaConfiguration.task.Task;
 
 import java.util.List;

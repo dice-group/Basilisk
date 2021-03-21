@@ -1,4 +1,4 @@
-package basilisk.jobsManagingService.domain.benchmarking.iguanaConfiguration;
+package basilisk.jobsManagingService.domain.benchmarking.iguanaConfiguration.storage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;

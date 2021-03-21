@@ -1,4 +1,4 @@
-package basilisk.jobsManagingService.domain.benchmarking.iguanaConfiguration.task;
+package basilisk.jobsManagingService.domain.benchmarking.iguanaConfiguration.task.worker;
 
 /**
  * @author Fakhr Shaheen

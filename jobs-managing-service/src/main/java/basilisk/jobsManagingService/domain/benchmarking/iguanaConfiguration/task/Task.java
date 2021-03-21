@@ -1,6 +1,8 @@
 package basilisk.jobsManagingService.domain.benchmarking.iguanaConfiguration.task;
 
 import basilisk.jobsManagingService.domain.BaseEntity;
+import basilisk.jobsManagingService.domain.benchmarking.iguanaConfiguration.task.queryHandler.TaskQueryHandler;
+import basilisk.jobsManagingService.domain.benchmarking.iguanaConfiguration.task.worker.TaskWorker;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;

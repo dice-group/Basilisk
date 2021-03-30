@@ -1,12 +1,9 @@
 package basilisk.jobsManagingService.domain.benchmarking.iguanaConfiguration.task.queryHandler;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
-
 /**
  * @author Fakhr Shaheen
  */
-public class MultipleLineTextQueryhandler extends TaskQueryHandler{
+public class MultipleLineTextQueryhandler extends IguanaTaskQueryHandler {
 
     private String delim;
 

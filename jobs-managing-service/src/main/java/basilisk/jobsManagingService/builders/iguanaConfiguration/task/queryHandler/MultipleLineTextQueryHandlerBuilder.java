@@ -1,7 +1,7 @@
 package basilisk.jobsManagingService.builders.iguanaConfiguration.task.queryHandler;
 
 import basilisk.jobsManagingService.domain.benchmarking.iguanaConfiguration.task.queryHandler.MultipleLineTextQueryhandler;
-import basilisk.jobsManagingService.domain.benchmarking.iguanaConfiguration.task.queryHandler.TaskQueryHandler;
+import basilisk.jobsManagingService.domain.benchmarking.iguanaConfiguration.task.queryHandler.IguanaTaskQueryHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -9,7 +9,7 @@ import org.springframework.core.env.Environment;
 /**
  * @author Fakhr Shaheen
  */
-public class MultipleLineTextQueryHandlerBuilder extends TaskQueryHandlerBuilder{
+public class MultipleLineTextQueryHandlerBuilder extends IguanaTaskQueryHandlerBuilder {
 
     @Value("${IguanaConfiguration.MutipleLineDefaultDelim}")
     private String delim;
@@ -28,7 +28,7 @@ public class MultipleLineTextQueryHandlerBuilder extends TaskQueryHandlerBuilder
     }
 
     @Override
-    public TaskQueryHandler build() {
+    public IguanaTaskQueryHandler build() {
         return new MultipleLineTextQueryhandler(className,delim);
     }
 }

@@ -1,7 +1,7 @@
 package basilisk.jobsManagingService.builders.iguanaConfiguration.task.queryHandler;
 
-import basilisk.jobsManagingService.domain.benchmarking.iguanaConfiguration.task.queryHandler.SparqlPatternQueryHandler;
-import basilisk.jobsManagingService.domain.benchmarking.iguanaConfiguration.task.queryHandler.TaskQueryHandler;
+import basilisk.jobsManagingService.domain.benchmarking.iguanaConfiguration.task.queryHandler.SparqlPatternQueryHandlerIguana;
+import basilisk.jobsManagingService.domain.benchmarking.iguanaConfiguration.task.queryHandler.IguanaTaskQueryHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -9,7 +9,7 @@ import org.springframework.core.env.Environment;
 /**
  * @author Fakhr Shaheen
  */
-public class SparqlPatternQueryHandlerBuilder extends TaskQueryHandlerBuilder{
+public class SparqlPatternQueryHandlerBuilder extends IguanaTaskQueryHandlerBuilder {
 
     private String endpoint;
     @Value("${IguanaConfiguration.DefaultValues.Queryhandler.SparqlPatternTimeLimit}")
@@ -30,7 +30,7 @@ public class SparqlPatternQueryHandlerBuilder extends TaskQueryHandlerBuilder{
         return this;
     }
     @Override
-    public TaskQueryHandler build() {
-        return new SparqlPatternQueryHandler(className,endpoint,limit);
+    public IguanaTaskQueryHandler build() {
+        return new SparqlPatternQueryHandlerIguana(className,endpoint,limit);
     }
 }

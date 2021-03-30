@@ -3,10 +3,10 @@ package basilisk.jobsManagingService.domain.benchmarking.iguanaConfiguration.tas
 /**
  * @author Fakhr Shaheen
  */
-public class TaskQueryHandler {
+public class IguanaTaskQueryHandler {
     protected String className;
 
-    public TaskQueryHandler(String className) {
+    public IguanaTaskQueryHandler(String className) {
         this.className = className;
     }
 }

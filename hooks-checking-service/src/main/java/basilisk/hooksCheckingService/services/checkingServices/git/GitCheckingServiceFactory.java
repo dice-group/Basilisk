@@ -1,6 +1,6 @@
 package basilisk.hooksCheckingService.services.checkingServices.git;
 
-import basilisk.hooksCheckingService.messaging.MessagingHandler;
+import basilisk.hooksCheckingService.web.messaging.MessageSender;
 import basilisk.hooksCheckingService.repositories.GitHookRepository;
 import basilisk.hooksCheckingService.repositories.GitRepoRepository;
 
@@ -11,9 +11,9 @@ public class GitCheckingServiceFactory {
 
     private  GitHookRepository gitHookRepository;
     private  GitRepoRepository gitRepoRepository;
-    private MessagingHandler hookMessageSender;
+    private MessageSender hookMessageSender;
 
-    public GitCheckingServiceFactory(GitRepoRepository gitRepoRepository,GitHookRepository gitHookRepository, MessagingHandler hookMessageSender) {
+    public GitCheckingServiceFactory(GitRepoRepository gitRepoRepository,GitHookRepository gitHookRepository, MessageSender hookMessageSender) {
         this.gitHookRepository = gitHookRepository;
         this.gitRepoRepository = gitRepoRepository;
         this.hookMessageSender = hookMessageSender;

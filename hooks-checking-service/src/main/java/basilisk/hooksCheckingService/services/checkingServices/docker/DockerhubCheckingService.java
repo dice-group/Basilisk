@@ -5,7 +5,10 @@ import basilisk.hooksCheckingService.core.exception.MessageSendingExecption;
 import basilisk.hooksCheckingService.domain.docker.DockerImage;
 import basilisk.hooksCheckingService.domain.docker.DockerRepo;
 import basilisk.hooksCheckingService.domain.docker.DockerTag;
-import basilisk.hooksCheckingService.messaging.MessagingHandler;
+import basilisk.hooksCheckingService.events.DockerImageCreatedEvent;
+import basilisk.hooksCheckingService.events.DockerTagAddedEvent;
+import basilisk.hooksCheckingService.events.DockerTagUpdatedEvent;
+import basilisk.hooksCheckingService.web.messaging.MessageSender;
 import basilisk.hooksCheckingService.repositories.DockerImageRepository;
 import basilisk.hooksCheckingService.repositories.DockerRepoRepository;
 import basilisk.hooksCheckingService.repositories.DockerTagRepository;
@@ -26,16 +29,16 @@ public class DockerhubCheckingService implements CheckingService {
     DockerImageRepository dockerImageRepository;
     DockerRepoRepository dockerRepoRepository;
     DockerTagRepository dockerTagRepository;
-    MessagingHandler messagingHandler;
+    MessageSender messageSender;
 
     @Autowired
     DockerHubRestProxy dockerHubRestProxy;
 
-    public DockerhubCheckingService(DockerRepoRepository dockerRepoRepository, DockerImageRepository dockerImageRepository, DockerTagRepository dockerTagRepository, MessagingHandler messagingHandler) {
+    public DockerhubCheckingService(DockerRepoRepository dockerRepoRepository, DockerImageRepository dockerImageRepository, DockerTagRepository dockerTagRepository, MessageSender messageSender) {
         this.dockerImageRepository = dockerImageRepository;
         this.dockerRepoRepository = dockerRepoRepository;
         this.dockerTagRepository = dockerTagRepository;
-        this.messagingHandler = messagingHandler;
+        this.messageSender = messageSender;
     }
 
     @Override
@@ -107,7 +110,8 @@ public class DockerhubCheckingService implements CheckingService {
             // save the image in the database
             dockerImageRepository.save(dockerImage);
             // send it to the queue
-            messagingHandler.send(dockerImage);
+            DockerImageCreatedEvent imageCreatedEvent= DockerImageCreatedEvent.builder().digest(dockerImage.getDigest()).repoId(dockerRepo.getId()).build();
+            messageSender.send(imageCreatedEvent);
         } else {
             dockerImage = savedDockerImage.get();
         }
@@ -121,7 +125,7 @@ public class DockerhubCheckingService implements CheckingService {
      * @param apiTag
      * @param dockerImage
      */
-    private void processDockerTag(DockerApiTag apiTag, DockerImage dockerImage) {
+    private void processDockerTag(DockerApiTag apiTag, DockerImage dockerImage)  throws MessageSendingExecption{
         // check whether the tag exists
         var savedTag = dockerTagRepository.findDockerTagByName(apiTag.getName());
         // If the tag is not stored
@@ -129,7 +133,13 @@ public class DockerhubCheckingService implements CheckingService {
             var x4 = new DockerTag(apiTag.getName(), apiTag.getTagLastPushed(), dockerImage);
             //Add the tag to the database
             dockerTagRepository.save(new DockerTag(apiTag.getName(), apiTag.getTagLastPushed(), dockerImage));
-
+            // send docker tag added event
+            DockerTagAddedEvent addedEvent=DockerTagAddedEvent.builder()
+                    .imageId(dockerImage.getId())
+                    .name(savedTag.get().getName())
+                    .lastPushedDate(savedTag.get().getLastPushedDate())
+                    .build();
+            messageSender.send(addedEvent);
             // if the tag already exists
         } else {
             // If the image of the tag has not been changed then the tag is the same, do nothing for now.
@@ -138,7 +148,16 @@ public class DockerhubCheckingService implements CheckingService {
             // Otherwise, the tag has been assigned with another image.
             else {
                 savedTag.get().setDockerImage(dockerImage);
+                //save the tag
                 dockerTagRepository.save(savedTag.get());
+                //send an event that the tag has been assigned to another image
+                DockerTagUpdatedEvent updatedEvent=DockerTagUpdatedEvent.builder()
+                        .imageId(dockerImage.getId())
+                        .name(savedTag.get().getName())
+                        .lastPushedDate(savedTag.get().getLastPushedDate())
+                        .build();
+                messageSender.send(updatedEvent);
+
             }
         }
     }

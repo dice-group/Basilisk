@@ -6,7 +6,8 @@ import basilisk.hooksCheckingService.domain.git.GitBranchRepo;
 import basilisk.hooksCheckingService.domain.git.GitHook;
 import basilisk.hooksCheckingService.domain.git.GitType;
 import basilisk.hooksCheckingService.domain.git.GitRepo;
-import basilisk.hooksCheckingService.messaging.MessagingHandler;
+import basilisk.hooksCheckingService.events.GitCommitAddedEvent;
+import basilisk.hooksCheckingService.web.messaging.MessageSender;
 import basilisk.hooksCheckingService.repositories.GitHookRepository;
 import basilisk.hooksCheckingService.repositories.GitRepoRepository;
 import org.kohsuke.github.GHBranch;
@@ -18,7 +19,7 @@ import java.util.Optional;
 
 public class GitBranchCheckingService extends GitCheckingService {
 
-    public GitBranchCheckingService(GitRepoRepository gitRepoRepository, GitHookRepository gitHookRepository, MessagingHandler hookMessageSender) {
+    public GitBranchCheckingService(GitRepoRepository gitRepoRepository, GitHookRepository gitHookRepository, MessageSender hookMessageSender) {
         super(gitRepoRepository, gitHookRepository, hookMessageSender);
     }
 
@@ -51,8 +52,14 @@ public class GitBranchCheckingService extends GitCheckingService {
                         commitUrl(commit.getHtmlUrl().toString()).build();
 
                 gitHookRepository.save(gitHook);
-                //send it to the queue
-                messagingHandler.send(gitHook);
+                //send git commit added event
+                GitCommitAddedEvent gitCommitAddedEvent=GitCommitAddedEvent.builder()
+                        .commit_sha1(gitHook.getCommitSha1())
+                        .repoId(gitRepo.getId())
+                        .url(gitHook.getCommitUrl())
+                        .commitCreationDate(gitHook.getCommitCreationDate())
+                        .build();
+                messageSender.send(gitCommitAddedEvent);
 
             }
         }

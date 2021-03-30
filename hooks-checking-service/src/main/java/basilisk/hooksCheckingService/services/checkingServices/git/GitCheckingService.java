@@ -2,7 +2,7 @@ package basilisk.hooksCheckingService.services.checkingServices.git;
 
 import basilisk.hooksCheckingService.core.exception.GithubException;
 import basilisk.hooksCheckingService.domain.git.GitRepo;
-import basilisk.hooksCheckingService.messaging.MessagingHandler;
+import basilisk.hooksCheckingService.web.messaging.MessageSender;
 import basilisk.hooksCheckingService.repositories.GitHookRepository;
 import basilisk.hooksCheckingService.repositories.GitRepoRepository;
 import basilisk.hooksCheckingService.services.checkingServices.CheckingService;
@@ -21,12 +21,12 @@ public abstract class GitCheckingService implements CheckingService {
 
     protected final GitHookRepository gitHookRepository;
     protected final GitRepoRepository gitRepoRepository;
-    protected final MessagingHandler messagingHandler;
+    protected final MessageSender messageSender;
 
-    public GitCheckingService(GitRepoRepository gitRepoRepository, GitHookRepository gitHookRepository, MessagingHandler messagingHandler) {
+    public GitCheckingService(GitRepoRepository gitRepoRepository, GitHookRepository gitHookRepository, MessageSender messageSender) {
         this.gitHookRepository = gitHookRepository;
         this.gitRepoRepository = gitRepoRepository;
-        this.messagingHandler = messagingHandler;
+        this.messageSender = messageSender;
     }
 
     public void performChecking() {

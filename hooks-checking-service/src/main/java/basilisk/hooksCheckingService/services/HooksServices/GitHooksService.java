@@ -1,10 +1,13 @@
 package basilisk.hooksCheckingService.services.HooksServices;
 
+import basilisk.hooksCheckingService.core.exception.MessageSendingExecption;
 import basilisk.hooksCheckingService.domain.git.GitBranchRepo;
 import basilisk.hooksCheckingService.domain.git.GitRepo;
 import basilisk.hooksCheckingService.domain.git.GitType;
 import basilisk.hooksCheckingService.dto.git.GitBranchRepoDto;
 import basilisk.hooksCheckingService.dto.git.GitRepoDto;
+import basilisk.hooksCheckingService.events.GitRepoAddedEvent;
+import basilisk.hooksCheckingService.web.messaging.MessageSender;
 import basilisk.hooksCheckingService.repositories.GitRepoRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -22,11 +25,13 @@ public class GitHooksService {
 
     private GitRepoRepository gitRepoRepository;
     private ModelMapper modelMapper;
+    private MessageSender messageSender;
 
 
-    public GitHooksService(GitRepoRepository gitRepoRepository, ModelMapper modelMapper) {
+    public GitHooksService(GitRepoRepository gitRepoRepository, ModelMapper modelMapper,MessageSender messageSender) {
         this.gitRepoRepository = gitRepoRepository;
         this.modelMapper=modelMapper;
+        this.messageSender=messageSender;
     }
 
     public List<GitRepoDto> findAllGitReleaseRepos()
@@ -72,7 +77,11 @@ public class GitHooksService {
         GitRepo gitRepo = modelMapper.map(gitRepoDto, GitRepo.class);
         GitRepo createdGitRepo=gitRepo;
         createdGitRepo.setType(GitType.release);
+        //save it
         gitRepoRepository.save(createdGitRepo);
+        // send it as event
+        sendGitRepoAddedEvent(createdGitRepo);
+        //return dto
         GitRepoDto createdGitRepoDto = modelMapper.map(createdGitRepo, GitRepoDto.class);
         return createdGitRepoDto;
     }
@@ -82,7 +91,11 @@ public class GitHooksService {
         GitRepo gitRepo = modelMapper.map(gitRepoDto, GitRepo.class);
         GitRepo createdGitRepo=gitRepo;
         createdGitRepo.setType(GitType.pull_request);
+        //save it
         gitRepoRepository.save(createdGitRepo);
+        // send it as event
+        sendGitRepoAddedEvent(createdGitRepo);
+        //return dto
         GitRepoDto createdGitRepoDto = modelMapper.map(createdGitRepo, GitRepoDto.class);
         return createdGitRepoDto;
     }
@@ -92,9 +105,23 @@ public class GitHooksService {
         GitRepo gitRepo = modelMapper.map(gitBranchRepoPostDto, GitBranchRepo.class);
         GitRepo createdGitRepo=gitRepo;
         createdGitRepo.setType(GitType.branch);
+        //save it
         gitRepoRepository.save(createdGitRepo);
+        // send it as event
+        sendGitRepoAddedEvent(createdGitRepo);
+        // return dto
         GitBranchRepoDto createdGitRepoDto = modelMapper.map(createdGitRepo, GitBranchRepoDto.class);
         return createdGitRepoDto;
 
+    }
+
+    private void sendGitRepoAddedEvent(GitRepo createdGitRepo)
+    {
+        GitRepoAddedEvent gitRepoAddedEvent=modelMapper.map(createdGitRepo, GitRepoAddedEvent.class);
+        try {
+            messageSender.send(gitRepoAddedEvent);
+        } catch (MessageSendingExecption messageSendingExecption) {
+            //todo Log
+        }
     }
 }

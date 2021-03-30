@@ -1,6 +1,6 @@
 package basilisk.hooksCheckingService.config;
 
-import basilisk.hooksCheckingService.messaging.MessagingHandler;
+import basilisk.hooksCheckingService.web.messaging.MessageSender;
 import basilisk.hooksCheckingService.repositories.DockerImageRepository;
 import basilisk.hooksCheckingService.repositories.DockerRepoRepository;
 import basilisk.hooksCheckingService.repositories.DockerTagRepository;
@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 public class DockerCheckingServicesConfig {
 
     @Bean
-    public DockerhubCheckingService dockerhubCheckingService(DockerRepoRepository dockerRepoRepository, DockerImageRepository dockerImageRepository, DockerTagRepository dockerTagRepository, MessagingHandler hookMessageSender)
+    public DockerhubCheckingService dockerhubCheckingService(DockerRepoRepository dockerRepoRepository, DockerImageRepository dockerImageRepository, DockerTagRepository dockerTagRepository, MessageSender hookMessageSender)
     {
         return new DockerhubCheckingService(dockerRepoRepository,dockerImageRepository,dockerTagRepository,hookMessageSender);
     }

@@ -1,6 +1,6 @@
 package basilisk.hooksCheckingService.config;
 
-import basilisk.hooksCheckingService.messaging.MessagingHandler;
+import basilisk.hooksCheckingService.web.messaging.MessageSender;
 import basilisk.hooksCheckingService.repositories.GitHookRepository;
 import basilisk.hooksCheckingService.repositories.GitRepoRepository;
 import basilisk.hooksCheckingService.services.checkingServices.git.*;
@@ -16,7 +16,7 @@ public class GitCheckingServicesConfig {
 
 
     @Bean
-    public GitCheckingServiceFactory gitCheckingServiceFactory(GitRepoRepository gitRepoRepository, GitHookRepository gitHookRepository, MessagingHandler hookMessageSender)
+    public GitCheckingServiceFactory gitCheckingServiceFactory(GitRepoRepository gitRepoRepository, GitHookRepository gitHookRepository, MessageSender hookMessageSender)
     {
         return new GitCheckingServiceFactory(gitRepoRepository,gitHookRepository,hookMessageSender);
     }

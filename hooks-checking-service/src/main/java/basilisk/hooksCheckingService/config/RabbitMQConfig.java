@@ -1,6 +1,5 @@
 package basilisk.hooksCheckingService.config;
 
-import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
@@ -20,38 +19,38 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-    @Value("${hooksCheckingService.rabbitmq.docker.ImagesQueue}")
+    @Value("${hooks.rabbitmq.docker.ImagesQueue}")
     String dockerImagesQueueName;
 
-    @Value("${hooksCheckingService.rabbitmq.docker.ReposQueue}")
+    @Value("${hooks.rabbitmq.docker.ReposQueue}")
     String dockerReposQueueName;
 
-    @Value("${hooksCheckingService.rabbitmq.docker.TagsQueue}")
+    @Value("${hooks.rabbitmq.docker.TagsQueue}")
     String dockerTagsQueueName;
 
-    @Value("${hooksCheckingService.rabbitmq.git.ReposQueue}")
+    @Value("${hooks.rabbitmq.git.ReposQueue}")
     String gitReposQueueName;
 
-    @Value("${hooksCheckingService.rabbitmq.git.CommitsQueue}")
+    @Value("${hooks.rabbitmq.git.CommitsQueue}")
     String gitCommitsQueueName;
 
-    @Value("${hooksCheckingService.rabbitmq.exchange}")
+    @Value("${hooks.rabbitmq.exchange}")
     String exchange;
 
-    @Value("${hooksCheckingService.rabbitmq.dockerRoutingkeys.Repo}")
+    @Value("${hooks.rabbitmq.dockerRoutingkeys.Repo}")
     private String dockerRepoRoutingkey;
 
-    @Value("${hooksCheckingService.rabbitmq.dockerRoutingkeys.Image}")
+    @Value("${hooks.rabbitmq.dockerRoutingkeys.Image}")
     private String dockerImageRoutingkey;
 
-    @Value("${hooksCheckingService.rabbitmq.dockerRoutingkeys.Tag}")
+    @Value("${hooks.rabbitmq.dockerRoutingkeys.Tag}")
     private String dockerTagRoutingkey;
 
 
-    @Value("${hooksCheckingService.rabbitmq.gitRoutingkeys.Repo}")
+    @Value("${hooks.rabbitmq.gitRoutingkeys.Repo}")
     private String gitRepoRoutingkey;
 
-    @Value("${hooksCheckingService.rabbitmq.gitRoutingkeys.Commit}")
+    @Value("${hooks.rabbitmq.gitRoutingkeys.Commit}")
     private String gitCommitRoutingkey;
 
     @Bean

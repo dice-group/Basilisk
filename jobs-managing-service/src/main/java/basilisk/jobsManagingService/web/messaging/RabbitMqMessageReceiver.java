@@ -27,31 +27,31 @@ public class RabbitMqMessageReceiver implements MessageReceiver, RabbitListenerC
 
 
     @Override
-    @RabbitListener(queues = "${hooksCheckingService.rabbitmq.docker.ImagesQueue}")
+    @RabbitListener(queues = "${hooks.rabbitmq.docker.ImagesQueue}")
     public void receiveDockerImageEvent(DockerImageCreatedEvent dockerImageCreatedEvent) {
         benchmarkingJobsService.createDockerBenchmarkingJob(dockerImageCreatedEvent);
     }
 
     @Override
-    @RabbitListener(queues = "${hooksCheckingService.rabbitmq.docker.ReposQueue}")
+    @RabbitListener(queues = "${hooks.rabbitmq.docker.ReposQueue}")
     public void receiveDockerRepoEvent(DockerRepoAddedEvent dockerRepoAddedEvent) {
         System.out.println();
     }
 
     @Override
-    @RabbitListener(queues = "${hooksCheckingService.rabbitmq.docker.TagsQueue}")
+    @RabbitListener(queues = "${hooks.rabbitmq.docker.TagsQueue}")
     public void receiveDockerTagEvent(DockerTagUpdatedEvent dockerTagUpdatedEvent) {
         System.out.println();
     }
 
     @Override
-    @RabbitListener(queues = "${hooksCheckingService.rabbitmq.git.CommitsQueue}")
+    @RabbitListener(queues = "${hooks.rabbitmq.git.CommitsQueue}")
     public void receiveGitCommitEvent(GitCommitAddedEvent gitCommitAddedEvent) {
         benchmarkingJobsService.createGitBenchmarkingJob(gitCommitAddedEvent);
     }
 
     @Override
-    @RabbitListener(queues = "${hooksCheckingService.rabbitmq.git.ReposQueue}")
+    @RabbitListener(queues = "${hooks.rabbitmq.git.ReposQueue}")
     public void receiveGitRepoEvent(GitRepoAddedEvent gitRepoAddedEvent) {
         System.out.println();
 

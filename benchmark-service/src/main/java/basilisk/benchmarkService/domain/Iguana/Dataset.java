@@ -1,6 +1,7 @@
 package basilisk.benchmarkService.domain.Iguana;
 
-import basilisk.jobsManagingService.domain.BaseEntity;
+
+import basilisk.benchmarkService.domain.BaseEntity;
 
 /**
  * @author Fakhr Shaheen

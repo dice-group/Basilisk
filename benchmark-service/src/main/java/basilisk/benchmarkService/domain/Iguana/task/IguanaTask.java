@@ -1,7 +1,6 @@
 package basilisk.benchmarkService.domain.Iguana.task;
 
 
-import basilisk.benchmarkService.domain.BaseEntity;
 import basilisk.benchmarkService.domain.Iguana.task.queryHandler.IguanaTaskQueryHandler;
 import basilisk.benchmarkService.domain.Iguana.task.worker.TaskWorker;
 import lombok.*;
@@ -17,7 +16,7 @@ import java.util.List;
 @Setter
 @Getter
 @Builder
-public class IguanaTask extends BaseEntity {
+public class IguanaTask {
 
     @Value("${IguanaConfiguration.ClassName.TestType")
     private String className;

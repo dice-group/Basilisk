@@ -1,17 +1,14 @@
 package basilisk.benchmarkService.domain.Iguana.storage;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.annotation.Value;
+
 
 /**
  * @author Fakhr Shaheen
  */
 public class FileStorage extends Storage{
 
-     @Autowired
-     private Environment env;
+     @Value( "${IguanaConfiguration.ClassName.FileStorage}" )
+     private  String className;
 
-     public FileStorage() {
-          this.className=env.getProperty("IguanaConfiguration.ClassName.FileStorage");
-     }
 }

@@ -1,7 +1,6 @@
 package basilisk.benchmarkService.domain.Iguana;
 
 
-import basilisk.benchmarkService.domain.BaseEntity;
 import basilisk.benchmarkService.domain.Iguana.storage.Storage;
 import basilisk.benchmarkService.domain.Iguana.task.IguanaTask;
 import lombok.Builder;
@@ -16,7 +15,7 @@ import java.util.List;
 @Setter
 @Getter
 @Builder
-public class IguanaConfiguration extends BaseEntity {
+public class IguanaConfiguration  {
 
     private List<IguanaConnection> iguanaConnections;
     private List<Dataset> datasets;

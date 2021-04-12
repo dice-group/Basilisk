@@ -14,6 +14,9 @@ public class HttpSparqlUpdateTaskWorkerBuilder extends HttpPostTaskWorkerBuilder
     @Value("${IguanaConfiguration.DefaultValues.Worker.TimerStrategy}")
     private TimerStrategy timerStrategy;
 
+    @Value("${IguanaConfiguration.DefaultValues.Worker.TimerStrategy}")
+    private String classname;
+
     public HttpSparqlUpdateTaskWorkerBuilder(int threads, String queriesFile) {
         super(threads, queriesFile);
     }

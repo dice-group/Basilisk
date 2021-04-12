@@ -10,8 +10,7 @@ import basilisk.benchmarkService.domain.Iguana.storage.Storage;
 import basilisk.benchmarkService.domain.Iguana.task.IguanaTask;
 import basilisk.benchmarkService.domain.Iguana.task.queryHandler.IguanaTaskQueryHandler;
 import basilisk.benchmarkService.domain.Iguana.task.worker.TaskWorker;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -25,8 +24,24 @@ import java.util.List;
 @Component
 public class IguanaConfigurationServiceImpl implements IguanaConfigurationService{
 
-    @Autowired
-    protected Environment env;
+    @Value( "${IguanaConfiguration.DefaultConfiguration.Threads}" )
+    private int threadsnumber;
+    @Value( "${IguanaConfiguration.DefaultConfiguration.Task.Worker.TimeOut}" )
+    private int workerTimeOut;
+    @Value( "${IguanaConfiguration.DefaultConfiguration.Task.RestrictionAmount}" )
+    private int restrictionAmount;
+    @Value( "${IguanaConfiguration.DefaultConfiguration.Task.RestrictionType}" )
+    private String restrictionType;
+    @Value( "${IguanaConfiguration.DefaultConfiguration.Metrics[0]}" )
+    private String metric1;
+    @Value( "${IguanaConfiguration.DefaultConfiguration.Metrics[1]}" )
+    private String metric2;
+    @Value( "${IguanaConfiguration.DefaultConfiguration.Metrics[2]}" )
+    private String metric3;
+    @Value( "${IguanaConfiguration.DefaultConfiguration.Metrics[3]}" )
+    private String metric4;
+    @Value( "${IguanaConfiguration.DefaultConfiguration.Metrics[4]}" )
+    private String metric5;
 
 
     @Override
@@ -49,8 +64,6 @@ public class IguanaConfigurationServiceImpl implements IguanaConfigurationServic
     private List<IguanaTask> getDefaultIguanaTasks() {
 
         //create the task worker
-        int threadsnumber=Integer.parseInt(env.getProperty("IguanaConfiguration.DefaultConfiguration.Threads"));
-        int workerTimeOut=Integer.parseInt(env.getProperty("IguanaConfiguration.DefaultConfiguration.Task.Worker.TimeOut"));
         TaskWorker worker=new HttpGetTaskWorkerBuilder(threadsnumber,"")
                 .setTimeOut(workerTimeOut)
                 .build();
@@ -60,11 +73,10 @@ public class IguanaConfigurationServiceImpl implements IguanaConfigurationServic
         IguanaTaskQueryHandler queryHandler=new OneLineTextQueryHandlerBuilder().build();
 
         //create the iguana task
-        int restrictionAmount=Integer.parseInt(env.getProperty("IguanaConfiguration.DefaultConfiguration.Task.RestrictionAmount"));
         IguanaTask iguanaTask=IguanaTask.builder()
                 .queryHandler(queryHandler)
                 .workers(workers)
-                .restrictionType(env.getProperty("IguanaConfiguration.DefaultConfiguration.Task.RestrictionType"))
+                .restrictionType(restrictionType)
                 .restrictionAmount(restrictionAmount)
                 .build();
 
@@ -77,11 +89,11 @@ public class IguanaConfigurationServiceImpl implements IguanaConfigurationServic
     private List<String> getDefaultIguanaMetrics() {
 
         List<String> iguanaMetrics=new ArrayList<>();
-        iguanaMetrics.add(env.getProperty("IguanaConfiguration.DefaultConfiguration.Metrics[0]"));
-        iguanaMetrics.add(env.getProperty("IguanaConfiguration.DefaultConfiguration.Metrics[1]"));
-        iguanaMetrics.add(env.getProperty("IguanaConfiguration.DefaultConfiguration.Metrics[2]"));
-        iguanaMetrics.add(env.getProperty("IguanaConfiguration.DefaultConfiguration.Metrics[3]"));
-        iguanaMetrics.add(env.getProperty("IguanaConfiguration.DefaultConfiguration.Metrics[4]"));
+        iguanaMetrics.add(metric1);
+        iguanaMetrics.add(metric2);
+        iguanaMetrics.add(metric3);
+        iguanaMetrics.add(metric4);
+        iguanaMetrics.add(metric5);
 
         return iguanaMetrics;
     }

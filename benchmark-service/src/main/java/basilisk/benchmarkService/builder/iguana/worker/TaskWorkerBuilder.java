@@ -19,7 +19,6 @@ public abstract class TaskWorkerBuilder {
     @Value("${IguanaConfiguration.DefaultValues.Worker.GaussianLatency}")
     protected int gaussianLatency;
 
-    protected String classname;
 
     public TaskWorkerBuilder(int threads, String queriesFile)
     {

@@ -8,7 +8,6 @@ import basilisk.benchmarkService.domain.Iguana.task.queryHandler.IguanaTaskQuery
  */
 public abstract class IguanaTaskQueryHandlerBuilder {
 
-    protected String className;
 
     public abstract IguanaTaskQueryHandler build();
 }

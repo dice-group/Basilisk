@@ -1,7 +1,6 @@
 package basilisk.benchmarkService.domain.Iguana;
 
 
-import basilisk.benchmarkService.domain.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +9,7 @@ import lombok.NoArgsConstructor;
  */
 @AllArgsConstructor
 @NoArgsConstructor
-public class Dataset extends BaseEntity {
+public class Dataset {
 
     private String name;
     private String file;

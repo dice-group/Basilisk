@@ -16,13 +16,12 @@ public class SparqlPatternQueryHandlerBuilder extends IguanaTaskQueryHandlerBuil
     @Value("${IguanaConfiguration.DefaultValues.Queryhandler.SparqlPatternTimeLimit}")
     private int limit;
 
-    @Autowired
-    private Environment env;
+    @Value("${IguanaConfiguration.ClassName.PatternQueryHandler}")
+    private String className;
 
 
     public SparqlPatternQueryHandlerBuilder(String endpoint) {
         this.endpoint=endpoint;
-        this.className=env.getProperty("IguanaConfiguration.ClassName.PatternQueryHandler");
     }
 
     public SparqlPatternQueryHandlerBuilder setLimit(int limit)

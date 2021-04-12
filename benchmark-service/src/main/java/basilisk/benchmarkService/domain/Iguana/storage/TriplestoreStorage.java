@@ -2,6 +2,7 @@ package basilisk.benchmarkService.domain.Iguana.storage;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 
 
@@ -13,13 +14,11 @@ public class TriplestoreStorage extends Storage{
     private String endpoint;
     private String updateEndpoint;
 
-
-    @Autowired
-    private Environment env;
+    @Value( "${IguanaConfiguration.ClassName.TriplestoreStorage}" )
+    private  String className;
 
 
     public TriplestoreStorage(String endpoint, String updateEndpoint) {
-        this.className=env.getProperty("IguanaConfiguration.ClassName.TriplestoreStorage");
         this.endpoint = endpoint;
         this.updateEndpoint = updateEndpoint;
 

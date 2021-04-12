@@ -15,6 +15,6 @@ import java.util.List;
 public interface IguanaConfigurationService {
 
 
-    public IguanaConfiguration createDefaultIguanaConfiguration(IguanaConnection connection, List<Dataset> datasets, List<Storage> storages);
+    public IguanaConfiguration createDefaultIguanaConfiguration(IguanaConnection connection, List<Dataset> datasets, List<Storage> storages,String queryFile);
 
 }

@@ -45,7 +45,7 @@ class IguanaConfigurationServiceImplTest {
         List< Storage > storages=List.of(new TriplestoreStorage("x","y"));
 
 
-        IguanaConfiguration iguanaConfiguration=iguanaConfigurationService.createDefaultIguanaConfiguration(connection,datasets,storages);
+        IguanaConfiguration iguanaConfiguration=iguanaConfigurationService.createDefaultIguanaConfiguration(connection,datasets,storages,"queryfile");
 
         Assert.assertNotNull(iguanaConfiguration.getIguanaConnections());
         Assert.assertNotNull(iguanaConfiguration.getIguanaTasks());

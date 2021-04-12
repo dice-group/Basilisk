@@ -45,12 +45,12 @@ public class IguanaConfigurationServiceImpl implements IguanaConfigurationServic
 
 
     @Override
-    public IguanaConfiguration createDefaultIguanaConfiguration(IguanaConnection connection, List<Dataset> datasets, List<Storage> storages){
+    public IguanaConfiguration createDefaultIguanaConfiguration(IguanaConnection connection, List<Dataset> datasets, List<Storage> storages,String queryFile){
 
         List<IguanaConnection> iguanaConnections=new ArrayList<>();
         iguanaConnections.add(connection);
         IguanaConfiguration iguanaConfiguration=IguanaConfiguration.builder()
-                .iguanaTasks(getDefaultIguanaTasks())
+                .iguanaTasks(getDefaultIguanaTasks(queryFile))
                 .iguanaMetrics(getDefaultIguanaMetrics())
                 .iguanaConnections(iguanaConnections)
                 .datasets(datasets)
@@ -61,10 +61,10 @@ public class IguanaConfigurationServiceImpl implements IguanaConfigurationServic
     }
 
 
-    private List<IguanaTask> getDefaultIguanaTasks() {
+    private List<IguanaTask> getDefaultIguanaTasks(String queryFile) {
 
         //create the task worker
-        TaskWorker worker=new HttpGetTaskWorkerBuilder(threadsnumber,"")
+        TaskWorker worker=new HttpGetTaskWorkerBuilder(threadsnumber,queryFile)
                 .setTimeOut(workerTimeOut)
                 .build();
         List<TaskWorker> workers=new ArrayList<>();

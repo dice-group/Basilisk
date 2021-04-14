@@ -29,24 +29,21 @@ class IguanaConfigurationServiceImplTest {
 
 
 
-
     @BeforeEach
     public void setUp()
     {
-        MockitoAnnotations.openMocks(this);
         iguanaConfigurationService=new IguanaConfigurationServiceImpl();
     }
 
     @Test
-    void createDefaultIguanaConfiguration() {
-        IguanaConnection connection= IguanaConnection.builder().name("conncection1")
-                .endpoint("https://example.com").build();
+    void souldCreateDefaultIguanaConfiguration() {
+
+        IguanaConnection connection= IguanaConnection.builder().name("connection1")
+                .endpoint("https://test.com").build();
         List<Dataset > datasets=List.of(new Dataset("name","filename"));
         List< Storage > storages=List.of(new TriplestoreStorage("x","y"));
 
-
         IguanaConfiguration iguanaConfiguration=iguanaConfigurationService.createDefaultIguanaConfiguration(connection,datasets,storages,"queryfile");
-
         Assert.assertNotNull(iguanaConfiguration.getIguanaConnections());
         Assert.assertNotNull(iguanaConfiguration.getIguanaTasks());
         Assert.assertNotNull(iguanaConfiguration.getDatasets());

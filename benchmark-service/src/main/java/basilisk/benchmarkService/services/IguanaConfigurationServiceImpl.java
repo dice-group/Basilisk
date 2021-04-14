@@ -10,7 +10,6 @@ import basilisk.benchmarkService.domain.Iguana.storage.Storage;
 import basilisk.benchmarkService.domain.Iguana.task.IguanaTask;
 import basilisk.benchmarkService.domain.Iguana.task.queryHandler.IguanaTaskQueryHandler;
 import basilisk.benchmarkService.domain.Iguana.task.worker.TaskWorker;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -24,34 +23,16 @@ import java.util.List;
 @Component
 public class IguanaConfigurationServiceImpl implements IguanaConfigurationService{
 
-    @Value( "${IguanaConfiguration.DefaultConfiguration.Threads}" )
-    private int threadsnumber;
-    @Value( "${IguanaConfiguration.DefaultConfiguration.Task.Worker.TimeOut}" )
-    private int workerTimeOut;
-    @Value( "${IguanaConfiguration.DefaultConfiguration.Task.RestrictionAmount}" )
-    private int restrictionAmount;
-    @Value( "${IguanaConfiguration.DefaultConfiguration.Task.RestrictionType}" )
-    private String restrictionType;
-    @Value( "${IguanaConfiguration.DefaultConfiguration.Metrics[0]}" )
-    private String metric1;
-    @Value( "${IguanaConfiguration.DefaultConfiguration.Metrics[1]}" )
-    private String metric2;
-    @Value( "${IguanaConfiguration.DefaultConfiguration.Metrics[2]}" )
-    private String metric3;
-    @Value( "${IguanaConfiguration.DefaultConfiguration.Metrics[3]}" )
-    private String metric4;
-    @Value( "${IguanaConfiguration.DefaultConfiguration.Metrics[4]}" )
-    private String metric5;
-
 
     @Override
     public IguanaConfiguration createDefaultIguanaConfiguration(IguanaConnection connection, List<Dataset> datasets, List<Storage> storages,String queryFile){
 
         List<IguanaConnection> iguanaConnections=new ArrayList<>();
         iguanaConnections.add(connection);
+        List<String> iguanaMetrics=List.of("QMPH","QPS","NoQPH","AvgQPS","NoQ");
         IguanaConfiguration iguanaConfiguration=IguanaConfiguration.builder()
                 .iguanaTasks(getDefaultIguanaTasks(queryFile))
-                .iguanaMetrics(getDefaultIguanaMetrics())
+                .iguanaMetrics(iguanaMetrics)
                 .iguanaConnections(iguanaConnections)
                 .datasets(datasets)
                 .storages(storages)
@@ -60,8 +41,12 @@ public class IguanaConfigurationServiceImpl implements IguanaConfigurationServic
         return iguanaConfiguration;
     }
 
-
     private List<IguanaTask> getDefaultIguanaTasks(String queryFile) {
+
+        int threadsnumber=1;
+        int workerTimeOut=180000;
+        int restrictionAmount=360000;
+        String restrictionType="timeLimit";
 
         //create the task worker
         TaskWorker worker=new HttpGetTaskWorkerBuilder(threadsnumber,queryFile)
@@ -85,17 +70,5 @@ public class IguanaConfigurationServiceImpl implements IguanaConfigurationServic
         return iguanaTasks;
     }
 
-
-    private List<String> getDefaultIguanaMetrics() {
-
-        List<String> iguanaMetrics=new ArrayList<>();
-        iguanaMetrics.add(metric1);
-        iguanaMetrics.add(metric2);
-        iguanaMetrics.add(metric3);
-        iguanaMetrics.add(metric4);
-        iguanaMetrics.add(metric5);
-
-        return iguanaMetrics;
-    }
 
 }

@@ -2,7 +2,6 @@ package basilisk.benchmarkService.builder.iguana.worker;
 
 
 import basilisk.benchmarkService.domain.Iguana.task.worker.TaskWorker;
-import org.springframework.beans.factory.annotation.Value;
 
 /**
  * @author Fakhr Shaheen
@@ -10,14 +9,14 @@ import org.springframework.beans.factory.annotation.Value;
 public abstract class TaskWorkerBuilder {
 
     protected int threads;
+
     protected String queriesFile;
 
-    @Value("${IguanaConfiguration.DefaultValues.Worker.TimeOut}")
-    protected int timeOut;
-    @Value("${IguanaConfiguration.DefaultValues.Worker.FixedLatency}")
-    protected int fixedLatency;
-    @Value("${IguanaConfiguration.DefaultValues.Worker.GaussianLatency}")
-    protected int gaussianLatency;
+    protected int timeOut=180000;
+
+    protected int fixedLatency=0;
+
+    protected int gaussianLatency=0;
 
 
     public TaskWorkerBuilder(int threads, String queriesFile)

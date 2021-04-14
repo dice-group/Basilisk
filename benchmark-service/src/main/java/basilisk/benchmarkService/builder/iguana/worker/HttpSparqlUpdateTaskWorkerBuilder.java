@@ -4,18 +4,15 @@ package basilisk.benchmarkService.builder.iguana.worker;
 import basilisk.benchmarkService.domain.Iguana.task.worker.HttpSparqlUpdateTaskWorker;
 import basilisk.benchmarkService.domain.Iguana.task.worker.TaskWorker;
 import basilisk.benchmarkService.domain.Iguana.task.worker.TimerStrategy;
-import org.springframework.beans.factory.annotation.Value;
 
 /**
  * @author Fakhr Shaheen
  */
 public class HttpSparqlUpdateTaskWorkerBuilder extends HttpPostTaskWorkerBuilder{
 
-    @Value("${IguanaConfiguration.DefaultValues.Worker.TimerStrategy}")
-    private TimerStrategy timerStrategy;
+    private TimerStrategy timerStrategy=TimerStrategy.NONE;
 
-    @Value("${IguanaConfiguration.DefaultValues.Worker.TimerStrategy}")
-    private String classname;
+    private final String classname="UPDATEWorker";
 
     public HttpSparqlUpdateTaskWorkerBuilder(int threads, String queriesFile) {
         super(threads, queriesFile);

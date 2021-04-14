@@ -1,19 +1,14 @@
 package basilisk.benchmarkService.builder.iguana.worker;
 
 
-import org.springframework.beans.factory.annotation.Value;
-
 /**
  * @author Fakhr Shaheen
  */
 public abstract class HttpTaskWorkerBuilder extends TaskWorkerBuilder {
 
-    @Value("${IguanaConfiguration.DefaultValues.Worker.ParameterName}")
-    protected String parameterName;
-    @Value("${IguanaConfiguration.DefaultValues.Worker.ResponseType}")
-    protected String responseType;
-    @Value("${IguanaConfiguration.DefaultValues.Worker.Language}")
-    protected String language;
+    protected String parameterName="query";
+    protected String responseType="application/sparql-results+json";
+    protected String language="lang.SPARQL";
 
 
 

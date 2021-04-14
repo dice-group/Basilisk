@@ -4,7 +4,6 @@ package basilisk.benchmarkService.domain.Iguana.task;
 import basilisk.benchmarkService.domain.Iguana.task.queryHandler.IguanaTaskQueryHandler;
 import basilisk.benchmarkService.domain.Iguana.task.worker.TaskWorker;
 import lombok.*;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
 
@@ -18,8 +17,8 @@ import java.util.List;
 @Builder
 public class IguanaTask {
 
-    @Value("${IguanaConfiguration.ClassName.TestType")
-    private String className;
+    private final String classname="Stresstest";
+
     private String restrictionType;
     private int restrictionAmount;
     private IguanaTaskQueryHandler queryHandler;

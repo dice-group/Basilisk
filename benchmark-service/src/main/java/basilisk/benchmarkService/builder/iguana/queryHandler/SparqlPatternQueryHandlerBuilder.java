@@ -3,9 +3,6 @@ package basilisk.benchmarkService.builder.iguana.queryHandler;
 
 import basilisk.benchmarkService.domain.Iguana.task.queryHandler.IguanaTaskQueryHandler;
 import basilisk.benchmarkService.domain.Iguana.task.queryHandler.SparqlPatternQueryHandlerIguana;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 
 /**
  * @author Fakhr Shaheen
@@ -13,11 +10,10 @@ import org.springframework.core.env.Environment;
 public class SparqlPatternQueryHandlerBuilder extends IguanaTaskQueryHandlerBuilder {
 
     private String endpoint;
-    @Value("${IguanaConfiguration.DefaultValues.Queryhandler.SparqlPatternTimeLimit}")
-    private int limit;
 
-    @Value("${IguanaConfiguration.ClassName.PatternQueryHandler}")
-    private String className;
+    private int limit=2000;
+
+    private final String className="PatternQueryHandler";
 
 
     public SparqlPatternQueryHandlerBuilder(String endpoint) {

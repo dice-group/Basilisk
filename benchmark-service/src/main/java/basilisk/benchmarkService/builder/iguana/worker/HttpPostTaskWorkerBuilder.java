@@ -3,18 +3,15 @@ package basilisk.benchmarkService.builder.iguana.worker;
 
 import basilisk.benchmarkService.domain.Iguana.task.worker.HttpPostTaskWorker;
 import basilisk.benchmarkService.domain.Iguana.task.worker.TaskWorker;
-import org.springframework.beans.factory.annotation.Value;
 
 /**
  * @author Fakhr Shaheen
  */
 public class HttpPostTaskWorkerBuilder extends HttpTaskWorkerBuilder{
 
-    @Value("${IguanaConfiguration.DefaultValues.Worker.ContentType}")
-    protected String contentType;
+    protected String contentType="text/plain";
 
-    @Value("${IguanaConfiguration.ClassName.Worker.HttpPostWorker}")
-    private String classname;
+    private final String classname="HttpPostWorker";
 
     public HttpPostTaskWorkerBuilder(int threads, String queriesFile) {
         super(threads, queriesFile);

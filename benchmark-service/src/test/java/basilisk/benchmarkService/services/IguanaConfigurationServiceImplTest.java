@@ -9,7 +9,6 @@ import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.junit4.SpringRunner;
 
 
@@ -36,7 +35,7 @@ class IguanaConfigurationServiceImplTest {
     }
 
     @Test
-    void souldCreateDefaultIguanaConfiguration() {
+    void shouldCreateDefaultIguanaConfiguration() {
 
         IguanaConnection connection= IguanaConnection.builder().name("connection1")
                 .endpoint("https://test.com").build();

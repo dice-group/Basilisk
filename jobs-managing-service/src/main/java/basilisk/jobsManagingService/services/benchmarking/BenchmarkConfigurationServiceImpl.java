@@ -6,6 +6,7 @@ import basilisk.jobsManagingService.repositories.benchmarking.BenchmarkDataSetCo
 import basilisk.jobsManagingService.repositories.benchmarking.BenchmarkQueryConfigRepository;
 import org.springframework.stereotype.Component;
 
+import javax.management.InstanceAlreadyExistsException;
 import java.util.List;
 
 /**
@@ -53,12 +54,30 @@ public class BenchmarkConfigurationServiceImpl implements BenchmarkConfiguration
     }
 
     @Override
-    public void addBenchmarkDataSetConfig() {
+    public DataSetConfig addBenchmarkDataSetConfig(String datasetFileName,String datasetFileUrl) throws InstanceAlreadyExistsException {
+        var dataSetConfig=benchmarkDataSetConfigRepository.findByName(datasetFileName);
+        if(dataSetConfig.isPresent())
+            throw new InstanceAlreadyExistsException();
+        else
+        {
+            DataSetConfig savedDataSetConfig=new DataSetConfig(datasetFileName,datasetFileUrl) ;
+            benchmarkDataSetConfigRepository.save(savedDataSetConfig);
+            return savedDataSetConfig;
+        }
 
     }
 
     @Override
-    public void addBenchmarkQueryConfig() {
+    public QueryConfig addBenchmarkQueryConfig(String queryFileName,String queryFileUrl) throws InstanceAlreadyExistsException {
+        var queryConfig=benchmarkQueryConfigRepository.findByName(queryFileName);
+        if(queryConfig.isPresent())
+            throw new InstanceAlreadyExistsException();
+        else
+        {
+            QueryConfig savedQueryConfig=new QueryConfig(queryFileName,queryFileUrl) ;
+            benchmarkQueryConfigRepository.save(savedQueryConfig);
+            return savedQueryConfig;
+        }
 
     }
 }

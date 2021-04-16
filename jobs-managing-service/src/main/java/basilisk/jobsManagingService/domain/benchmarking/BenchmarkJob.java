@@ -10,9 +10,7 @@ import java.util.List;
  * @author Fakhr Shaheen
  */
 
-@Builder
-@Setter
-@Getter
+
 public abstract class BenchmarkJob extends BaseEntity {
 
     private List<DataSetConfig> dataSetConfigs;

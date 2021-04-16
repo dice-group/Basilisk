@@ -8,7 +8,7 @@ import lombok.*;
  */
 
 
-@Builder
+
 @Setter
 @Getter
 public class GitBenchmarkJob extends BenchmarkJob{

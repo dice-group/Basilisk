@@ -8,9 +8,7 @@ import lombok.*;
  */
 
 
-@Builder
 @Setter
-@Getter
 public class DockerBenchmarkJob extends BenchmarkJob{
 
     private DockerJobConfig dockerJobConfig;

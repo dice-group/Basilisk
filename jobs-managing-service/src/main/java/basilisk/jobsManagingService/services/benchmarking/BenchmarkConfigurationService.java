@@ -3,6 +3,7 @@ package basilisk.jobsManagingService.services.benchmarking;
 import basilisk.jobsManagingService.domain.benchmarking.DataSetConfig;
 import basilisk.jobsManagingService.domain.benchmarking.QueryConfig;
 
+import javax.management.InstanceAlreadyExistsException;
 import java.util.List;
 
 /**
@@ -16,6 +17,6 @@ public interface BenchmarkConfigurationService {
     List<DataSetConfig> getAllBenchmarkDataSetConfigs();
     List<QueryConfig> getAllBenchmarkQueryConfigs();
 
-    void addBenchmarkDataSetConfig();
-    void addBenchmarkQueryConfig();
+    DataSetConfig addBenchmarkDataSetConfig(String datasetFileName,String datasetFileUrl) throws InstanceAlreadyExistsException;
+    QueryConfig addBenchmarkQueryConfig(String queryFileName,String queryFileUrl) throws InstanceAlreadyExistsException;
 }

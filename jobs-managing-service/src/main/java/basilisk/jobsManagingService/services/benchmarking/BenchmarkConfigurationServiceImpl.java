@@ -7,7 +7,6 @@ import basilisk.jobsManagingService.repositories.benchmarking.BenchmarkDataSetCo
 import basilisk.jobsManagingService.repositories.benchmarking.BenchmarkQueryConfigRepository;
 import org.springframework.stereotype.Component;
 
-import javax.management.InstanceAlreadyExistsException;
 import java.util.List;
 
 /**
@@ -52,6 +51,16 @@ public class BenchmarkConfigurationServiceImpl implements BenchmarkConfiguration
     @Override
     public List<QueryConfig> getAllBenchmarkQueryConfigs() {
         return (List<QueryConfig>) benchmarkQueryConfigRepository.findAll();
+    }
+
+    @Override
+    public List<DataSetConfig> getAllActiveBenchmarkDataSetConfigs() {
+        return benchmarkDataSetConfigRepository.findAllByActive(true);
+    }
+
+    @Override
+    public List<QueryConfig> getAllActiveBenchmarkQueryConfigs() {
+        return benchmarkQueryConfigRepository.findAllByActive(true);
     }
 
     @Override

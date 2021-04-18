@@ -12,6 +12,7 @@ public class DataSetConfig extends BaseEntity {
 
     String name;
     String url;
+    boolean isActive;
 
     public DataSetConfig(String name,String url)
     {

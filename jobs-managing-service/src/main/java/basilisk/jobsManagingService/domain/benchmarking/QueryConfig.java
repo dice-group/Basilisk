@@ -12,6 +12,7 @@ public class QueryConfig extends BaseEntity {
 
     String name;
     String url;
+    boolean isActive;
 
     public QueryConfig(String name,String url)
     {

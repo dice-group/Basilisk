@@ -2,6 +2,7 @@ package basilisk.jobsManagingService.services.benchmarking;
 
 import basilisk.jobsManagingService.domain.benchmarking.DataSetConfig;
 import basilisk.jobsManagingService.domain.benchmarking.QueryConfig;
+import basilisk.jobsManagingService.exception.ConfigNameAlreadyExistsException;
 import basilisk.jobsManagingService.repositories.benchmarking.BenchmarkDataSetConfigRepository;
 import basilisk.jobsManagingService.repositories.benchmarking.BenchmarkQueryConfigRepository;
 import org.springframework.stereotype.Component;
@@ -54,10 +55,10 @@ public class BenchmarkConfigurationServiceImpl implements BenchmarkConfiguration
     }
 
     @Override
-    public DataSetConfig addBenchmarkDataSetConfig(String datasetFileName,String datasetFileUrl) throws InstanceAlreadyExistsException {
+    public DataSetConfig addBenchmarkDataSetConfig(String datasetFileName,String datasetFileUrl) throws ConfigNameAlreadyExistsException {
         var dataSetConfig=benchmarkDataSetConfigRepository.findByName(datasetFileName);
         if(dataSetConfig.isPresent())
-            throw new InstanceAlreadyExistsException();
+            throw new ConfigNameAlreadyExistsException();
         else
         {
             DataSetConfig savedDataSetConfig=new DataSetConfig(datasetFileName,datasetFileUrl) ;
@@ -68,10 +69,10 @@ public class BenchmarkConfigurationServiceImpl implements BenchmarkConfiguration
     }
 
     @Override
-    public QueryConfig addBenchmarkQueryConfig(String queryFileName,String queryFileUrl) throws InstanceAlreadyExistsException {
+    public QueryConfig addBenchmarkQueryConfig(String queryFileName,String queryFileUrl) throws ConfigNameAlreadyExistsException {
         var queryConfig=benchmarkQueryConfigRepository.findByName(queryFileName);
         if(queryConfig.isPresent())
-            throw new InstanceAlreadyExistsException();
+            throw new ConfigNameAlreadyExistsException();
         else
         {
             QueryConfig savedQueryConfig=new QueryConfig(queryFileName,queryFileUrl) ;

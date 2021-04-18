@@ -2,6 +2,7 @@ package basilisk.jobsManagingService.services.benchmarking;
 
 import basilisk.jobsManagingService.domain.benchmarking.DataSetConfig;
 import basilisk.jobsManagingService.domain.benchmarking.QueryConfig;
+import basilisk.jobsManagingService.exception.ConfigNameAlreadyExistsException;
 import basilisk.jobsManagingService.repositories.benchmarking.BenchmarkDataSetConfigRepository;
 import basilisk.jobsManagingService.repositories.benchmarking.BenchmarkQueryConfigRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -96,7 +97,7 @@ class BenchmarkConfigurationServiceImplTest {
         //when
         try {
             benchmarkConfigurationService.addBenchmarkDataSetConfig(datasetName,datasetUrl);
-        } catch (InstanceAlreadyExistsException e) {
+        } catch (ConfigNameAlreadyExistsException e) {
         }
         //then
         ArgumentCaptor<DataSetConfig>  dataSetConfigArgumentCaptor=ArgumentCaptor.forClass(DataSetConfig.class);
@@ -122,12 +123,12 @@ class BenchmarkConfigurationServiceImplTest {
         //when
         try {
             benchmarkConfigurationService.addBenchmarkDataSetConfig(datasetName,datasetUrl);
-        } catch (InstanceAlreadyExistsException e) {
+        } catch (ConfigNameAlreadyExistsException e) {
         }
 
         //then
         assertThatThrownBy(()->benchmarkConfigurationService.addBenchmarkDataSetConfig(datasetName,datasetUrl))
-                .isInstanceOf(InstanceAlreadyExistsException.class);
+                .isInstanceOf(ConfigNameAlreadyExistsException.class);
 
     }
 
@@ -145,7 +146,7 @@ class BenchmarkConfigurationServiceImplTest {
         //when
         try {
             benchmarkConfigurationService.addBenchmarkQueryConfig(queryName,queryUrl);
-        } catch (InstanceAlreadyExistsException e) {
+        } catch (ConfigNameAlreadyExistsException e) {
         }
         //then
         ArgumentCaptor<QueryConfig>  queryConfigArgumentCaptor=ArgumentCaptor.forClass(QueryConfig.class);
@@ -170,11 +171,11 @@ class BenchmarkConfigurationServiceImplTest {
         //when
         try {
             benchmarkConfigurationService.addBenchmarkDataSetConfig(queryName,queryUrl);
-        } catch (InstanceAlreadyExistsException e) {
+        } catch (ConfigNameAlreadyExistsException e) {
         }
 
         //then
         assertThatThrownBy(()->benchmarkConfigurationService.addBenchmarkQueryConfig(queryName,queryUrl))
-                .isInstanceOf(InstanceAlreadyExistsException.class);
+                .isInstanceOf(ConfigNameAlreadyExistsException.class);
     }
 }

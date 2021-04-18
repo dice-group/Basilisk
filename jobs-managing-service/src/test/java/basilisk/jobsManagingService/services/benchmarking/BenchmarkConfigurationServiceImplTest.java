@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.management.InstanceAlreadyExistsException;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -177,5 +178,38 @@ class BenchmarkConfigurationServiceImplTest {
         //then
         assertThatThrownBy(()->benchmarkConfigurationService.addBenchmarkQueryConfig(queryName,queryUrl))
                 .isInstanceOf(ConfigNameAlreadyExistsException.class);
+    }
+
+    @Test
+    void shouldReturnActiveDatasets()
+    {
+        DataSetConfig dataSetConfig1=new DataSetConfig("dataSetConfig1","dataSetConfig1url");
+        DataSetConfig dataSetConfig2=new DataSetConfig("dataSetConfig2","dataSetConfig2url");
+
+        //given
+        given(benchmarkDataSetConfigRepository.findAllByActive(true))
+                .willReturn(List.of(dataSetConfig1,dataSetConfig2));
+
+        //when
+        var dataSetConfigs=benchmarkConfigurationService.getAllActiveBenchmarkDataSetConfigs();
+        //then
+        assertThat(dataSetConfigs.size()==2);
+
+    }
+
+    @Test
+    void shouldReturnActiveQueries()
+    {
+        QueryConfig queryConfig1=new QueryConfig("query1","query1url");
+        QueryConfig queryConfig2=new QueryConfig("query2","query1ur2");
+
+        //given
+        given(benchmarkQueryConfigRepository.findAllByActive(true))
+                .willReturn(List.of(queryConfig1,queryConfig2));
+
+        //when
+        var queryConfigs=benchmarkConfigurationService.getAllActiveBenchmarkQueryConfigs();
+        //then
+        assertThat(queryConfigs.size()==2);
     }
 }

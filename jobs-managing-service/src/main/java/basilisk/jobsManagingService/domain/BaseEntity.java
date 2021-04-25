@@ -1,17 +1,16 @@
 package basilisk.jobsManagingService.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+
 
 /**
  * @author Fakhr Shaheen
  */
-@AllArgsConstructor
+@SuperBuilder
 @NoArgsConstructor
-@Builder
 @Setter
+@Getter
 public class BaseEntity{
     private Long id;
 }

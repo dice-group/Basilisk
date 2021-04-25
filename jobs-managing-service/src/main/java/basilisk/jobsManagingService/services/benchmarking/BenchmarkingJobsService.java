@@ -10,6 +10,6 @@ import basilisk.jobsManagingService.events.GitCommitAddedEvent;
 
 public interface BenchmarkingJobsService {
 
-    public BenchmarkJob createGitBenchmarkingJob(GitCommitAddedEvent gitCommitAddedEvent);
-    public BenchmarkJob createDockerBenchmarkingJob(DockerImageCreatedEvent dockerImageCreatedEvent);
+    public BenchmarkJob generateGitBenchmarkingJob(GitCommitAddedEvent gitCommitAddedEvent);
+    public BenchmarkJob generateDockerBenchmarkingJob(DockerImageCreatedEvent dockerImageCreatedEvent);
 }

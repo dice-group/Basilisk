@@ -2,8 +2,10 @@ package basilisk.jobsManagingService.events;
 
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -12,7 +14,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 public class GitCommitAddedEvent implements Serializable {
@@ -20,5 +22,5 @@ public class GitCommitAddedEvent implements Serializable {
     private long repoId;
     private String url;
     private String commit_sha1;
-    private Date commitCreationDate;
+    private LocalDateTime commitCreationDate;
 }

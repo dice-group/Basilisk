@@ -1,8 +1,13 @@
 package basilisk.jobsManagingService.domain;
 
+import lombok.Getter;
+import lombok.experimental.SuperBuilder;
+
 /**
  * @author Fakhr Shaheen
  */
+@SuperBuilder
+@Getter
 public class TripleStore extends BaseEntity{
 
     private String name;

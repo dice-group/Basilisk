@@ -13,6 +13,7 @@ import java.util.List;
 
 @SuperBuilder
 @NoArgsConstructor
+@Getter
 public abstract class BenchmarkJob extends BaseEntity {
 
     private List<DataSetConfig> dataSetConfigs;

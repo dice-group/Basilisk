@@ -40,6 +40,29 @@ public class BenchmarkingJobsServiceImpl implements BenchmarkingJobsService{
     @Override
     public void generateBenchmarkingJobs(GitCommitAddedEvent gitCommitAddedEvent) {
 
+
+        List<GitBenchmarkJob> jobs=generateGitBenchmarkingJobsConfigs(gitCommitAddedEvent);
+        // ToDo save in database
+        // ToDo create and event and send it to the queue
+        // ToDo test it
+        jobs.stream().forEach(job->
+        {
+            jobsRepository.save(job);
+            BenchmarkJobCreatedEvent benchmarkJobCreatedEvent=BenchmarkJobCreatedEvent.builder()
+                    .benchmarkJob(job)
+                    .createdDate(LocalDate.now())
+                    .build();
+            messageSender.send(benchmarkJobCreatedEvent);
+        });
+    }
+
+    @Override
+    public void generateBenchmarkingJobs(DockerImageCreatedEvent dockerImageCreatedEvent) {
+        //ToDo
+    }
+
+    private List<GitBenchmarkJob> generateGitBenchmarkingJobsConfigs(GitCommitAddedEvent gitCommitAddedEvent)
+    {
         List<GitBenchmarkJob> jobs=new ArrayList<>();
         //get all active query and dataset configs
         List<QueryConfig> activeQueryConfigs=benchmarkConfigurationService.getAllActiveBenchmarkQueryConfigs();
@@ -68,23 +91,7 @@ public class BenchmarkingJobsServiceImpl implements BenchmarkingJobsService{
             jobs.add(benchmarkJob);
         });
 
-        // ToDo save in database
-        // ToDo create and event and send it to the queue
-        // ToDo test it
-        jobs.stream().forEach(job->
-        {
-            jobsRepository.save(job);
-            BenchmarkJobCreatedEvent benchmarkJobCreatedEvent=BenchmarkJobCreatedEvent.builder()
-                    .benchmarkJob(job)
-                    .createdDate(LocalDate.now())
-                    .build();
-            messageSender.send(benchmarkJobCreatedEvent);
-        });
-    }
-
-    @Override
-    public void generateBenchmarkingJobs(DockerImageCreatedEvent dockerImageCreatedEvent) {
-        //ToDo
+        return jobs;
     }
 
 }

@@ -1,19 +1,15 @@
 package basilisk.jobsManagingService.services.benchmarking;
 
-import basilisk.jobsManagingService.domain.DockerJobConfig;
 import basilisk.jobsManagingService.domain.GitJobConfig;
 import basilisk.jobsManagingService.domain.TripleStore;
-import basilisk.jobsManagingService.domain.benchmarking.BenchmarkJob;
-import basilisk.jobsManagingService.domain.benchmarking.DataSetConfig;
-import basilisk.jobsManagingService.domain.benchmarking.GitBenchmarkJob;
-import basilisk.jobsManagingService.domain.benchmarking.QueryConfig;
+import basilisk.jobsManagingService.domain.benchmarking.*;
 import basilisk.jobsManagingService.events.DockerImageCreatedEvent;
 import basilisk.jobsManagingService.events.GitCommitAddedEvent;
-import basilisk.jobsManagingService.repositories.TripleStoreRepository;
 import basilisk.jobsManagingService.services.TripleStoreService;
 import basilisk.jobsManagingService.web.messaging.MessageSender;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,12 +31,12 @@ public class BenchmarkingJobsServiceImpl implements BenchmarkingJobsService{
     }
 
     @Override
-    public BenchmarkJob generateGitBenchmarkingJob(GitCommitAddedEvent gitCommitAddedEvent) {
+    public List<GitBenchmarkJob> generateGitBenchmarkingJob(GitCommitAddedEvent gitCommitAddedEvent) {
 
+        List<GitBenchmarkJob> jobs=new ArrayList<>();
         //get all active query and dataset configs
         List<QueryConfig> activeQueryConfigs=benchmarkConfigurationService.getAllActiveBenchmarkQueryConfigs();
         List<DataSetConfig> dataSetConfigs=benchmarkConfigurationService.getAllActiveBenchmarkDataSetConfigs();
-
         GitJobConfig gitJobConfig=GitJobConfig.builder()
                 .commit_sha1(gitCommitAddedEvent.getCommit_sha1())
                 .url(gitCommitAddedEvent.getUrl())
@@ -53,18 +49,22 @@ public class BenchmarkingJobsServiceImpl implements BenchmarkingJobsService{
         {
             //ToDo
         }
+        dataSetConfigs.stream().forEach(dataset ->
+        {
+            GitBenchmarkJob benchmarkJob=GitBenchmarkJob.builder()
+                    .gitJobConfig(gitJobConfig)
+                    .queryConfigs(activeQueryConfigs)
+                    .dataSetConfig(dataset)
+                    .tripleStore(tripleStore.get())
+                    .build();
+            jobs.add(benchmarkJob);
+        });
 
-        GitBenchmarkJob benchmarkJob=GitBenchmarkJob.builder()
-                .gitJobConfig(gitJobConfig)
-                .queryConfigs(activeQueryConfigs)
-                .dataSetConfigs(dataSetConfigs)
-                .tripleStore(tripleStore.get())
-                .build();
-        return benchmarkJob;
+        return jobs;
     }
 
     @Override
-    public BenchmarkJob generateDockerBenchmarkingJob(DockerImageCreatedEvent dockerImageCreatedEvent) {
+    public List<DockerBenchmarkJob> generateDockerBenchmarkingJob(DockerImageCreatedEvent dockerImageCreatedEvent) {
 
         return null;
     }

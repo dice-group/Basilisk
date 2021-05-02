@@ -1,8 +1,12 @@
 package basilisk.jobsManagingService.services.benchmarking;
 
 import basilisk.jobsManagingService.domain.benchmarking.BenchmarkJob;
+import basilisk.jobsManagingService.domain.benchmarking.DockerBenchmarkJob;
+import basilisk.jobsManagingService.domain.benchmarking.GitBenchmarkJob;
 import basilisk.jobsManagingService.events.DockerImageCreatedEvent;
 import basilisk.jobsManagingService.events.GitCommitAddedEvent;
+
+import java.util.List;
 
 /**
  * @author Fakhr Shaheen
@@ -10,6 +14,11 @@ import basilisk.jobsManagingService.events.GitCommitAddedEvent;
 
 public interface BenchmarkingJobsService {
 
-    public BenchmarkJob generateGitBenchmarkingJob(GitCommitAddedEvent gitCommitAddedEvent);
-    public BenchmarkJob generateDockerBenchmarkingJob(DockerImageCreatedEvent dockerImageCreatedEvent);
+    /**
+     *
+     * @param gitCommitAddedEvent
+     * @return
+     */
+    public List<GitBenchmarkJob> generateGitBenchmarkingJob(GitCommitAddedEvent gitCommitAddedEvent);
+    public List<DockerBenchmarkJob> generateDockerBenchmarkingJob(DockerImageCreatedEvent dockerImageCreatedEvent);
 }

@@ -16,7 +16,7 @@ import java.util.List;
 @Getter
 public abstract class BenchmarkJob extends BaseEntity {
 
-    private List<DataSetConfig> dataSetConfigs;
+    private DataSetConfig dataSetConfig;
     private List<QueryConfig> queryConfigs;
     private TripleStore tripleStore;
 

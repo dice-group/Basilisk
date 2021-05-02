@@ -76,12 +76,15 @@ class BenchmarkingJobsServiceImplTest {
         given(benchmarkConfigurationService.getAllActiveBenchmarkQueryConfigs())
                 .willReturn(List.of(queryConfig));
 
-        String datasetName="dataset1";
-        String datasetUrl="dataset1Url";
-        DataSetConfig dataSetConfig=new DataSetConfig(datasetName,datasetUrl);
+        String dataset1Name="dataset1";
+        String dataset1Url="dataset1Url";
+        DataSetConfig dataSetConfig1=new DataSetConfig(dataset1Name,dataset1Url);
+        String dataset2Name="dataset2";
+        String dataset2Url="dataset2Url";
+        DataSetConfig dataSetConfig2=new DataSetConfig(dataset2Name,dataset2Url);
 
         given(benchmarkConfigurationService.getAllActiveBenchmarkDataSetConfigs())
-                .willReturn(List.of(dataSetConfig));
+                .willReturn(List.of(dataSetConfig1,dataSetConfig2));
 
         given(tripleStoreService.getTripleStoreByGitRepoId(1l))
                 .willReturn(Optional.of(tripleStore));
@@ -89,19 +92,23 @@ class BenchmarkingJobsServiceImplTest {
 
         //when
 
-         GitBenchmarkJob benchmarkJob= (GitBenchmarkJob) benchmarkingJobsService.generateGitBenchmarkingJob(gitCommitAddedEvent);
+         List<GitBenchmarkJob> Jobs= benchmarkingJobsService.generateGitBenchmarkingJob(gitCommitAddedEvent);
 
         //then
-        assertThat(benchmarkJob.getDataSetConfigs()).isEqualTo(List.of(dataSetConfig));
-        assertThat(benchmarkJob.getQueryConfigs()).isEqualTo(List.of(queryConfig));
-        GitJobConfig gitJobConfig=benchmarkJob.getGitJobConfig();
-        assertThat(gitJobConfig.getCommit_sha1()).isEqualTo("8bde8f3ca718ebad91893a958a2a308ff0e8286s");
-        assertThat(gitJobConfig.getUrl()).isEqualTo("https://test.com");
-        assertThat(gitJobConfig.getCommitCreationDate()).isEqualTo(LocalDateTime.of(2015, Month.FEBRUARY, 20, 06, 30));
-        TripleStore foundedTripleStore=benchmarkJob.getTripleStore();
-        assertThat(foundedTripleStore.getName()).isEqualTo(tripleStore.getName());
-        assertThat(foundedTripleStore.getEndpoint()).isEqualTo(tripleStore.getEndpoint());
-        assertThat(foundedTripleStore.isRequiresAuthentication()).isEqualTo(tripleStore.isRequiresAuthentication());
+        Jobs.stream().forEach( job->
+        {
+            assertThat(job.getDataSetConfig()).isIn(dataSetConfig1,dataSetConfig2);
+            assertThat(job.getQueryConfigs()).isEqualTo(List.of(queryConfig));
+            GitJobConfig gitJobConfig=job.getGitJobConfig();
+            assertThat(gitJobConfig.getCommit_sha1()).isEqualTo("8bde8f3ca718ebad91893a958a2a308ff0e8286s");
+            assertThat(gitJobConfig.getUrl()).isEqualTo("https://test.com");
+            assertThat(gitJobConfig.getCommitCreationDate()).isEqualTo(LocalDateTime.of(2015, Month.FEBRUARY, 20, 06, 30));
+            TripleStore foundedTripleStore=job.getTripleStore();
+            assertThat(foundedTripleStore.getName()).isEqualTo(tripleStore.getName());
+            assertThat(foundedTripleStore.getEndpoint()).isEqualTo(tripleStore.getEndpoint());
+            assertThat(foundedTripleStore.isRequiresAuthentication()).isEqualTo(tripleStore.isRequiresAuthentication());
+        });
+
 
 
 

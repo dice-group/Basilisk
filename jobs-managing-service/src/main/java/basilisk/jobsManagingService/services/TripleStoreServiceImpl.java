@@ -2,7 +2,7 @@ package basilisk.jobsManagingService.services;
 
 import basilisk.jobsManagingService.domain.TripleStore;
 import basilisk.jobsManagingService.repositories.TripleStoreRepository;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,7 +10,7 @@ import java.util.Optional;
 /**
  * @author Fakhr Shaheen
  */
-@Component
+@Service
 public class TripleStoreServiceImpl implements TripleStoreService{
 
     private TripleStoreRepository tripleStoreRepository;

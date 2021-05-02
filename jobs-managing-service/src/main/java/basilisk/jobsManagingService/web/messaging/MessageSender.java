@@ -9,6 +9,7 @@ import basilisk.jobsManagingService.events.BenchmarkJob.BenchmarkJobCreatedEvent
  */
 public interface MessageSender {
 
+
     public void send(BenchmarkJobCreatedEvent event);
     public void send(BenchmarkJobAbortCommand command);
 }

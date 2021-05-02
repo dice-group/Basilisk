@@ -29,7 +29,7 @@ public class RabbitMqMessageReceiver implements MessageReceiver, RabbitListenerC
     @Override
     @RabbitListener(queues = "${hooks.rabbitmq.docker.ImagesQueue}")
     public void receiveDockerImageEvent(DockerImageCreatedEvent dockerImageCreatedEvent) {
-        benchmarkingJobsService.generateDockerBenchmarkingJob(dockerImageCreatedEvent);
+        benchmarkingJobsService.generateBenchmarkingJobs(dockerImageCreatedEvent);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class RabbitMqMessageReceiver implements MessageReceiver, RabbitListenerC
     @Override
     @RabbitListener(queues = "${hooks.rabbitmq.git.CommitsQueue}")
     public void receiveGitCommitEvent(GitCommitAddedEvent gitCommitAddedEvent) {
-        benchmarkingJobsService.generateGitBenchmarkingJob(gitCommitAddedEvent);
+        benchmarkingJobsService.generateBenchmarkingJobs(gitCommitAddedEvent);
     }
 
     @Override

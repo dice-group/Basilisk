@@ -19,5 +19,6 @@ public abstract class BenchmarkJob extends BaseEntity {
     private DataSetConfig dataSetConfig;
     private List<QueryConfig> queryConfigs;
     private TripleStore tripleStore;
+    private JobStatus status;
 
 }

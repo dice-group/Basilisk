@@ -11,6 +11,7 @@ import java.util.List;
  */
 public interface BenchmarkConfigurationService {
 
+
     DataSetConfig getBenchmarkDataSetConfig(Long id);
     QueryConfig getBenchmarkQueryConfig(Long id);
 

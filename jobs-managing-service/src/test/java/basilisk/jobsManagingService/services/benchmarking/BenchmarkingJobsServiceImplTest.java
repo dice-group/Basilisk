@@ -4,8 +4,10 @@ import basilisk.jobsManagingService.domain.GitJobConfig;
 import basilisk.jobsManagingService.domain.TripleStore;
 import basilisk.jobsManagingService.domain.benchmarking.DataSetConfig;
 import basilisk.jobsManagingService.domain.benchmarking.GitBenchmarkJob;
+import basilisk.jobsManagingService.domain.benchmarking.JobStatus;
 import basilisk.jobsManagingService.domain.benchmarking.QueryConfig;
 import basilisk.jobsManagingService.events.GitCommitAddedEvent;
+import basilisk.jobsManagingService.repositories.benchmarking.JobsRepository;
 import basilisk.jobsManagingService.services.TripleStoreService;
 import basilisk.jobsManagingService.web.messaging.MessageSender;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,6 +27,8 @@ import java.util.Optional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 /**
  * @author Fakhr Shaheen
@@ -44,11 +48,14 @@ class BenchmarkingJobsServiceImplTest {
     @Mock
     private MessageSender messageSender;
 
+    @Mock
+    private JobsRepository jobsRepository;
+
     @BeforeEach
     void setUp()
     {
         MockitoAnnotations.openMocks(this);
-        benchmarkingJobsService=new BenchmarkingJobsServiceImpl(benchmarkConfigurationService,tripleStoreService,messageSender);
+        benchmarkingJobsService=new BenchmarkingJobsServiceImpl(benchmarkConfigurationService,tripleStoreService,messageSender,jobsRepository);
     }
 
     @Test
@@ -56,11 +63,18 @@ class BenchmarkingJobsServiceImplTest {
 
         //given
 
+
         GitCommitAddedEvent gitCommitAddedEvent=GitCommitAddedEvent.builder()
                 .url("https://test.com")
                 .commit_sha1("8bde8f3ca718ebad91893a958a2a308ff0e8286s")
                 .commitCreationDate(LocalDateTime.of(2015, Month.FEBRUARY, 20, 06, 30))
                 .repoId(1)
+                .build();
+
+        GitJobConfig gitJobConfig=GitJobConfig.builder()
+                .commit_sha1(gitCommitAddedEvent.getCommit_sha1())
+                .url(gitCommitAddedEvent.getUrl())
+                .commitCreationDate(gitCommitAddedEvent.getCommitCreationDate())
                 .build();
 
         TripleStore tripleStore=TripleStore.builder()
@@ -76,12 +90,21 @@ class BenchmarkingJobsServiceImplTest {
         given(benchmarkConfigurationService.getAllActiveBenchmarkQueryConfigs())
                 .willReturn(List.of(queryConfig));
 
+
         String dataset1Name="dataset1";
         String dataset1Url="dataset1Url";
         DataSetConfig dataSetConfig1=new DataSetConfig(dataset1Name,dataset1Url);
         String dataset2Name="dataset2";
         String dataset2Url="dataset2Url";
         DataSetConfig dataSetConfig2=new DataSetConfig(dataset2Name,dataset2Url);
+
+        GitBenchmarkJob benchmarkJob=GitBenchmarkJob.builder()
+                .gitJobConfig(gitJobConfig)
+                .queryConfigs(List.of(queryConfig))
+                .status(JobStatus.CREATED)
+                .dataSetConfig(dataSetConfig1)
+                .tripleStore(tripleStore)
+                .build();
 
         given(benchmarkConfigurationService.getAllActiveBenchmarkDataSetConfigs())
                 .willReturn(List.of(dataSetConfig1,dataSetConfig2));
@@ -92,10 +115,14 @@ class BenchmarkingJobsServiceImplTest {
 
         //when
 
-         List<GitBenchmarkJob> Jobs= benchmarkingJobsService.generateGitBenchmarkingJob(gitCommitAddedEvent);
+         benchmarkingJobsService.generateBenchmarkingJobs(gitCommitAddedEvent);
 
+        verify(jobsRepository, times(1)).save(benchmarkJob);
+
+
+        //ToDo refactor
         //then
-        Jobs.stream().forEach( job->
+        /*Jobs.stream().forEach( job->
         {
             assertThat(job.getDataSetConfig()).isIn(dataSetConfig1,dataSetConfig2);
             assertThat(job.getQueryConfigs()).isEqualTo(List.of(queryConfig));
@@ -107,7 +134,7 @@ class BenchmarkingJobsServiceImplTest {
             assertThat(foundedTripleStore.getName()).isEqualTo(tripleStore.getName());
             assertThat(foundedTripleStore.getEndpoint()).isEqualTo(tripleStore.getEndpoint());
             assertThat(foundedTripleStore.isRequiresAuthentication()).isEqualTo(tripleStore.isRequiresAuthentication());
-        });
+        });*/
 
 
 
@@ -115,4 +142,5 @@ class BenchmarkingJobsServiceImplTest {
 
 
     }
+
 }

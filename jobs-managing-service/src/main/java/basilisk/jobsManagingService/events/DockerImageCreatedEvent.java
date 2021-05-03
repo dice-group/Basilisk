@@ -3,6 +3,7 @@ package basilisk.jobsManagingService.events;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * @author Fakhr Shaheen
@@ -18,5 +19,6 @@ public class DockerImageCreatedEvent implements Serializable {
     private long imageId;
     private long repoId;
     private String digest;
+    private LocalDateTime imageCreationDate;
 
 }

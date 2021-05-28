@@ -14,6 +14,7 @@ import java.util.List;
 @SuperBuilder
 @NoArgsConstructor
 @Getter
+@Setter
 public abstract class BenchmarkJob extends BaseEntity {
 
     private DataSetConfig dataSetConfig;

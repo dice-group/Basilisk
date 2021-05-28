@@ -4,6 +4,7 @@ import basilisk.jobsManagingService.domain.DockerJobConfig;
 import basilisk.jobsManagingService.domain.GitJobConfig;
 import basilisk.jobsManagingService.domain.TripleStore;
 import basilisk.jobsManagingService.domain.benchmarking.*;
+import basilisk.jobsManagingService.events.BenchmarkJob.BenchmarkJobAbortCommand;
 import basilisk.jobsManagingService.events.BenchmarkJob.BenchmarkJobCreatedEvent;
 import basilisk.jobsManagingService.events.DockerImageCreatedEvent;
 import basilisk.jobsManagingService.events.GitCommitAddedEvent;
@@ -42,10 +43,11 @@ public class BenchmarkingJobsServiceImpl implements BenchmarkingJobsService{
     public void generateBenchmarkingJobs(GitCommitAddedEvent gitCommitAddedEvent) {
 
         List<GitBenchmarkJob> jobs=generateGitBenchmarkingJobsConfigs(gitCommitAddedEvent);
-        // ToDo test it
         jobs.stream().forEach(job->
         {
+            // store created jon in database
             jobsRepository.save(job);
+            // send created job to message queue
             BenchmarkJobCreatedEvent benchmarkJobCreatedEvent=BenchmarkJobCreatedEvent.builder()
                     .benchmarkJob(job)
                     .createdDate(LocalDate.now())
@@ -60,7 +62,10 @@ public class BenchmarkingJobsServiceImpl implements BenchmarkingJobsService{
         List<DockerBenchmarkJob> jobs=generateDockerBenchmarkingJobsConfigs(dockerImageCreatedEvent);
         jobs.stream().forEach(job->
         {
+            // store the created job in the database
             jobsRepository.save(job);
+
+            // send created job to the message queue
             BenchmarkJobCreatedEvent benchmarkJobCreatedEvent=BenchmarkJobCreatedEvent.builder()
                     .benchmarkJob(job)
                     .createdDate(LocalDate.now())
@@ -69,8 +74,94 @@ public class BenchmarkingJobsServiceImpl implements BenchmarkingJobsService{
         });
     }
 
+    @Override
+    public void setJobStatusAsStarted(long jobId) {
+        Optional<BenchmarkJob> job= jobsRepository.findById(jobId);
+        if(job.isPresent())
+        {
+            BenchmarkJob benchmarkJob=job.get();
+            benchmarkJob.setStatus(JobStatus.STARTED);
+            jobsRepository.save(benchmarkJob);
 
+        }
+        else
+        {
+            //ToDo log
+        }
 
+    }
+
+    @Override
+    public void setJobStatusAsFinished(long jobId) {
+        Optional<BenchmarkJob> job= jobsRepository.findById(jobId);
+        if(job.isPresent())
+        {
+            BenchmarkJob benchmarkJob=job.get();
+            benchmarkJob.setStatus(JobStatus.FINISHED);
+            jobsRepository.save(benchmarkJob);
+
+        }
+        else
+        {
+            //ToDo log
+        }
+    }
+
+    @Override
+    public void setJobStatusAsAborted(long jobId) {
+        Optional<BenchmarkJob> job= jobsRepository.findById(jobId);
+        if(job.isPresent())
+        {
+            BenchmarkJob benchmarkJob=job.get();
+            benchmarkJob.setStatus(JobStatus.ABORTED);
+            jobsRepository.save(benchmarkJob);
+
+        }
+        else
+        {
+            //ToDo log
+        }
+    }
+
+    @Override
+    public void setJobStatusAsFailed(long jobId) {
+        Optional<BenchmarkJob> job= jobsRepository.findById(jobId);
+        if(job.isPresent())
+        {
+            BenchmarkJob benchmarkJob=job.get();
+            benchmarkJob.setStatus(JobStatus.FAILED);
+            jobsRepository.save(benchmarkJob);
+
+        }
+        else
+        {
+            //ToDo log
+        }
+    }
+
+    @Override
+    public void abortJob(long jobId)
+    {
+        Optional<BenchmarkJob> job= jobsRepository.findById(jobId);
+        if(job.isPresent())
+        {
+            BenchmarkJob benchmarkJob=job.get();
+            benchmarkJob.setStatus(JobStatus.ABORTING);
+            jobsRepository.save(benchmarkJob);
+            BenchmarkJobAbortCommand benchmarkJobAbortCommand=new BenchmarkJobAbortCommand(jobId);
+            messageSender.send(benchmarkJobAbortCommand);
+        }
+        else
+        {
+            //ToDo log
+        }
+    }
+
+    /**
+     * Create a git becnhmarking job for each dataset
+     * @param gitCommitAddedEvent
+     * @return Created jobs
+     */
     private List<GitBenchmarkJob> generateGitBenchmarkingJobsConfigs(GitCommitAddedEvent gitCommitAddedEvent)
     {
         List<GitBenchmarkJob> jobs=new ArrayList<>();
@@ -104,6 +195,11 @@ public class BenchmarkingJobsServiceImpl implements BenchmarkingJobsService{
         return jobs;
     }
 
+    /**
+     * Create a docker becnhmarking job for each dataset
+     * @param dockerImageCreatedEvent
+     * @return Created jobs
+     */
     private List<DockerBenchmarkJob> generateDockerBenchmarkingJobsConfigs(DockerImageCreatedEvent dockerImageCreatedEvent)
     {
         List<DockerBenchmarkJob> jobs=new ArrayList<>();

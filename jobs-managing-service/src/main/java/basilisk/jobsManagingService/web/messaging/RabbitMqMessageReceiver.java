@@ -1,6 +1,7 @@
 package basilisk.jobsManagingService.web.messaging;
 
 import basilisk.jobsManagingService.events.*;
+import basilisk.jobsManagingService.events.BenchmarkJob.*;
 import basilisk.jobsManagingService.services.benchmarking.BenchmarkingJobsService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.annotation.RabbitListenerConfigurer;
@@ -55,5 +56,32 @@ public class RabbitMqMessageReceiver implements MessageReceiver, RabbitListenerC
     public void receiveGitRepoEvent(GitRepoAddedEvent gitRepoAddedEvent) {
         System.out.println();
 
+    }
+
+    @Override
+    public void receive(BenchmarkJobStartedEvent benchmarkJobStartedEvent) {
+        benchmarkingJobsService.setJobStatusAsStarted(benchmarkJobStartedEvent.getJobId());
+    }
+
+    @Override
+    public void receive(BenchmarkJobAbortedEvent benchmarkJobAbortedEvent) {
+        benchmarkingJobsService.setJobStatusAsAborted(benchmarkJobAbortedEvent.getJobId());
+    }
+
+
+
+    @Override
+    public void receive(BenchmarkJobFinishedEvent benchmarkJobFinishedEvent) {
+        benchmarkingJobsService.setJobStatusAsFinished(benchmarkJobFinishedEvent.getJobId());
+    }
+
+    @Override
+    public void receive(BenchmarkJobFailedEvent benchmarkJobFailedEvent) {
+        benchmarkingJobsService.setJobStatusAsFailed(benchmarkJobFailedEvent.getJobId());
+    }
+
+    @Override
+    public void receive(BenchmarkJobAbortCommand benchmarkJobAbortCommand) {
+        benchmarkingJobsService.abortJob(benchmarkJobAbortCommand.getJobId());
     }
 }

@@ -59,11 +59,13 @@ public class RabbitMqMessageReceiver implements MessageReceiver, RabbitListenerC
     }
 
     @Override
+    @RabbitListener(queues = "${jobs.benchmark.rabbitmq.startedEventQueue}")
     public void receive(BenchmarkJobStartedEvent benchmarkJobStartedEvent) {
         benchmarkingJobsService.setJobStatusAsStarted(benchmarkJobStartedEvent.getJobId());
     }
 
     @Override
+    @RabbitListener(queues = "${jobs.benchmark.rabbitmq.abortedEventQueue}")
     public void receive(BenchmarkJobAbortedEvent benchmarkJobAbortedEvent) {
         benchmarkingJobsService.setJobStatusAsAborted(benchmarkJobAbortedEvent.getJobId());
     }
@@ -71,16 +73,19 @@ public class RabbitMqMessageReceiver implements MessageReceiver, RabbitListenerC
 
 
     @Override
+    @RabbitListener(queues = "${jobs.benchmark.rabbitmq.finishedEventQueue}")
     public void receive(BenchmarkJobFinishedEvent benchmarkJobFinishedEvent) {
         benchmarkingJobsService.setJobStatusAsFinished(benchmarkJobFinishedEvent.getJobId());
     }
 
     @Override
+    @RabbitListener(queues = "${jobs.benchmark.rabbitmq.failedEventQueue}")
     public void receive(BenchmarkJobFailedEvent benchmarkJobFailedEvent) {
         benchmarkingJobsService.setJobStatusAsFailed(benchmarkJobFailedEvent.getJobId());
     }
 
     @Override
+    @RabbitListener(queues = "${jobs.benchmark.rabbitmq.abortCommandQueue}")
     public void receive(BenchmarkJobAbortCommand benchmarkJobAbortCommand) {
         benchmarkingJobsService.abortJob(benchmarkJobAbortCommand.getJobId());
     }

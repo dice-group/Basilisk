@@ -2,7 +2,7 @@ package basilisk.benchmarkService.web.messaging;
 
 import basilisk.benchmarkService.events.BenchmarkJobAbortCommand;
 import basilisk.benchmarkService.events.BenchmarkJobCreatedEvent;
-import basilisk.benchmarkService.services.BenchamrkingOrganizerService;
+import basilisk.benchmarkService.services.BenchmarkingOrganizerService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.annotation.RabbitListenerConfigurer;
 import org.springframework.amqp.rabbit.listener.RabbitListenerEndpointRegistrar;
@@ -12,10 +12,10 @@ import org.springframework.amqp.rabbit.listener.RabbitListenerEndpointRegistrar;
  */
 public class RabbitMqMessageReceiver implements MessageReceiver, RabbitListenerConfigurer {
 
-    private BenchamrkingOrganizerService benchamrkingOrganizerService;
+    private BenchmarkingOrganizerService benchmarkingOrganizerService;
 
-    public RabbitMqMessageReceiver(BenchamrkingOrganizerService benchamrkingOrganizerService) {
-        this.benchamrkingOrganizerService = benchamrkingOrganizerService;
+    public RabbitMqMessageReceiver(BenchmarkingOrganizerService benchmarkingOrganizerService) {
+        this.benchmarkingOrganizerService = benchmarkingOrganizerService;
     }
 
     @Override
@@ -25,12 +25,12 @@ public class RabbitMqMessageReceiver implements MessageReceiver, RabbitListenerC
     @Override
     @RabbitListener(queues = "${jobs.benchmark.createdEventQueue.}")
     public void receive(BenchmarkJobCreatedEvent event) {
-        benchamrkingOrganizerService.startBenchmark(event.getBenchmarkJob());
+        benchmarkingOrganizerService.startBenchmark(event.getBenchmarkJob());
     }
 
     @Override
     @RabbitListener(queues = "${jobs.benchmark.rabbitmq.abortCommandQueue}")
     public void receive(BenchmarkJobAbortCommand command) {
-        benchamrkingOrganizerService.abortBenchmark(command.getJobId());
+        benchmarkingOrganizerService.abortBenchmark(command.getJobId());
     }
 }

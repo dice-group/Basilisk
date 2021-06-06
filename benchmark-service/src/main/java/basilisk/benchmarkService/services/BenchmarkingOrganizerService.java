@@ -6,7 +6,7 @@ import basilisk.benchmarkService.domain.benchamrking.BenchmarkJob;
 /**
  * @author Fakhr Shaheen
  */
-public interface BenchamrkingOrganizerService {
+public interface BenchmarkingOrganizerService {
 
     void startBenchmark(BenchmarkJob benchmarkJob);
 

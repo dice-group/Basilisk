@@ -6,10 +6,13 @@ import basilisk.benchmarkService.services.BenchmarkingOrganizerService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.annotation.RabbitListenerConfigurer;
 import org.springframework.amqp.rabbit.listener.RabbitListenerEndpointRegistrar;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Fakhr Shaheen
  */
+
+@Component
 public class RabbitMqMessageReceiver implements MessageReceiver, RabbitListenerConfigurer {
 
     private BenchmarkingOrganizerService benchmarkingOrganizerService;

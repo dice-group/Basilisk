@@ -7,5 +7,5 @@ import basilisk.benchmarkService.domain.Iguana.IguanaConfiguration;
  */
 public interface BenchmarkingService {
 
-    public void performBenchmark(IguanaConfiguration iguanaConfiguration);
+    public void performBenchmark(String iguanaFile);
 }

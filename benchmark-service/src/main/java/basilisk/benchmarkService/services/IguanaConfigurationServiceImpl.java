@@ -25,48 +25,58 @@ public class IguanaConfigurationServiceImpl implements IguanaConfigurationServic
 
 
     @Override
-    public IguanaConfiguration createDefaultIguanaConfiguration(IguanaConnection connection, List<Dataset> datasets, List<Storage> storages,String queryFile){
+    public IguanaConfiguration createDefaultIguanaConfiguration(IguanaConnection connection, Dataset dataset, Storage storage,List<String> queryFiles){
 
-        List<IguanaConnection> iguanaConnections=new ArrayList<>();
-        iguanaConnections.add(connection);
         List<String> iguanaMetrics=List.of("QMPH","QPS","NoQPH","AvgQPS","NoQ");
         IguanaConfiguration iguanaConfiguration=IguanaConfiguration.builder()
-                .iguanaTasks(getDefaultIguanaTasks(queryFile))
+                .iguanaTasks(getDefaultIguanaTasks(queryFiles))
                 .iguanaMetrics(iguanaMetrics)
-                .iguanaConnections(iguanaConnections)
-                .datasets(datasets)
-                .storages(storages)
+                .iguanaConnection(connection)
+                .dataset(dataset)
+                .storage(storage)
                 .build();
 
         return iguanaConfiguration;
     }
 
-    private List<IguanaTask> getDefaultIguanaTasks(String queryFile) {
+    @Override
+    public String serializeConfigurationIntoJSON(IguanaConfiguration iguanaConfiguration) {
+        return null;
+    }
+
+    private List<IguanaTask> getDefaultIguanaTasks(List<String> queryFiles) {
 
         int threadsnumber=1;
         int workerTimeOut=180000;
         int restrictionAmount=360000;
         String restrictionType="timeLimit";
 
-        //create the task worker
-        TaskWorker worker=new HttpGetTaskWorkerBuilder(threadsnumber,queryFile)
-                .setTimeOut(workerTimeOut)
-                .build();
-        List<TaskWorker> workers=new ArrayList<>();
+        List<IguanaTask> iguanaTasks = new ArrayList<>();
+
+        queryFiles.stream().forEach( queryFile ->
+                {
+
+
+                        //create the task worker
+                        TaskWorker worker = new HttpGetTaskWorkerBuilder(threadsnumber, queryFile)
+                        .setTimeOut(workerTimeOut)
+                        .build();
+        List<TaskWorker> workers = new ArrayList<>();
         workers.add(worker);
         //create the task handler
-        IguanaTaskQueryHandler queryHandler=new OneLineTextQueryHandlerBuilder().build();
+        IguanaTaskQueryHandler queryHandler = new OneLineTextQueryHandlerBuilder().build();
 
         //create the iguana task
-        IguanaTask iguanaTask=IguanaTask.builder()
+        IguanaTask iguanaTask = IguanaTask.builder()
                 .queryHandler(queryHandler)
                 .workers(workers)
                 .restrictionType(restrictionType)
                 .restrictionAmount(restrictionAmount)
                 .build();
 
-        List<IguanaTask> iguanaTasks=new ArrayList<>();
         iguanaTasks.add(iguanaTask);
+        }
+        );
         return iguanaTasks;
     }
 

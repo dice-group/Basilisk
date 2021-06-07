@@ -17,9 +17,9 @@ import java.util.List;
 @Builder
 public class IguanaConfiguration  {
 
-    private List<IguanaConnection> iguanaConnections;
-    private List<Dataset> datasets;
-    private List<Storage> storages;
+    private IguanaConnection iguanaConnection;
+    private Dataset dataset;
+    private Storage storage;
     private List<IguanaTask> iguanaTasks;
     private List<String> iguanaMetrics;
 }

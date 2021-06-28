@@ -5,11 +5,17 @@ import basilisk.benchmarkService.domain.Iguana.IguanaConfiguration;
 import basilisk.benchmarkService.domain.Iguana.IguanaConnection;
 import basilisk.benchmarkService.domain.TripleStore;
 import basilisk.benchmarkService.domain.benchamrking.BenchmarkJob;
+import basilisk.benchmarkService.domain.benchamrking.QueryConfig;
 import basilisk.benchmarkService.events.BenchmarkJobStartedEvent;
 import basilisk.benchmarkService.exception.MessageSendingExecption;
 import basilisk.benchmarkService.web.messaging.MessageSender;
 import org.springframework.stereotype.Service;
 
+import java.io.*;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
+import java.nio.channels.ReadableByteChannel;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,6 +72,12 @@ public class BenchmarkingOrganizerServiceImpl implements BenchmarkingOrganizerSe
         } catch (MessageSendingExecption messageSendingExecption) {
            //ToDo
         }
+        // check whether dataset is already downloaded, and if not, download it.
+        processFile(dataset.getName(),dataset.getFile());
+
+        // check whether query files are already downloaded, and if not, download them.
+        benchmarkJob.getQueryConfigs().forEach(f->{processFile(f.getName(),f.getUrl());});
+
         // perform the benchmark
         //ToDo should be done in async
         benchmarkingService.performBenchmark(iguanaJsonFile);
@@ -76,4 +88,30 @@ public class BenchmarkingOrganizerServiceImpl implements BenchmarkingOrganizerSe
     public void abortBenchmark(Long jobId) {
 
     }
+
+
+    /**
+     * check whether a file is already downloaded, and if not, download it.
+     * @param filename
+     * @param fileURL
+     */
+    private void processFile(String filename,String fileURL) throws IOException {
+        // check whether the file is already downloaded
+        File datasetFile = new File(filename);
+        boolean downloaded = datasetFile.exists();
+        // if it is not downloaded, download it
+        if(!downloaded)
+        {
+                InputStream in = new URL(fileURL).openStream();
+                ReadableByteChannel readableByteChannel = Channels.newChannel(in);
+                FileOutputStream fileOutputStream = null;
+                fileOutputStream = new FileOutputStream(filename);
+                FileChannel fileChannel = fileOutputStream.getChannel();
+                fileOutputStream.getChannel()
+                        .transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
+
+        }
+    }
+
+
 }

@@ -2,6 +2,7 @@ package basilisk.benchmarkService.domain.Iguana;
 
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
  */
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 public class Dataset {
 
     private String name;

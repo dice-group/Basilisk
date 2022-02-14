@@ -25,9 +25,8 @@ public class ContinuousCheckingController {
     public ResponseEntity<String> start() throws InterruptedException {
         if(continuesCheckingService.isRunning())
             return new ResponseEntity<>("the service is already running.",HttpStatus.OK);
-        else
-        {
-                continuesCheckingService.start();
+        else {
+            continuesCheckingService.start();
             return new ResponseEntity<>("the service has started.",HttpStatus.OK);
         }
     }

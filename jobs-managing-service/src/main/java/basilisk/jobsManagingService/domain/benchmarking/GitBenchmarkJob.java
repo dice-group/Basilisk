@@ -4,6 +4,8 @@ import basilisk.jobsManagingService.domain.GitJobConfig;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import javax.persistence.Entity;
+
 /**
  * @author Fakhr Shaheen
  */
@@ -12,8 +14,9 @@ import lombok.experimental.SuperBuilder;
 
 @Setter
 @Getter
-@NoArgsConstructor
 @SuperBuilder
+@Entity
+@NoArgsConstructor
 public class GitBenchmarkJob extends BenchmarkJob{
 
     private GitJobConfig gitJobConfig;

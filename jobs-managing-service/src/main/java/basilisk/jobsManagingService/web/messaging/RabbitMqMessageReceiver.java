@@ -5,17 +5,18 @@ import basilisk.jobsManagingService.events.BenchmarkJob.*;
 import basilisk.jobsManagingService.services.benchmarking.BenchmarkingJobsService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.annotation.RabbitListenerConfigurer;
+import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.listener.RabbitListenerEndpointRegistrar;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  * @author Fakhr Shaheen
  */
 
-@Component
+@Service
 public class RabbitMqMessageReceiver implements MessageReceiver, RabbitListenerConfigurer {
 
-    private BenchmarkingJobsService benchmarkingJobsService;
+    private final BenchmarkingJobsService benchmarkingJobsService;
 
     public RabbitMqMessageReceiver(BenchmarkingJobsService benchmarkingJobsService) {
         this.benchmarkingJobsService = benchmarkingJobsService;

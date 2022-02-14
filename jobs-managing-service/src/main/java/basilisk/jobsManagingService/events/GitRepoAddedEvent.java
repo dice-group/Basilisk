@@ -15,7 +15,7 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GitRepoAddedEvent  implements Serializable {
+public class GitRepoAddedEvent implements Serializable {
     public enum GitType {
         release,pull_request,branch
 

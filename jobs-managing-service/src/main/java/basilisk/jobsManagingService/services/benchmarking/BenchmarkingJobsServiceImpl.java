@@ -1,5 +1,6 @@
 package basilisk.jobsManagingService.services.benchmarking;
 
+import basilisk.jobsManagingService.core.exception.MessageSendingExecption;
 import basilisk.jobsManagingService.domain.DockerJobConfig;
 import basilisk.jobsManagingService.domain.GitJobConfig;
 import basilisk.jobsManagingService.domain.TripleStore;
@@ -25,10 +26,10 @@ import java.util.Optional;
 @Service
 public class BenchmarkingJobsServiceImpl implements BenchmarkingJobsService{
 
-    private JobsRepository jobsRepository;
-    private BenchmarkConfigurationService benchmarkConfigurationService;
-    private TripleStoreService tripleStoreService;
-    private MessageSender messageSender;
+    private final JobsRepository jobsRepository;
+    private final BenchmarkConfigurationService benchmarkConfigurationService;
+    private final TripleStoreService tripleStoreService;
+    private final MessageSender messageSender;
 
     public BenchmarkingJobsServiceImpl(BenchmarkConfigurationService benchmarkConfigurationService,TripleStoreService tripleStoreService
             , MessageSender messageSender,JobsRepository jobsRepository) {
@@ -43,7 +44,7 @@ public class BenchmarkingJobsServiceImpl implements BenchmarkingJobsService{
     public void generateBenchmarkingJobs(GitCommitAddedEvent gitCommitAddedEvent) {
 
         List<GitBenchmarkJob> jobs=generateGitBenchmarkingJobsConfigs(gitCommitAddedEvent);
-        jobs.stream().forEach(job->
+        jobs.forEach(job->
         {
             // store created jon in database
             jobsRepository.save(job);
@@ -52,7 +53,11 @@ public class BenchmarkingJobsServiceImpl implements BenchmarkingJobsService{
                     .benchmarkJob(job)
                     .createdDate(LocalDate.now())
                     .build();
-            messageSender.send(benchmarkJobCreatedEvent);
+            try {
+                messageSender.send(benchmarkJobCreatedEvent);
+            } catch (MessageSendingExecption e) {
+                e.printStackTrace();
+            }
         });
     }
 
@@ -60,7 +65,7 @@ public class BenchmarkingJobsServiceImpl implements BenchmarkingJobsService{
     public void generateBenchmarkingJobs(DockerImageCreatedEvent dockerImageCreatedEvent) {
 
         List<DockerBenchmarkJob> jobs=generateDockerBenchmarkingJobsConfigs(dockerImageCreatedEvent);
-        jobs.stream().forEach(job->
+        jobs.forEach(job->
         {
             // store the created job in the database
             jobsRepository.save(job);
@@ -70,7 +75,11 @@ public class BenchmarkingJobsServiceImpl implements BenchmarkingJobsService{
                     .benchmarkJob(job)
                     .createdDate(LocalDate.now())
                     .build();
-            messageSender.send(benchmarkJobCreatedEvent);
+            try {
+                messageSender.send(benchmarkJobCreatedEvent);
+            } catch (MessageSendingExecption e) {
+                e.printStackTrace();
+            }
         });
     }
 
@@ -149,7 +158,11 @@ public class BenchmarkingJobsServiceImpl implements BenchmarkingJobsService{
             benchmarkJob.setStatus(JobStatus.ABORTING);
             jobsRepository.save(benchmarkJob);
             BenchmarkJobAbortCommand benchmarkJobAbortCommand=new BenchmarkJobAbortCommand(jobId);
-            messageSender.send(benchmarkJobAbortCommand);
+            try {
+                messageSender.send(benchmarkJobAbortCommand);
+            } catch (MessageSendingExecption e) {
+                e.printStackTrace();
+            }
         }
         else
         {
@@ -180,7 +193,7 @@ public class BenchmarkingJobsServiceImpl implements BenchmarkingJobsService{
         {
             //ToDo
         }
-        dataSetConfigs.stream().forEach(dataset ->
+        dataSetConfigs.forEach(dataset ->
         {
             GitBenchmarkJob benchmarkJob=GitBenchmarkJob.builder()
                     .gitJobConfig(gitJobConfig)
@@ -218,7 +231,7 @@ public class BenchmarkingJobsServiceImpl implements BenchmarkingJobsService{
         {
             //ToDo
         }
-        dataSetConfigs.stream().forEach(dataset ->
+        dataSetConfigs.forEach(dataset ->
         {
             DockerBenchmarkJob benchmarkJob=DockerBenchmarkJob.builder()
                     .dockerJobConfig(dockerJobConfig)

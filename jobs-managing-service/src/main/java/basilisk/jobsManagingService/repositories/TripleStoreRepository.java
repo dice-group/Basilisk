@@ -13,5 +13,5 @@ import java.util.Optional;
 @Repository
 public interface TripleStoreRepository extends CrudRepository<TripleStore,Long> {
 
-    Optional<TripleStore> findTripleStoreByGitRepo_Id(Long gitRepoId);
+    Optional<TripleStore> findTripleStoreByGitRepoId(Long gitRepoId);
 }

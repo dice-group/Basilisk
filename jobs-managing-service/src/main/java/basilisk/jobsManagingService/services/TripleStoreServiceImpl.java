@@ -13,7 +13,7 @@ import java.util.Optional;
 @Service
 public class TripleStoreServiceImpl implements TripleStoreService{
 
-    private TripleStoreRepository tripleStoreRepository;
+    private final TripleStoreRepository tripleStoreRepository;
 
     public TripleStoreServiceImpl(TripleStoreRepository tripleStoreRepository) {
         this.tripleStoreRepository = tripleStoreRepository;
@@ -31,7 +31,7 @@ public class TripleStoreServiceImpl implements TripleStoreService{
 
     @Override
     public Optional<TripleStore> getTripleStoreByGitRepoId(Long id) {
-        return tripleStoreRepository.findTripleStoreByGitRepo_Id(id);
+        return tripleStoreRepository.findTripleStoreByGitRepoId(id);
     }
 
     @Override

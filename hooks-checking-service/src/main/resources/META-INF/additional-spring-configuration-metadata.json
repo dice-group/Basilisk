@@ -1,0 +1,63 @@
+{
+  "properties": [
+    {
+      "name": "hooks.rabbitmq.exchange",
+      "type": "java.lang.String",
+      "description": "Description for hooks.rabbitmq.exchange."
+    },
+    {
+      "name": "hooks.rabbitmq.docker.ImagesQueue",
+      "type": "java.lang.String",
+      "description": "Description for hooks.rabbitmq.docker.ImagesQueue."
+    },
+    {
+      "name": "hooks.rabbitmq.docker.ReposQueue",
+      "type": "java.lang.String",
+      "description": "Description for hooks.rabbitmq.docker.ReposQueue."
+    },
+    {
+      "name": "hooks.rabbitmq.docker.TagsQueue",
+      "type": "java.lang.String",
+      "description": "Description for hooks.rabbitmq.docker.TagsQueue."
+    },
+    {
+      "name": "hooks.rabbitmq.git.ReposQueue",
+      "type": "java.lang.String",
+      "description": "Description for hooks.rabbitmq.git.ReposQueue."
+    },
+    {
+      "name": "hooks.rabbitmq.git.CommitsQueue",
+      "type": "java.lang.String",
+      "description": "Description for hooks.rabbitmq.git.CommitsQueue."
+    },
+    {
+      "name": "hooks.rabbitmq.dockerRoutingkeys.Image",
+      "type": "java.lang.String",
+      "description": "Description for hooks.rabbitmq.dockerRoutingkeys.Image."
+    },
+    {
+      "name": "hooks.rabbitmq.dockerRoutingkeys.Repo",
+      "type": "java.lang.String",
+      "description": "Description for hooks.rabbitmq.dockerRoutingkeys.Repo."
+    },
+    {
+      "name": "hooks.rabbitmq.dockerRoutingkeys.Tag",
+      "type": "java.lang.String",
+      "description": "Description for hooks.rabbitmq.dockerRoutingkeys.Tag."
+    },
+    {
+      "name": "hooks.rabbitmq.gitRoutingkeys.Repo",
+      "type": "java.lang.String",
+      "description": "Description for hooks.rabbitmq.gitRoutingkeys.Repo."
+    },
+    {
+      "name": "hooks.rabbitmq.gitRoutingkeys.Commit",
+      "type": "java.lang.String",
+      "description": "Description for hooks.rabbitmq.gitRoutingkeys.Commit."
+    },
+    {
+      "name": "proxies.docker.apihost",
+      "type": "java.lang.String",
+      "description": "Description for proxies.docker.apihost."
+    }
+  ] }

@@ -2,13 +2,15 @@ package basilisk.hooksCheckingService.services.checkingServices.git;
 
 import basilisk.hooksCheckingService.core.exception.GithubException;
 import basilisk.hooksCheckingService.domain.git.GitRepo;
-import basilisk.hooksCheckingService.web.messaging.MessageSender;
 import basilisk.hooksCheckingService.repositories.GitHookRepository;
 import basilisk.hooksCheckingService.repositories.GitRepoRepository;
 import basilisk.hooksCheckingService.services.checkingServices.CheckingService;
+import basilisk.hooksCheckingService.web.messaging.MessageSender;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -18,6 +20,7 @@ import java.io.IOException;
  */
 public abstract class GitCheckingService implements CheckingService {
 
+    private static final Logger logger = LoggerFactory.getLogger(GitCheckingService.class);
 
     protected final GitHookRepository gitHookRepository;
     protected final GitRepoRepository gitRepoRepository;
@@ -64,9 +67,9 @@ public abstract class GitCheckingService implements CheckingService {
         else
             github =GitHub.connectAnonymously();
 
-        GHRepository repo = github.getUser(gitRepo.getRepoOwner()).getRepository(gitRepo.getRepoName());
+        logger.info("GitHub rate limit: {}", github.getRateLimit());
 
-        return repo;
+        return github.getUser(gitRepo.getRepoOwner()).getRepository(gitRepo.getRepoName());
     }
 
 

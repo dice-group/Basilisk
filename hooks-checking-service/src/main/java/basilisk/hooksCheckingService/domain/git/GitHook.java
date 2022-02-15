@@ -25,6 +25,8 @@ public class GitHook extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "repo_id")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private GitRepo gitRepo;
 
     public Date getCommitCreationDate() {

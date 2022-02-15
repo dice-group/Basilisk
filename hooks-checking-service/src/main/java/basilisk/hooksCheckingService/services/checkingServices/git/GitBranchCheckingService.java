@@ -4,12 +4,12 @@ package basilisk.hooksCheckingService.services.checkingServices.git;
 import basilisk.hooksCheckingService.core.exception.GithubException;
 import basilisk.hooksCheckingService.domain.git.GitBranchRepo;
 import basilisk.hooksCheckingService.domain.git.GitHook;
-import basilisk.hooksCheckingService.domain.git.GitType;
 import basilisk.hooksCheckingService.domain.git.GitRepo;
+import basilisk.hooksCheckingService.domain.git.GitType;
 import basilisk.hooksCheckingService.events.GitCommitAddedEvent;
-import basilisk.hooksCheckingService.web.messaging.MessageSender;
 import basilisk.hooksCheckingService.repositories.GitHookRepository;
 import basilisk.hooksCheckingService.repositories.GitRepoRepository;
+import basilisk.hooksCheckingService.web.messaging.MessageSender;
 import org.kohsuke.github.GHBranch;
 import org.kohsuke.github.GHCommit;
 import org.kohsuke.github.GHRepository;
@@ -62,13 +62,10 @@ public class GitBranchCheckingService extends GitCheckingService {
                 messageSender.send(gitCommitAddedEvent);
 
             }
-        }
-        catch (MessagingException e)
-        {
-            //ToDo
-        }
-        catch (Exception e)
-        {
+        } catch (MessagingException e) {
+            // TODO
+            throw e;
+        } catch (Exception e) {
             throw new GithubException();
         }
 

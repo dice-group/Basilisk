@@ -13,8 +13,8 @@ import java.util.Set;
 @Entity
 @Table(name = "git_repo")
 @DiscriminatorColumn(
-        name="is_branch",
-        discriminatorType =DiscriminatorType.STRING)
+        name = "is_branch",
+        discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue("no")
 
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -26,7 +26,7 @@ public class GitRepo extends BaseEntity {
     private String repoOwner;
     @Column(name = "is_private")
     private boolean isPrivate;
-    @Column(name = "oAuth_token")
+    @Column(name = "o_Auth_token")
     private String OAuthToken;
 
     @Enumerated(value = EnumType.STRING)

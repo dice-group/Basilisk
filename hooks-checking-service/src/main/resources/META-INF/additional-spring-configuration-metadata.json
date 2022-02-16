@@ -59,5 +59,10 @@
       "name": "proxies.docker.apihost",
       "type": "java.lang.String",
       "description": "Description for proxies.docker.apihost."
+    },
+    {
+      "name": "core.timing.timeout",
+      "type": "java.lang.String",
+      "description": "Description for timing strategy timeout."
     }
   ] }

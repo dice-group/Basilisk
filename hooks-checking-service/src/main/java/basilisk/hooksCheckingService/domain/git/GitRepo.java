@@ -27,7 +27,7 @@ public class GitRepo extends BaseEntity {
     @Column(name = "is_private")
     private boolean isPrivate;
     @Column(name = "o_Auth_token")
-    private String OAuthToken;
+    private String oAuthToken;
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "type")
@@ -40,7 +40,7 @@ public class GitRepo extends BaseEntity {
         this.repoName = repoName;
         this.repoOwner = repoOwner;
         this.isPrivate = isPrivate;
-        this.OAuthToken = OAuthToken;
+        this.oAuthToken = OAuthToken;
     }
 
     public GitRepo() {

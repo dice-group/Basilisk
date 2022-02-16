@@ -1,12 +1,16 @@
 package basilisk.hooksCheckingService.web.controllers;
 
+import basilisk.hooksCheckingService.core.Views;
 import basilisk.hooksCheckingService.domain.git.GitBranchRepo;
 import basilisk.hooksCheckingService.domain.git.GitRepo;
 import basilisk.hooksCheckingService.dto.git.GitBranchRepoDto;
 import basilisk.hooksCheckingService.dto.git.GitRepoDto;
 import basilisk.hooksCheckingService.services.HooksServices.GitHooksService;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.google.common.base.Preconditions;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +29,7 @@ public class GitHooksController {
 
     private final GitHooksService gitHooksService;
     private final ModelMapper modelMapper;
+    private final Logger logger = LoggerFactory.getLogger(GitHooksController.class);
 
     public GitHooksController(GitHooksService gitHooksService, ModelMapper modelMapper) {
         this.gitHooksService = gitHooksService;
@@ -33,6 +38,7 @@ public class GitHooksController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
+    @JsonView(Views.Api.class)
     public ResponseEntity<List<GitRepoDto>> getAllGitRepos() {
         List<GitRepoDto> gitRepoDtos = this.gitHooksService.findAllGitRepos()
                 .stream().map(this::convertToDto).collect(Collectors.toList());
@@ -41,6 +47,7 @@ public class GitHooksController {
 
     @GetMapping("/release")
     @ResponseStatus(HttpStatus.OK)
+    @JsonView(Views.Api.class)
     public ResponseEntity<List<GitRepoDto>> getAllGitReleaseRepos() {
         List<GitRepoDto> gitRepoDtos = this.gitHooksService.findAllGitReleaseRepos()
                 .stream().map(this::convertToDto).collect(Collectors.toList());
@@ -59,6 +66,7 @@ public class GitHooksController {
 
     @GetMapping("/pullRequest")
     @ResponseStatus(HttpStatus.OK)
+    @JsonView(Views.Api.class)
     public ResponseEntity<List<GitRepoDto>> getAllGitPullRequestRepos() {
         List<GitRepoDto> gitRepoDtos = this.gitHooksService.findAllGitPullRequestRepos()
                 .stream().map(this::convertToDto).collect(Collectors.toList());
@@ -76,6 +84,7 @@ public class GitHooksController {
 
     @GetMapping("/branch")
     @ResponseStatus(HttpStatus.OK)
+    @JsonView(Views.Api.class)
     public ResponseEntity<List<GitBranchRepoDto>> getAllGitBranchRepos() {
         List<GitBranchRepoDto> gitRepoDtos = this.gitHooksService.findAllGitBranchRepos()
                 .stream().map(this::convertToDto).collect(Collectors.toList());

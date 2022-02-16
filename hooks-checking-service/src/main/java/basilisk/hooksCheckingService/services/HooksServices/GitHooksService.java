@@ -12,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -34,6 +35,14 @@ public class GitHooksService {
         this.messageSender = messageSender;
     }
 
+    public Optional<GitRepo> findGitRepo(long id) {
+        return this.gitRepoRepository.findById(id);
+    }
+
+    public List<GitRepo> findAllGitRepos() {
+        return IteratorUtils.toList(this.gitRepoRepository.findAll().iterator());
+    }
+
     public List<GitRepo> findAllGitReleaseRepos() {
         return IteratorUtils.toList(this.gitRepoRepository.findAllByType(GitType.RELEASE).iterator());
     }
@@ -49,10 +58,10 @@ public class GitHooksService {
                 .collect(Collectors.toList());
     }
 
-    public GitRepo addGitRepo(GitRepo gitRepo, GitType gitType) {
+    private GitRepo addGitRepo(GitRepo gitRepo, GitType gitType) {
         gitRepo.setType(gitType);
         //save it
-        gitRepoRepository.save(gitRepo);
+        this.gitRepoRepository.save(gitRepo);
         // send it as event
         sendGitRepoAddedEvent(gitRepo);
         //return dto
@@ -69,6 +78,10 @@ public class GitHooksService {
 
     public GitBranchRepo addGitRepoForBranch(GitBranchRepo gitBranchRepo) {
         return (GitBranchRepo) addGitRepo(gitBranchRepo, GitType.BRANCH);
+    }
+
+    public void deleteHookForRepo(GitRepo gitRepo) {
+        this.gitRepoRepository.delete(gitRepo);
     }
 
     private void sendGitRepoAddedEvent(GitRepo createdGitRepo) {

@@ -7,12 +7,12 @@ import basilisk.hooksCheckingService.dto.git.GitRepoDto;
 import basilisk.hooksCheckingService.services.HooksServices.GitHooksService;
 import com.google.common.base.Preconditions;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -26,16 +26,22 @@ public class GitHooksController {
     private final GitHooksService gitHooksService;
     private final ModelMapper modelMapper;
 
-    @Autowired
     public GitHooksController(GitHooksService gitHooksService, ModelMapper modelMapper) {
         this.gitHooksService = gitHooksService;
         this.modelMapper = modelMapper;
     }
 
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<GitRepoDto>> getAllGitRepos() {
+        List<GitRepoDto> gitRepoDtos = this.gitHooksService.findAllGitRepos()
+                .stream().map(this::convertToDto).collect(Collectors.toList());
+        return new ResponseEntity<>(gitRepoDtos, HttpStatus.OK);
+    }
 
     @GetMapping("/release")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<GitRepoDto>> getllGitReleaseRepos() {
+    public ResponseEntity<List<GitRepoDto>> getAllGitReleaseRepos() {
         List<GitRepoDto> gitRepoDtos = this.gitHooksService.findAllGitReleaseRepos()
                 .stream().map(this::convertToDto).collect(Collectors.toList());
         return new ResponseEntity<>(gitRepoDtos, HttpStatus.OK);
@@ -49,13 +55,6 @@ public class GitHooksController {
         GitRepo repo = convertToEntity(gitRepoDto);
         GitRepo createdRepo = this.gitHooksService.addGitRepoForRelease(repo);
         return new ResponseEntity<>(convertToDto(createdRepo), HttpStatus.OK);
-    }
-
-    @DeleteMapping(path = "/release")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<GitRepoDto> deleteGitRepoForRelease(@RequestBody GitRepoDto gitRepoDto) {
-        // TODO
-        return null;
     }
 
     @GetMapping("/pullRequest")
@@ -90,6 +89,19 @@ public class GitHooksController {
         Preconditions.checkNotNull(gitBranchRepoDto);
         GitBranchRepo createdRepo = this.gitHooksService.addGitRepoForBranch(convertToEntity(gitBranchRepoDto));
         return new ResponseEntity<>(convertToDto(createdRepo), HttpStatus.OK);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<String> deleteGitRepo(@PathVariable Long id) {
+        Preconditions.checkNotNull(id);
+        Optional<GitRepo> repo = this.gitHooksService.findGitRepo(id);
+        if (repo.isPresent()) {
+            this.gitHooksService.deleteHookForRepo(repo.get());
+            return new ResponseEntity<>("The Git repository has been removed.", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("There is no Git repository with ID " + id, HttpStatus.OK);
+        }
     }
 
     private GitRepoDto convertToDto(GitRepo gitRepo) {

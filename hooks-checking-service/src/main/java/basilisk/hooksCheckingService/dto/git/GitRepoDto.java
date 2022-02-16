@@ -1,5 +1,6 @@
 package basilisk.hooksCheckingService.dto.git;
 
+import basilisk.hooksCheckingService.domain.git.GitType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
@@ -25,5 +26,7 @@ public class GitRepoDto {
     private boolean isPrivate;
     @JsonProperty("oAuth_token")
     private String OAuthToken;
+    @JsonProperty("hook_type")
+    private GitType type;
 
 }

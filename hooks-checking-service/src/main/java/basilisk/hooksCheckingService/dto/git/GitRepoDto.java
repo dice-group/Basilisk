@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 /**
- * @author Fakhr Shaheen
+ * @author Fakhr Shaheen, Fabian Rensing
  */
 
 @Getter
@@ -13,6 +13,9 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class GitRepoDto {
+
+    @JsonProperty("repo_id")
+    private Long id;
 
     @JsonProperty("repo_name")
     private String repoName;

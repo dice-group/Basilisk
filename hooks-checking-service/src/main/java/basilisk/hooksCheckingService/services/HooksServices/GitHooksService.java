@@ -4,120 +4,75 @@ import basilisk.hooksCheckingService.core.exception.MessageSendingExecption;
 import basilisk.hooksCheckingService.domain.git.GitBranchRepo;
 import basilisk.hooksCheckingService.domain.git.GitRepo;
 import basilisk.hooksCheckingService.domain.git.GitType;
-import basilisk.hooksCheckingService.dto.git.GitBranchRepoDto;
-import basilisk.hooksCheckingService.dto.git.GitRepoDto;
 import basilisk.hooksCheckingService.events.GitRepoAddedEvent;
-import basilisk.hooksCheckingService.web.messaging.MessageSender;
 import basilisk.hooksCheckingService.repositories.GitRepoRepository;
+import basilisk.hooksCheckingService.web.messaging.MessageSender;
+import org.apache.commons.collections4.IteratorUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 
 /**
- * @author Fakhr Shaheen
+ * @author Fakhr Shaheen, Fabian Rensing
  */
 
 @Service
 public class GitHooksService {
 
-    private GitRepoRepository gitRepoRepository;
-    private ModelMapper modelMapper;
-    private MessageSender messageSender;
+    private final GitRepoRepository gitRepoRepository;
+    private final ModelMapper modelMapper;
+    private final MessageSender messageSender;
 
 
-    public GitHooksService(GitRepoRepository gitRepoRepository, ModelMapper modelMapper,MessageSender messageSender) {
+    public GitHooksService(GitRepoRepository gitRepoRepository, ModelMapper modelMapper, MessageSender messageSender) {
         this.gitRepoRepository = gitRepoRepository;
-        this.modelMapper=modelMapper;
-        this.messageSender=messageSender;
+        this.modelMapper = modelMapper;
+        this.messageSender = messageSender;
     }
 
-    public List<GitRepoDto> findAllGitReleaseRepos()
-    {
-        var repos=gitRepoRepository.findAllByType(GitType.release);
-        List<GitRepoDto> gitRepoDtos=new ArrayList<>();
-        for(GitRepo repo:repos)
-        {
-            GitRepoDto gitRepoDto=modelMapper.map(repo,GitRepoDto.class);
-            gitRepoDtos.add(gitRepoDto);
-        }
-
-        return gitRepoDtos;
+    public List<GitRepo> findAllGitReleaseRepos() {
+        return IteratorUtils.toList(this.gitRepoRepository.findAllByType(GitType.RELEASE).iterator());
     }
 
-    public List<GitRepoDto> findAllGitPullRequestRepos()
-    {
-        var repos= gitRepoRepository.findAllByType(GitType.pull_request);
-        List<GitRepoDto> gitRepoDtos=new ArrayList<>();
-        for(GitRepo repo:repos)
-        {
-            GitRepoDto gitRepoDto=modelMapper.map(repo,GitRepoDto.class);
-            gitRepoDtos.add(gitRepoDto);
-        }
-        return gitRepoDtos;
+    public List<GitRepo> findAllGitPullRequestRepos() {
+        return IteratorUtils.toList(this.gitRepoRepository.findAllByType(GitType.PULL_REQUEST).iterator());
     }
 
-    public List<GitBranchRepoDto> findAllGitBranchRepos()
-    {
-        var repos= gitRepoRepository.findAllByType(GitType.branch);
-        List<GitBranchRepoDto> gitRepoDtos=new ArrayList<>();
-        for(GitRepo repo:repos)
-        {
-            GitBranchRepoDto gitRepoDto=modelMapper.map(repo,GitBranchRepoDto.class);
-            gitRepoDtos.add(gitRepoDto);
-        }
-        return gitRepoDtos;
+    public List<GitBranchRepo> findAllGitBranchRepos() {
+        return StreamSupport
+                .stream(this.gitRepoRepository.findAllByType(GitType.BRANCH).spliterator(), false)
+                .map(repo -> modelMapper.map(repo, GitBranchRepo.class))
+                .collect(Collectors.toList());
     }
 
-
-    public GitRepoDto addGitRepoForRelease( GitRepoDto gitRepoDto)
-    {
-        GitRepo gitRepo = modelMapper.map(gitRepoDto, GitRepo.class);
-        GitRepo createdGitRepo=gitRepo;
-        createdGitRepo.setType(GitType.release);
+    public GitRepo addGitRepo(GitRepo gitRepo, GitType gitType) {
+        gitRepo.setType(gitType);
         //save it
-        gitRepoRepository.save(createdGitRepo);
+        gitRepoRepository.save(gitRepo);
         // send it as event
-        sendGitRepoAddedEvent(createdGitRepo);
+        sendGitRepoAddedEvent(gitRepo);
         //return dto
-        GitRepoDto createdGitRepoDto = modelMapper.map(createdGitRepo, GitRepoDto.class);
-        return createdGitRepoDto;
+        return gitRepo;
     }
 
-    public GitRepoDto addGitRepoForPullRequest(GitRepoDto gitRepoDto)
-    {
-        GitRepo gitRepo = modelMapper.map(gitRepoDto, GitRepo.class);
-        GitRepo createdGitRepo=gitRepo;
-        createdGitRepo.setType(GitType.pull_request);
-        //save it
-        gitRepoRepository.save(createdGitRepo);
-        // send it as event
-        sendGitRepoAddedEvent(createdGitRepo);
-        //return dto
-        GitRepoDto createdGitRepoDto = modelMapper.map(createdGitRepo, GitRepoDto.class);
-        return createdGitRepoDto;
+    public GitRepo addGitRepoForRelease(GitRepo gitRepo) {
+        return addGitRepo(gitRepo, GitType.RELEASE);
     }
 
-    public GitBranchRepoDto addGitRepoForBranch(GitBranchRepoDto gitBranchRepoPostDto)
-    {
-        GitRepo gitRepo = modelMapper.map(gitBranchRepoPostDto, GitBranchRepo.class);
-        GitRepo createdGitRepo=gitRepo;
-        createdGitRepo.setType(GitType.branch);
-        //save it
-        gitRepoRepository.save(createdGitRepo);
-        // send it as event
-        sendGitRepoAddedEvent(createdGitRepo);
-        // return dto
-        GitBranchRepoDto createdGitRepoDto = modelMapper.map(createdGitRepo, GitBranchRepoDto.class);
-        return createdGitRepoDto;
-
+    public GitRepo addGitRepoForPullRequest(GitRepo gitRepo) {
+        return addGitRepo(gitRepo, GitType.PULL_REQUEST);
     }
 
-    private void sendGitRepoAddedEvent(GitRepo createdGitRepo)
-    {
-        GitRepoAddedEvent gitRepoAddedEvent=modelMapper.map(createdGitRepo, GitRepoAddedEvent.class);
+    public GitBranchRepo addGitRepoForBranch(GitBranchRepo gitBranchRepo) {
+        return (GitBranchRepo) addGitRepo(gitBranchRepo, GitType.BRANCH);
+    }
+
+    private void sendGitRepoAddedEvent(GitRepo createdGitRepo) {
+        GitRepoAddedEvent gitRepoAddedEvent = modelMapper.map(createdGitRepo, GitRepoAddedEvent.class);
         try {
             messageSender.send(gitRepoAddedEvent);
         } catch (MessageSendingExecption messageSendingExecption) {

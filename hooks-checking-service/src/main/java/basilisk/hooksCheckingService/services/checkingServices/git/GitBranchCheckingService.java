@@ -17,6 +17,10 @@ import org.springframework.messaging.MessagingException;
 
 import java.util.Optional;
 
+/**
+ * @author Fabian Rensing
+ */
+
 public class GitBranchCheckingService extends GitCheckingService {
 
     public GitBranchCheckingService(GitRepoRepository gitRepoRepository, GitHookRepository gitHookRepository, MessageSender hookMessageSender) {
@@ -25,7 +29,7 @@ public class GitBranchCheckingService extends GitCheckingService {
 
     @Override
     protected Iterable<GitRepo> getRelatedGitRepos() {
-        return gitRepoRepository.findAllByType(GitType.branch);
+        return gitRepoRepository.findAllByType(GitType.BRANCH);
     }
 
 

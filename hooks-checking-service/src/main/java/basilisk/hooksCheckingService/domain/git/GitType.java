@@ -1,9 +1,8 @@
 package basilisk.hooksCheckingService.domain.git;
 
 /**
- * @author Fakhr Shaheen
+ * @author Fakhr Shaheen, Fabian Rensing
  */
 public enum GitType {
-    release,pull_request,branch
-
+    RELEASE, PULL_REQUEST, BRANCH
 }

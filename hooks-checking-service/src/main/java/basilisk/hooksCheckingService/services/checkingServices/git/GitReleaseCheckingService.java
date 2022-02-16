@@ -2,18 +2,21 @@ package basilisk.hooksCheckingService.services.checkingServices.git;
 
 import basilisk.hooksCheckingService.core.exception.GithubException;
 import basilisk.hooksCheckingService.domain.git.GitHook;
-import basilisk.hooksCheckingService.domain.git.GitType;
 import basilisk.hooksCheckingService.domain.git.GitRepo;
+import basilisk.hooksCheckingService.domain.git.GitType;
 import basilisk.hooksCheckingService.events.GitCommitAddedEvent;
-import basilisk.hooksCheckingService.web.messaging.MessageSender;
 import basilisk.hooksCheckingService.repositories.GitHookRepository;
 import basilisk.hooksCheckingService.repositories.GitRepoRepository;
+import basilisk.hooksCheckingService.web.messaging.MessageSender;
 import org.kohsuke.github.GHCommit;
 import org.kohsuke.github.GHRelease;
 import org.kohsuke.github.GHRepository;
 
-
 import java.util.Optional;
+
+/**
+ * @author Fabian Rensing
+ */
 
 public class GitReleaseCheckingService extends GitCheckingService {
 
@@ -24,7 +27,7 @@ public class GitReleaseCheckingService extends GitCheckingService {
 
     @Override
     protected Iterable<GitRepo> getRelatedGitRepos() {
-        return gitRepoRepository.findAllByType(GitType.release);
+        return gitRepoRepository.findAllByType(GitType.RELEASE);
     }
 
 

@@ -2,55 +2,54 @@ package basilisk.hooksCheckingService.services.HooksServices;
 
 import basilisk.hooksCheckingService.core.exception.MessageSendingExecption;
 import basilisk.hooksCheckingService.domain.docker.DockerRepo;
-import basilisk.hooksCheckingService.dto.docker.DockerRepoDto;
 import basilisk.hooksCheckingService.events.DockerRepoAddedEvent;
 import basilisk.hooksCheckingService.repositories.DockerRepoRepository;
 import basilisk.hooksCheckingService.web.messaging.MessageSender;
+import org.apache.commons.collections4.IteratorUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
+
 import java.util.List;
+import java.util.Optional;
 
 /**
- * @author Fakhr Shaheen
+ * @author Fakhr Shaheen, Fabian Rensing
  */
 @Service
 public class DockerHooksService {
 
-    private DockerRepoRepository dockerRepoRepository;
-    private MessageSender messageSender;
-    private ModelMapper modelMapper;
+    private final DockerRepoRepository dockerRepoRepository;
+    private final MessageSender messageSender;
+    private final ModelMapper modelMapper;
 
-    public DockerHooksService(DockerRepoRepository dockerRepoRepository,ModelMapper modelMapper,MessageSender messageSender) {
+    public DockerHooksService(DockerRepoRepository dockerRepoRepository, ModelMapper modelMapper, MessageSender messageSender) {
         this.dockerRepoRepository = dockerRepoRepository;
-        this.modelMapper=modelMapper;
-        this.messageSender=messageSender;
+        this.modelMapper = modelMapper;
+        this.messageSender = messageSender;
     }
 
-    public List<DockerRepoDto> findAllDockerRepos() {
-        var dockerRepos= dockerRepoRepository.findAll();
-        List<DockerRepoDto> dockerRepoDtos=new ArrayList<>();
-        for(DockerRepo repo:dockerRepos)
-        {
-            DockerRepoDto dockerRepoDto=modelMapper.map(repo,DockerRepoDto.class);
-            dockerRepoDtos.add(dockerRepoDto);
-        }
-        return dockerRepoDtos;
+    public List<DockerRepo> findAllDockerRepos() {
+        return IteratorUtils.toList(this.dockerRepoRepository.findAll().iterator());
     }
 
-    public void addDockerRepo(DockerRepoDto dockerRepoDto)
-    {
-        DockerRepo dockerRepo=modelMapper.map(dockerRepoDto,DockerRepo.class);
+    public Optional<DockerRepo> findDockerRepo(long id) {
+        return this.dockerRepoRepository.findById(id);
+    }
+
+    public DockerRepo addDockerRepo(DockerRepo dockerRepo) {
         //save it
-        dockerRepoRepository.save(dockerRepo);
+        this.dockerRepoRepository.save(dockerRepo);
         // send it as event
-        DockerRepoAddedEvent dockerRepoAddedEvent=modelMapper.map(dockerRepo,DockerRepoAddedEvent.class);
+        DockerRepoAddedEvent dockerRepoAddedEvent = this.modelMapper.map(dockerRepo, DockerRepoAddedEvent.class);
         try {
-            messageSender.send(dockerRepoAddedEvent);
+            this.messageSender.send(dockerRepoAddedEvent);
         } catch (MessageSendingExecption messageSendingExecption) {
             //ToDo log
         }
+        return dockerRepo;
     }
 
-
+    public void deleteHookForRepo(DockerRepo repo) {
+        this.dockerRepoRepository.delete(repo);
+    }
 }

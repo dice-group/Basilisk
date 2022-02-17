@@ -19,5 +19,4 @@ public class DockerRepoAddedEvent  implements Serializable {
     private String repoName;
     private String ownerName;
     private boolean isPrivate;
-    private String OAuthToken;
 }

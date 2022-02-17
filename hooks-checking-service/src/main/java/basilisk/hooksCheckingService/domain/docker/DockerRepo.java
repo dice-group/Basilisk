@@ -20,11 +20,11 @@ import java.util.Set;
 @Table(name = "docker_repo")
 public class DockerRepo extends BaseEntity {
 
-    @Column(name="name")
+    @Column(name = "name")
     private String repoName;
-    @Column(name="owner")
-    private String ownerName;
-    @Column(name="is_private")
+    @Column(name = "owner")
+    private String repoOwner;
+    @Column(name = "is_private")
     private boolean isPrivate;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "dockerRepo")
     private Set<DockerImage> dockerHooks;

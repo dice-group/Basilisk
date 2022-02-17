@@ -8,20 +8,20 @@ import basilisk.hooksCheckingService.domain.docker.DockerTag;
 import basilisk.hooksCheckingService.events.DockerImageCreatedEvent;
 import basilisk.hooksCheckingService.events.DockerTagAddedEvent;
 import basilisk.hooksCheckingService.events.DockerTagUpdatedEvent;
-import basilisk.hooksCheckingService.web.messaging.MessageSender;
 import basilisk.hooksCheckingService.repositories.DockerImageRepository;
 import basilisk.hooksCheckingService.repositories.DockerRepoRepository;
 import basilisk.hooksCheckingService.repositories.DockerTagRepository;
-import basilisk.hooksCheckingService.web.proxies.docker.DockerHubRestProxy;
 import basilisk.hooksCheckingService.services.checkingServices.CheckingService;
+import basilisk.hooksCheckingService.web.messaging.MessageSender;
 import basilisk.hooksCheckingService.web.proxies.docker.DockerApiTag;
+import basilisk.hooksCheckingService.web.proxies.docker.DockerHubRestProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashSet;
 
 
 /**
- * @author Fakhr Shaheen
+ * @author Fakhr Shaheen, Fabian Renisng
  */
 public class DockerhubCheckingService implements CheckingService {
 
@@ -44,46 +44,37 @@ public class DockerhubCheckingService implements CheckingService {
     @Override
     public void performChecking() {
         //get the dockerhub repos
-        Iterable<DockerRepo> dockerRepos = dockerRepoRepository.findAll();
+        Iterable<DockerRepo> dockerRepos = this.dockerRepoRepository.findAll();
         //go through them
         for (DockerRepo dockerRepo : dockerRepos) {
             //do the logic for checking
             try {
                 checkRepo(dockerRepo);
-                System.out.println();
             } catch (DockerhubException e) {
                 //ToDo log
                 System.out.println("not valid  thing");
             }
-            //
         }
     }
 
 
     /**
      * checks for new images and tags in a docker repo.
-     *
-     * @param dockerRepo
-     * @throws DockerhubException
      */
     private void checkRepo(DockerRepo dockerRepo) throws DockerhubException {
 
-        var retrievedTags = dockerHubRestProxy.getTags(dockerRepo.getOwnerName(), dockerRepo.getRepoName());
+        var retrievedTags = this.dockerHubRestProxy.getTags(dockerRepo.getRepoOwner(), dockerRepo.getRepoName());
         for (DockerApiTag apiTag : retrievedTags) {
-
-            DockerImage dockerImage = null;
             try {
 
-                dockerImage = processDockerImage(apiTag, dockerRepo);
+                DockerImage dockerImage = processDockerImage(apiTag, dockerRepo);
                 processDockerTag(apiTag, dockerImage);
             } catch (MessageSendingExecption e) {
 
             } catch (Exception e) {
                 throw new DockerhubException();
             }
-
         }
-
     }
 
 
@@ -110,7 +101,7 @@ public class DockerhubCheckingService implements CheckingService {
             // save the image in the database
             dockerImageRepository.save(dockerImage);
             // send it to the queue
-            DockerImageCreatedEvent imageCreatedEvent= DockerImageCreatedEvent.builder().digest(dockerImage.getDigest()).repoId(dockerRepo.getId()).build();
+            DockerImageCreatedEvent imageCreatedEvent = DockerImageCreatedEvent.builder().digest(dockerImage.getDigest()).repoId(dockerRepo.getId()).build();
             messageSender.send(imageCreatedEvent);
         } else {
             dockerImage = savedDockerImage.get();
@@ -125,7 +116,7 @@ public class DockerhubCheckingService implements CheckingService {
      * @param apiTag
      * @param dockerImage
      */
-    private void processDockerTag(DockerApiTag apiTag, DockerImage dockerImage)  throws MessageSendingExecption{
+    private void processDockerTag(DockerApiTag apiTag, DockerImage dockerImage) throws MessageSendingExecption {
         // check whether the tag exists
         var savedTag = dockerTagRepository.findDockerTagByName(apiTag.getName());
         // If the tag is not stored
@@ -134,10 +125,10 @@ public class DockerhubCheckingService implements CheckingService {
             //Add the tag to the database
             dockerTagRepository.save(new DockerTag(apiTag.getName(), apiTag.getTagLastPushed(), dockerImage));
             // send docker tag added event
-            DockerTagAddedEvent addedEvent=DockerTagAddedEvent.builder()
+            DockerTagAddedEvent addedEvent = DockerTagAddedEvent.builder()
                     .imageId(dockerImage.getId())
-                    .name(savedTag.get().getName())
-                    .lastPushedDate(savedTag.get().getLastPushedDate())
+                    .name(apiTag.getName())
+                    .lastPushedDate(apiTag.getTagLastPushed())
                     .build();
             messageSender.send(addedEvent);
             // if the tag already exists
@@ -151,7 +142,7 @@ public class DockerhubCheckingService implements CheckingService {
                 //save the tag
                 dockerTagRepository.save(savedTag.get());
                 //send an event that the tag has been assigned to another image
-                DockerTagUpdatedEvent updatedEvent=DockerTagUpdatedEvent.builder()
+                DockerTagUpdatedEvent updatedEvent = DockerTagUpdatedEvent.builder()
                         .imageId(dockerImage.getId())
                         .name(savedTag.get().getName())
                         .lastPushedDate(savedTag.get().getLastPushedDate())

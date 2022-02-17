@@ -58,7 +58,6 @@ public class GitReleaseCheckingService extends GitCheckingService {
                         .commit_sha1(gitHook.getCommitSha1())
                         .repoId(gitRepo.getId())
                         .url(gitHook.getCommitUrl())
-                        .commitCreationDate(gitHook.getCommitCreationDate())
                         .build();
                 messageSender.send(gitCommitAddedEvent);
 

@@ -57,11 +57,10 @@ public class GitBranchCheckingService extends GitCheckingService {
 
                 gitHookRepository.save(gitHook);
                 //send git commit added event
-                GitCommitAddedEvent gitCommitAddedEvent=GitCommitAddedEvent.builder()
+                GitCommitAddedEvent gitCommitAddedEvent = GitCommitAddedEvent.builder()
                         .commit_sha1(gitHook.getCommitSha1())
                         .repoId(gitRepo.getId())
                         .url(gitHook.getCommitUrl())
-                        .commitCreationDate(gitHook.getCommitCreationDate())
                         .build();
                 messageSender.send(gitCommitAddedEvent);
 

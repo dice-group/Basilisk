@@ -6,16 +6,16 @@ import basilisk.hooksCheckingService.services.checkingServices.git.GitCheckingSe
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
- * @author Fakhr Shaheen
+ * @author Fakhr Shaheen, Fabian Rensing
  */
 
-@Component
-public class ContinuesCheckingServiceImpl implements ContinuousCheckingService {
+@Service
+public class ContinuousCheckingServiceImpl implements ContinuousCheckingService {
 
-    public ContinuesCheckingServiceImpl(GitCheckingService gitBranchCheckingService
+    public ContinuousCheckingServiceImpl(GitCheckingService gitBranchCheckingService
             , GitCheckingService gitReleaseCheckingService
             , GitCheckingService gitPullRequestCheckingService
             , DockerhubCheckingService dockerhubCheckingService
@@ -24,7 +24,7 @@ public class ContinuesCheckingServiceImpl implements ContinuousCheckingService {
         this.gitBranchCheckingService = gitBranchCheckingService;
         this.gitReleaseCheckingService = gitReleaseCheckingService;
         this.gitPullRequestCheckingService = gitPullRequestCheckingService;
-        this.dockerhubCheckingService=dockerhubCheckingService;
+        this.dockerhubCheckingService = dockerhubCheckingService;
         this.timingStrategy = timingStrategy;
     }
 

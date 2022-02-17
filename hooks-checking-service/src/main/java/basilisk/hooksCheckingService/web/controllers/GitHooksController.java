@@ -111,6 +111,8 @@ public class GitHooksController {
         } else {
             return new ResponseEntity<>("There is no Git repository with ID " + id, HttpStatus.OK);
         }
+
+        // TODO send message?
     }
 
     private GitRepoDto convertToDto(GitRepo gitRepo) {

@@ -184,7 +184,6 @@ public class BenchmarkingJobsServiceImpl implements BenchmarkingJobsService{
         GitJobConfig gitJobConfig=GitJobConfig.builder()
                 .commit_sha1(gitCommitAddedEvent.getCommit_sha1())
                 .url(gitCommitAddedEvent.getUrl())
-                .commitCreationDate(gitCommitAddedEvent.getCommitCreationDate())
                 .build();
 
         // check the corresponding triple store
@@ -199,7 +198,7 @@ public class BenchmarkingJobsServiceImpl implements BenchmarkingJobsService{
                     .gitJobConfig(gitJobConfig)
                     .queryConfigs(activeQueryConfigs)
                     .dataSetConfig(dataset)
-                    .tripleStore(tripleStore.get())
+                    .tripleStore(tripleStore.get()) // TODO!
                     .status(JobStatus.CREATED)
                     .build();
             jobs.add(benchmarkJob);
@@ -237,7 +236,7 @@ public class BenchmarkingJobsServiceImpl implements BenchmarkingJobsService{
                     .dockerJobConfig(dockerJobConfig)
                     .queryConfigs(activeQueryConfigs)
                     .dataSetConfig(dataset)
-                    .tripleStore(tripleStore.get())
+                    .tripleStore(tripleStore.get()) // TODO!
                     .status(JobStatus.CREATED)
                     .build();
             jobs.add(benchmarkJob);

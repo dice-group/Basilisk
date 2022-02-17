@@ -17,8 +17,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class GitRepoAddedEvent implements Serializable {
     public enum GitType {
-        release,pull_request,branch
-
+        RELEASE, PULL_REQUEST, BRANCH
     }
     private Long id;
     private String repoName;

@@ -67,14 +67,12 @@ class BenchmarkingJobsServiceImplTest {
         GitCommitAddedEvent gitCommitAddedEvent=GitCommitAddedEvent.builder()
                 .url("https://test.com")
                 .commit_sha1("8bde8f3ca718ebad91893a958a2a308ff0e8286s")
-                .commitCreationDate(LocalDateTime.of(2015, Month.FEBRUARY, 20, 06, 30))
                 .repoId(1)
                 .build();
 
         GitJobConfig gitJobConfig=GitJobConfig.builder()
                 .commit_sha1(gitCommitAddedEvent.getCommit_sha1())
                 .url(gitCommitAddedEvent.getUrl())
-                .commitCreationDate(gitCommitAddedEvent.getCommitCreationDate())
                 .build();
 
         TripleStore tripleStore=TripleStore.builder()
@@ -109,7 +107,7 @@ class BenchmarkingJobsServiceImplTest {
         given(benchmarkConfigurationService.getAllActiveBenchmarkDataSetConfigs())
                 .willReturn(List.of(dataSetConfig1,dataSetConfig2));
 
-        given(tripleStoreService.getTripleStoreByGitRepoId(1l))
+        given(tripleStoreService.getTripleStoreByGitRepoId(1L))
                 .willReturn(Optional.of(tripleStore));
 
 

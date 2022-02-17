@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import java.time.LocalDateTime;
-
 /**
  * @author Fakhr Shaheen
  */
@@ -21,5 +19,4 @@ public class GitJobConfig extends BaseEntity{
 
     private String url;
     private String commit_sha1;
-    private LocalDateTime commitCreationDate;
 }

@@ -17,7 +17,6 @@ import java.io.Serializable;
 public class DockerRepoAddedEvent  implements Serializable {
     private Long id;
     private String repoName;
-    private String ownerName;
+    private String repoOwner;
     private boolean isPrivate;
-    private String OAuthToken;
 }

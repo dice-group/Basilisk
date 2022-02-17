@@ -22,5 +22,4 @@ public class GitCommitAddedEvent implements Serializable {
     private long repoId;
     private String url;
     private String commit_sha1;
-    private LocalDateTime commitCreationDate;
 }

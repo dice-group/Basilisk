@@ -3,9 +3,10 @@ package basilisk.jobsManagingService.web.messaging;
 import basilisk.jobsManagingService.events.*;
 import basilisk.jobsManagingService.events.BenchmarkJob.*;
 import basilisk.jobsManagingService.services.benchmarking.BenchmarkingJobsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.annotation.RabbitListenerConfigurer;
-import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.listener.RabbitListenerEndpointRegistrar;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Service;
 public class RabbitMqMessageReceiver implements MessageReceiver, RabbitListenerConfigurer {
 
     private final BenchmarkingJobsService benchmarkingJobsService;
+
+    private final Logger logger = LoggerFactory.getLogger(RabbitMqMessageReceiver.class);
 
     public RabbitMqMessageReceiver(BenchmarkingJobsService benchmarkingJobsService) {
         this.benchmarkingJobsService = benchmarkingJobsService;
@@ -55,7 +58,7 @@ public class RabbitMqMessageReceiver implements MessageReceiver, RabbitListenerC
     @Override
     @RabbitListener(queues = "${hooks.rabbitmq.git.ReposQueue}")
     public void receiveGitRepoEvent(GitRepoAddedEvent gitRepoAddedEvent) {
-        System.out.println();
+        logger.warn("From Queue : {} ", gitRepoAddedEvent.getRepoName());
 
     }
 

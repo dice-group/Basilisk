@@ -1,14 +1,10 @@
 package basilisk.hooksCheckingService.web.proxies.docker;
 
+import com.fasterxml.jackson.annotation.*;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -28,7 +24,7 @@ public class DockerTagApiCall {
     @JsonProperty("results")
     private List<DockerApiTag> dockerTags = null;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private final Map<String, Object> additionalProperties = new HashMap<>();
 
     @JsonProperty("count")
     public Integer getCount() {
@@ -61,12 +57,12 @@ public class DockerTagApiCall {
     }
 
     @JsonProperty("results")
-    public List<DockerApiTag> getDockerTages() {
+    public List<DockerApiTag> getDockerTags() {
         return dockerTags;
     }
 
     @JsonProperty("results")
-    public void setDockerTages(List<DockerApiTag> results) {
+    public void setDockerTags(List<DockerApiTag> results) {
         this.dockerTags = results;
     }
 

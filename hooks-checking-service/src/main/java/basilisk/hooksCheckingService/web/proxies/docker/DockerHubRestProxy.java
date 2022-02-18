@@ -1,12 +1,12 @@
 package basilisk.hooksCheckingService.web.proxies.docker;
 
 
-import basilisk.hooksCheckingService.web.proxies.docker.DockerApiTag;
-import basilisk.hooksCheckingService.web.proxies.docker.DockerTagApiCall;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.stereotype.Component;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -19,28 +19,36 @@ import java.util.List;
 
 public class DockerHubRestProxy {
 
+    private final Logger logger = LoggerFactory.getLogger(DockerHubRestProxy.class);
+    private final RestTemplate restTemplate;
+    @Value("${proxies.docker.apihost}")
+    private String dockerRegistry;
 
     public DockerHubRestProxy(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplate = restTemplateBuilder.build();
     }
 
-    @Value("${proxies.docker.apihost}")
-    private String apihost;
-    private final RestTemplate restTemplate;
-
     public List<DockerApiTag> getTags(String ownerName, String repoName) {
-        List<DockerApiTag> tags = new ArrayList<>();
-        String fooResourceUrl
-                = apihost + "/v2/repositories/" + ownerName + "/" + repoName + "/tags";
-        DockerTagApiCall response
-                = restTemplate.getForObject(fooResourceUrl, DockerTagApiCall.class);
-        tags.addAll(response.getDockerTages());
-        while (response.getNext()!=null) {
+        String resourceUrl = this.dockerRegistry + "/v2/repositories/" + ownerName + "/" + repoName + "/tags";
+
+        ResponseEntity<DockerTagApiCall> responseEntity = this.restTemplate.getForEntity(resourceUrl, DockerTagApiCall.class);
+        HttpHeaders headers = responseEntity.getHeaders();
+
+        this.logger.info("Docker remaining rate: {}", headers.getFirst("X-RateLimit-Remaining"));
+
+        DockerTagApiCall response = responseEntity.getBody();
+
+        assert response != null;
+        List<DockerApiTag> tags = new ArrayList<>(response.getDockerTags());
+        while (true) {
+            assert response != null;
+            if (response.getNext() == null) break;
             response = restTemplate.getForObject(response.getNext(), DockerTagApiCall.class);
-            tags.addAll(response.getDockerTages());
+            if (response != null) {
+                tags.addAll(response.getDockerTags());
+            }
         }
 
         return tags;
     }
-
 }

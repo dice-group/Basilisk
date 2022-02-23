@@ -1,6 +1,6 @@
-package basilisk.jobsManagingService.web.messaging.benchmark;
+package basilisk.jobsManagingService.web.messaging.benchmarking;
 
-import basilisk.jobsManagingService.events.BenchmarkJob.*;
+import basilisk.jobsManagingService.events.benchmarking.*;
 import basilisk.jobsManagingService.services.benchmarking.BenchmarkingJobsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class RabbitMqBenchmarkMessageReceiver implements BenchmarkMessageReceiver, RabbitListenerConfigurer {
+public class RabbitMqBenchmarkMessageReceiver implements RabbitListenerConfigurer {
 
     private final BenchmarkingJobsService benchmarkingJobsService;
 
@@ -26,7 +26,6 @@ public class RabbitMqBenchmarkMessageReceiver implements BenchmarkMessageReceive
 
     }
 
-    @Override
     @RabbitListener(queues = "${rabbitmq.benchmarks.jobQueue}")
     public void receive(BenchmarkJobStartedEvent benchmarkJobStartedEvent) {
         benchmarkingJobsService.setJobStatusAsStarted(benchmarkJobStartedEvent.getJobId());

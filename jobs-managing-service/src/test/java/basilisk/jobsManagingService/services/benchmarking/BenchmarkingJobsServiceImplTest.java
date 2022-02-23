@@ -9,7 +9,7 @@ import basilisk.jobsManagingService.model.benchmarking.QueryConfig;
 import basilisk.jobsManagingService.events.GitCommitAddedEvent;
 import basilisk.jobsManagingService.repositories.benchmarking.JobsRepository;
 import basilisk.jobsManagingService.services.TripleStoreService;
-import basilisk.jobsManagingService.web.messaging.benchmark.BenchmarkMessageSender;
+import basilisk.jobsManagingService.web.messaging.benchmarking.BenchmarkMessageSender;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,7 +18,6 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -29,7 +28,7 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 class BenchmarkingJobsServiceImplTest {
 
-    BenchmarkingJobsServiceImpl benchmarkingJobsService;
+    BenchmarkingJobsService benchmarkingJobsService;
 
     @Mock
     private BenchmarkConfigurationService benchmarkConfigurationService;
@@ -47,7 +46,7 @@ class BenchmarkingJobsServiceImplTest {
     void setUp()
     {
         MockitoAnnotations.openMocks(this);
-        benchmarkingJobsService=new BenchmarkingJobsServiceImpl(benchmarkConfigurationService,tripleStoreService,messageSender,jobsRepository);
+        benchmarkingJobsService=new BenchmarkingJobsService(benchmarkConfigurationService,tripleStoreService,messageSender,jobsRepository);
     }
 
     @Test

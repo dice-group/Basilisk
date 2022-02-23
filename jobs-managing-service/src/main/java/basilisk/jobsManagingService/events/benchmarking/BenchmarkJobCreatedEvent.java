@@ -1,4 +1,4 @@
-package basilisk.jobsManagingService.events.BenchmarkJob;
+package basilisk.jobsManagingService.events.benchmarking;
 
 import basilisk.jobsManagingService.model.benchmarking.BenchmarkJob;
 import lombok.Builder;

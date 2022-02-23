@@ -1,4 +1,4 @@
-package basilisk.jobsManagingService.events.BenchmarkJob;
+package basilisk.jobsManagingService.events.benchmarking;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,6 +12,6 @@ import java.io.Serializable;
 @Getter
 @Setter
 @AllArgsConstructor
-public class BenchmarkJobFinishedEvent implements Serializable {
+public class BenchmarkJobStartedEvent implements Serializable {
     Long jobId;
 }

@@ -1,4 +1,4 @@
-package basilisk.jobsManagingService.events.BenchmarkJob;
+package basilisk.jobsManagingService.events.benchmarking;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

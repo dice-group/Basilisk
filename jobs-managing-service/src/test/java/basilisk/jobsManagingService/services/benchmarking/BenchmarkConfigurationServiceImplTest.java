@@ -37,7 +37,7 @@ class BenchmarkConfigurationServiceImplTest {
     void setUp()
     {
         MockitoAnnotations.openMocks(this);
-        benchmarkConfigurationService=new BenchmarkConfigurationServiceImpl(benchmarkQueryConfigRepository,benchmarkDataSetConfigRepository);
+        benchmarkConfigurationService=new BenchmarkConfigurationService(benchmarkQueryConfigRepository,benchmarkDataSetConfigRepository);
     }
 
     @Test

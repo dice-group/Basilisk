@@ -13,6 +13,6 @@ import javax.persistence.Table;
 public class GitRepo extends Repo {
 
     private GitRepoType repoType;
-    private String branch;
+    private String branchName;
 
 }

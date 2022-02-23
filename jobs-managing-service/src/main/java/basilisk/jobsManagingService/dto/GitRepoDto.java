@@ -21,6 +21,6 @@ public class GitRepoDto extends RepoDto {
 
     @JsonProperty("branch_name")
     @JsonView(Views.Api.class)
-    private String branch;
+    private String branchName;
 
 }

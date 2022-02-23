@@ -20,24 +20,29 @@ public class HooksMessageSender {
     @Value("${rabbitmq.hooks.exchange}")
     private String exchange;
 
-    @Value("${rabbitmq.hooks.docker.routingKeys.repo}")
-    private String dockerRepoRoutingKey;
-    @Value("${rabbitmq.hooks.git.routingKeys.repo}")
-    private String gitRepoRoutingKey;
+    @Value("${rabbitmq.hooks.docker.routingKeys.repoAdded}")
+    private String dockerRepoAddedRoutingKey;
+    @Value("${rabbitmq.hooks.docker.routingKeys.repoDeleted}")
+    private String dockerRepoDeletedRoutingKey;
+
+    @Value("${rabbitmq.hooks.git.routingKeys.repoAdded}")
+    private String gitRepoAddedRoutingKey;
+    @Value("${rabbitmq.hooks.git.routingKeys.repoDeleted}")
+    private String gitRepoDeletedRoutingKey;
 
     public void send(GitRepoAddedEvent event) {
-        this.rabbitTemplate.convertAndSend(this.exchange, this.gitRepoRoutingKey, event);
+        this.rabbitTemplate.convertAndSend(this.exchange, this.gitRepoAddedRoutingKey, event);
     }
 
     public void send(GitRepoDeletedEvent event) {
-        this.rabbitTemplate.convertAndSend(this.exchange, this.gitRepoRoutingKey, event);
+        this.rabbitTemplate.convertAndSend(this.exchange, this.gitRepoDeletedRoutingKey, event);
     }
 
     public void send(DockerRepoAddedEvent event) {
-        this.rabbitTemplate.convertAndSend(this.exchange, this.dockerRepoRoutingKey, event);
+        this.rabbitTemplate.convertAndSend(this.exchange, this.dockerRepoAddedRoutingKey, event);
     }
 
     public void send(DockerRepoDeletedEvent event) {
-        this.rabbitTemplate.convertAndSend(this.exchange, this.dockerRepoRoutingKey, event);
+        this.rabbitTemplate.convertAndSend(this.exchange, this.dockerRepoDeletedRoutingKey, event);
     }
 }

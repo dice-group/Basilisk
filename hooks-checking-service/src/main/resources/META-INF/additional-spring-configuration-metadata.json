@@ -1,59 +1,34 @@
 {
   "properties": [
     {
-      "name": "hooks.rabbitmq.exchange",
+      "name": "core.timing.timeout",
       "type": "java.lang.String",
-      "description": "Description for hooks.rabbitmq.exchange."
+      "description": "Description for core.timing.timeout."
     },
     {
-      "name": "hooks.rabbitmq.docker.ImagesQueue",
+      "name": "rabbitmq.hooks.exchange",
       "type": "java.lang.String",
-      "description": "Description for hooks.rabbitmq.docker.ImagesQueue."
+      "description": "Description for rabbitmq.hooks.exchange."
     },
     {
-      "name": "hooks.rabbitmq.docker.ReposQueue",
+      "name": "rabbitmq.hooks.git.commitQueue",
       "type": "java.lang.String",
-      "description": "Description for hooks.rabbitmq.docker.ReposQueue."
+      "description": "Description for rabbitmq.hooks.git.commitQueue."
     },
     {
-      "name": "hooks.rabbitmq.docker.TagsQueue",
+      "name": "rabbitmq.hooks.git.routingKeys.commit",
       "type": "java.lang.String",
-      "description": "Description for hooks.rabbitmq.docker.TagsQueue."
+      "description": "Description for rabbitmq.hooks.git.routingKeys.commit."
     },
     {
-      "name": "hooks.rabbitmq.git.ReposQueue",
+      "name": "rabbitmq.hooks.docker.tagQueue",
       "type": "java.lang.String",
-      "description": "Description for hooks.rabbitmq.git.ReposQueue."
+      "description": "Description for rabbitmq.hooks.docker.tagQueue."
     },
     {
-      "name": "hooks.rabbitmq.git.CommitsQueue",
+      "name": "rabbitmq.hooks.docker.routingKeys.tag",
       "type": "java.lang.String",
-      "description": "Description for hooks.rabbitmq.git.CommitsQueue."
-    },
-    {
-      "name": "hooks.rabbitmq.dockerRoutingkeys.Image",
-      "type": "java.lang.String",
-      "description": "Description for hooks.rabbitmq.dockerRoutingkeys.Image."
-    },
-    {
-      "name": "hooks.rabbitmq.dockerRoutingkeys.Repo",
-      "type": "java.lang.String",
-      "description": "Description for hooks.rabbitmq.dockerRoutingkeys.Repo."
-    },
-    {
-      "name": "hooks.rabbitmq.dockerRoutingkeys.Tag",
-      "type": "java.lang.String",
-      "description": "Description for hooks.rabbitmq.dockerRoutingkeys.Tag."
-    },
-    {
-      "name": "hooks.rabbitmq.gitRoutingkeys.Repo",
-      "type": "java.lang.String",
-      "description": "Description for hooks.rabbitmq.gitRoutingkeys.Repo."
-    },
-    {
-      "name": "hooks.rabbitmq.gitRoutingkeys.Commit",
-      "type": "java.lang.String",
-      "description": "Description for hooks.rabbitmq.gitRoutingkeys.Commit."
+      "description": "Description for rabbitmq.hooks.docker.routingKeys.tag."
     },
     {
       "name": "proxies.docker.apihost",
@@ -61,8 +36,43 @@
       "description": "Description for proxies.docker.apihost."
     },
     {
-      "name": "core.timing.timeout",
+      "name": "rabbitmq.hooks.git.repoAddedQueue",
       "type": "java.lang.String",
-      "description": "Description for timing strategy timeout."
+      "description": "Description for rabbitmq.hooks.git.repoAddedQueue."
+    },
+    {
+      "name": "rabbitmq.hooks.git.repoDeletedQueue",
+      "type": "java.lang.String",
+      "description": "Description for rabbitmq.hooks.git.repoDeletedQueue."
+    },
+    {
+      "name": "rabbitmq.hooks.git.routingKeys.repoAdded",
+      "type": "java.lang.String",
+      "description": "Description for rabbitmq.hooks.git.routingKeys.repoAdded."
+    },
+    {
+      "name": "rabbitmq.hooks.git.routingKeys.repoDeleted",
+      "type": "java.lang.String",
+      "description": "Description for rabbitmq.hooks.git.routingKeys.repoDeleted."
+    },
+    {
+      "name": "rabbitmq.hooks.docker.repoAddedQueue",
+      "type": "java.lang.String",
+      "description": "Description for rabbitmq.hooks.docker.repoAddedQueue."
+    },
+    {
+      "name": "rabbitmq.hooks.docker.repoDeletedQueue",
+      "type": "java.lang.String",
+      "description": "Description for rabbitmq.hooks.docker.repoDeletedQueue."
+    },
+    {
+      "name": "rabbitmq.hooks.docker.routingKeys.repoAdded",
+      "type": "java.lang.String",
+      "description": "Description for rabbitmq.hooks.docker.routingKeys.repoAdded."
+    },
+    {
+      "name": "rabbitmq.hooks.docker.routingKeys.repoDeleted",
+      "type": "java.lang.String",
+      "description": "Description for rabbitmq.hooks.docker.routingKeys.repoDeleted."
     }
   ] }

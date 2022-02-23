@@ -1,7 +1,7 @@
 package basilisk.hooksCheckingService.services.checkingServices.git;
 
 import basilisk.hooksCheckingService.core.exception.GithubException;
-import basilisk.hooksCheckingService.domain.git.GitRepo;
+import basilisk.hooksCheckingService.model.git.GitRepo;
 import basilisk.hooksCheckingService.repositories.GitHookRepository;
 import basilisk.hooksCheckingService.repositories.GitRepoRepository;
 import basilisk.hooksCheckingService.services.checkingServices.CheckingService;
@@ -14,10 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-/***
- * @author Fakhr Shaheen
- * This class follows the templte method pattern to difine a common steps that will be followed by different git checking services.
- */
+
 public abstract class GitCheckingService implements CheckingService {
 
     private static final Logger logger = LoggerFactory.getLogger(GitCheckingService.class);
@@ -52,11 +49,6 @@ public abstract class GitCheckingService implements CheckingService {
 
     protected abstract Iterable<GitRepo> getRelatedGitRepos();
 
-    /**
-     * checks the git repo for new related content.
-     * @param gitrepo
-     * @throws GithubException
-     */
     protected abstract void checkRepo(GitRepo gitrepo) throws GithubException;
 
 

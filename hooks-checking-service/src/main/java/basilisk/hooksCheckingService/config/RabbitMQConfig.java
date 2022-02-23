@@ -4,122 +4,112 @@ import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
-import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-/**
- * @author Fakhr Shaheen
- */
+
 
 
 @Configuration
 public class RabbitMQConfig {
 
-    @Value("${hooks.rabbitmq.docker.ImagesQueue}")
-    String dockerImagesQueueName;
-
-    @Value("${hooks.rabbitmq.docker.ReposQueue}")
-    String dockerReposQueueName;
-
-    @Value("${hooks.rabbitmq.docker.TagsQueue}")
-    String dockerTagsQueueName;
-
-    @Value("${hooks.rabbitmq.git.ReposQueue}")
-    String gitReposQueueName;
-
-    @Value("${hooks.rabbitmq.git.CommitsQueue}")
-    String gitCommitsQueueName;
-
-    @Value("${hooks.rabbitmq.exchange}")
-    String exchange;
-
-    @Value("${hooks.rabbitmq.dockerRoutingkeys.Repo}")
-    private String dockerRepoRoutingkey;
-
-    @Value("${hooks.rabbitmq.dockerRoutingkeys.Image}")
-    private String dockerImageRoutingkey;
-
-    @Value("${hooks.rabbitmq.dockerRoutingkeys.Tag}")
-    private String dockerTagRoutingkey;
+    @Value("${rabbitmq.hooks.exchange}")
+    String hooksExchange;
 
 
-    @Value("${hooks.rabbitmq.gitRoutingkeys.Repo}")
-    private String gitRepoRoutingkey;
+    @Value("${rabbitmq.hooks.docker.repoAddedQueue}")
+    String dockerRepoAddedQueue;
+    @Value("${rabbitmq.hooks.docker.repoDeletedQueue}")
+    String dockerRepoDeletedQueue;
 
-    @Value("${hooks.rabbitmq.gitRoutingkeys.Commit}")
-    private String gitCommitRoutingkey;
+    @Value("${rabbitmq.hooks.docker.tagQueue}")
+    String dockerTagQueue;
+    @Value("${rabbitmq.hooks.git.repoAddedQueue}")
+    String gitRepoAddedQueue;
+    @Value("${rabbitmq.hooks.git.repoDeletedQueue}")
+    String gitRepoDeletedQueue;
+    @Value("${rabbitmq.hooks.git.commitQueue}")
+    String gitCommitQueue;
+    @Value("${rabbitmq.hooks.docker.routingKeys.repoAdded}")
+    private String dockerRepoAddedRoutingKey;
+    @Value("${rabbitmq.hooks.docker.routingKeys.repoDeleted}")
+    private String dockerRepoDeletedRoutingKey;
+    @Value("${rabbitmq.hooks.docker.routingKeys.tag}")
+    private String dockerTagRoutingKey;
+    @Value("${rabbitmq.hooks.git.routingKeys.repoAdded}")
+    private String gitRepoAddedRoutingKey;
+    @Value("${rabbitmq.hooks.git.routingKeys.repoDeleted}")
+    private String gitRepoDeletedRoutingKey;
 
-    @Bean
-    Queue dockerReposQueue() {
-        return new Queue(dockerReposQueueName, false);
-    }
-
-    @Bean
-    Queue dockerImagesQueue() {
-        return new Queue(dockerImagesQueueName, false);
-    }
-
-    @Bean
-    Queue dockerTagsQueue() {
-        return new Queue(dockerTagsQueueName, false);
-    }
-
-    @Bean
-    Queue gitReposQueue() {
-        return new Queue(gitReposQueueName, false);
-    }
-
-    @Bean
-    Queue gitCommitsQueue() {
-        return new Queue(gitCommitsQueueName, false);
-    }
-
-    @Bean
-    DirectExchange exchange() {
-        return new DirectExchange(exchange);
-    }
-
+    @Value("${rabbitmq.hooks.git.routingKeys.commit}")
+    private String gitCommitRoutingKey;
 
 
     @Bean
-    Binding dockerRepoBinding(Queue dockerReposQueue, DirectExchange exchange) {
-        return BindingBuilder.bind(dockerReposQueue).to(exchange).with(dockerRepoRoutingkey);
-    }
-
-    @Bean
-    Binding dockerImageBinding(Queue dockerImagesQueue, DirectExchange exchange) {
-        return BindingBuilder.bind(dockerImagesQueue).to(exchange).with(dockerImageRoutingkey);
-    }
-
-    @Bean
-    Binding dockerTagBinding(Queue dockerTagsQueue, DirectExchange exchange) {
-        return BindingBuilder.bind(dockerTagsQueue).to(exchange).with(dockerTagRoutingkey);
-    }
-
-    @Bean
-    Binding gitRepoBinding(Queue gitReposQueue, DirectExchange exchange) {
-        return BindingBuilder.bind(gitReposQueue).to(exchange).with(gitRepoRoutingkey);
-    }
-
-    @Bean
-    Binding gitCommitBinding(Queue gitCommitsQueue, DirectExchange exchange) {
-        return BindingBuilder.bind(gitCommitsQueue).to(exchange).with(gitCommitRoutingkey);
+    DirectExchange hooksExchange() {
+        return new DirectExchange(hooksExchange);
     }
 
 
     @Bean
-    public RabbitTemplate rabbitTemplate(final ConnectionFactory connectionFactory) {
-        final var rabbitTemplate = new RabbitTemplate(connectionFactory);
-        rabbitTemplate.setMessageConverter(jsonMessageConverter());
-        return rabbitTemplate;
+    Queue dockerRepoAddedQueue() {
+        return new Queue(this.dockerRepoAddedQueue, false);
     }
 
     @Bean
-    public MessageConverter jsonMessageConverter() {
-        return new Jackson2JsonMessageConverter();
+    Queue dockerRepoDeletedQueue() {
+        return new Queue(this.dockerRepoDeletedQueue, false);
     }
+
+    @Bean
+    Queue dockerTagQueue() {
+        return new Queue(this.dockerTagQueue, false);
+    }
+
+    @Bean
+    Queue gitRepoAddedQueue() {
+        return new Queue(this.gitRepoAddedQueue, false);
+    }
+
+    @Bean
+    Queue gitRepoDeletedQueue() {
+        return new Queue(this.gitRepoDeletedQueue, false);
+    }
+
+    @Bean
+    Queue gitCommitQueue() {
+        return new Queue(this.gitCommitQueue, false);
+    }
+
+
+    @Bean
+    Binding dockerRepoAddedBinding(Queue dockerRepoAddedQueue, DirectExchange hooksExchange) {
+        return BindingBuilder.bind(dockerRepoAddedQueue).to(hooksExchange).with(this.dockerRepoAddedRoutingKey);
+    }
+
+    @Bean
+    Binding dockerRepoDeletedBinding(Queue dockerRepoDeletedQueue, DirectExchange hooksExchange) {
+        return BindingBuilder.bind(dockerRepoDeletedQueue).to(hooksExchange).with(this.dockerRepoDeletedRoutingKey);
+    }
+
+    @Bean
+    Binding dockerTagBinding(Queue dockerTagQueue, DirectExchange hooksExchange) {
+        return BindingBuilder.bind(dockerTagQueue).to(hooksExchange).with(dockerTagRoutingKey);
+    }
+
+    @Bean
+    Binding gitRepoAddedBinding(Queue gitRepoAddedQueue, DirectExchange hooksExchange) {
+        return BindingBuilder.bind(gitRepoAddedQueue).to(hooksExchange).with(this.gitRepoAddedRoutingKey);
+    }
+
+    @Bean
+    Binding gitRepoDeletedBinding(Queue gitRepoDeletedQueue, DirectExchange hooksExchange) {
+        return BindingBuilder.bind(gitRepoDeletedQueue).to(hooksExchange).with(this.gitRepoDeletedRoutingKey);
+    }
+
+    @Bean
+    Binding gitCommitBinding(Queue gitCommitQueue, DirectExchange hooksExchange) {
+        return BindingBuilder.bind(gitCommitQueue).to(hooksExchange).with(gitCommitRoutingKey);
+    }
+
 }

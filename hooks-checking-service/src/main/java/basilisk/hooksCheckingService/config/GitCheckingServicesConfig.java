@@ -1,15 +1,13 @@
 package basilisk.hooksCheckingService.config;
 
-import basilisk.hooksCheckingService.web.messaging.MessageSender;
 import basilisk.hooksCheckingService.repositories.GitHookRepository;
 import basilisk.hooksCheckingService.repositories.GitRepoRepository;
-import basilisk.hooksCheckingService.services.checkingServices.git.*;
+import basilisk.hooksCheckingService.services.checkingServices.git.GitCheckingService;
+import basilisk.hooksCheckingService.services.checkingServices.git.GitCheckingServiceFactory;
+import basilisk.hooksCheckingService.web.messaging.MessageSender;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * @author Fakhr Shaheen
- */
 
 @Configuration
 public class GitCheckingServicesConfig {

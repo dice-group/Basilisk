@@ -2,11 +2,10 @@ package basilisk.hooksCheckingService.services.checkingServices.git;
 
 
 import basilisk.hooksCheckingService.core.exception.GithubException;
-import basilisk.hooksCheckingService.domain.git.GitBranchRepo;
-import basilisk.hooksCheckingService.domain.git.GitHook;
-import basilisk.hooksCheckingService.domain.git.GitRepo;
-import basilisk.hooksCheckingService.domain.git.GitType;
-import basilisk.hooksCheckingService.events.GitCommitAddedEvent;
+import basilisk.hooksCheckingService.events.git.GitCommitAddedEvent;
+import basilisk.hooksCheckingService.model.git.GitHook;
+import basilisk.hooksCheckingService.model.git.GitRepo;
+import basilisk.hooksCheckingService.model.git.GitRepoType;
 import basilisk.hooksCheckingService.repositories.GitHookRepository;
 import basilisk.hooksCheckingService.repositories.GitRepoRepository;
 import basilisk.hooksCheckingService.web.messaging.MessageSender;
@@ -17,9 +16,6 @@ import org.springframework.messaging.MessagingException;
 
 import java.util.Optional;
 
-/**
- * @author Fabian Rensing
- */
 
 public class GitBranchCheckingService extends GitCheckingService {
 
@@ -29,7 +25,7 @@ public class GitBranchCheckingService extends GitCheckingService {
 
     @Override
     protected Iterable<GitRepo> getRelatedGitRepos() {
-        return gitRepoRepository.findAllByType(GitType.BRANCH);
+        return gitRepoRepository.findAllByRepoType(GitRepoType.BRANCH);
     }
 
 
@@ -38,11 +34,10 @@ public class GitBranchCheckingService extends GitCheckingService {
 
         try {
 
-            GitBranchRepo gitBranchRepo = (GitBranchRepo) gitRepo;
             GHRepository repo = getRepoFromGitHub(gitRepo);
 
             //get latest commit on the branch
-            GHBranch branch = repo.getBranch(gitBranchRepo.getBranchName());
+            GHBranch branch = repo.getBranch(gitRepo.getBranchName());
 
             //  check whether the hook is already saved
             Optional<GitHook> foundHook = gitHookRepository.findByCommitSha1(branch.getSHA1());

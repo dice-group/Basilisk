@@ -1,8 +1,8 @@
 package basilisk.hooksCheckingService.services.checkingServices.git;
 
 import basilisk.hooksCheckingService.core.exception.GithubException;
-import basilisk.hooksCheckingService.domain.git.GitRepo;
-import basilisk.hooksCheckingService.domain.git.GitType;
+import basilisk.hooksCheckingService.model.git.GitRepo;
+import basilisk.hooksCheckingService.model.git.GitRepoType;
 import basilisk.hooksCheckingService.repositories.GitHookRepository;
 import basilisk.hooksCheckingService.repositories.GitRepoRepository;
 import basilisk.hooksCheckingService.web.messaging.MessageSender;
@@ -22,7 +22,7 @@ public class GitPullRequestCheckingService extends GitCheckingService {
 
     @Override
     protected Iterable<GitRepo> getRelatedGitRepos() {
-        return gitRepoRepository.findAllByType(GitType.PULL_REQUEST);
+        return this.gitRepoRepository.findAllByRepoType(GitRepoType.PULL_REQUEST);
     }
 
 

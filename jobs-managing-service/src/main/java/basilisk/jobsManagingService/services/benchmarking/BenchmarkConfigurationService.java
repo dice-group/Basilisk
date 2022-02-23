@@ -1,14 +1,12 @@
 package basilisk.jobsManagingService.services.benchmarking;
 
-import basilisk.jobsManagingService.domain.benchmarking.DataSetConfig;
-import basilisk.jobsManagingService.domain.benchmarking.QueryConfig;
+import basilisk.jobsManagingService.model.benchmarking.DataSetConfig;
+import basilisk.jobsManagingService.model.benchmarking.QueryConfig;
 import basilisk.jobsManagingService.exception.ConfigNameAlreadyExistsException;
 
 import java.util.List;
 
-/**
- * @author Fakhr Shaheen
- */
+
 public interface BenchmarkConfigurationService {
 
 

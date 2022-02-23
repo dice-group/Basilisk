@@ -1,7 +1,7 @@
 package basilisk.jobsManagingService.services.benchmarking;
 
-import basilisk.jobsManagingService.domain.benchmarking.DataSetConfig;
-import basilisk.jobsManagingService.domain.benchmarking.QueryConfig;
+import basilisk.jobsManagingService.model.benchmarking.DataSetConfig;
+import basilisk.jobsManagingService.model.benchmarking.QueryConfig;
 import basilisk.jobsManagingService.exception.ConfigNameAlreadyExistsException;
 import basilisk.jobsManagingService.repositories.benchmarking.BenchmarkDataSetConfigRepository;
 import basilisk.jobsManagingService.repositories.benchmarking.BenchmarkQueryConfigRepository;
@@ -21,9 +21,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
-/**
- * @author Fakhr Shaheen
- */
 
 
 @ExtendWith(MockitoExtension.class)

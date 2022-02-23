@@ -1,39 +1,30 @@
 package basilisk.jobsManagingService.services;
 
-import basilisk.jobsManagingService.domain.TripleStore;
+import basilisk.jobsManagingService.model.TripleStore;
+import basilisk.jobsManagingService.repositories.TripleStoreRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-/**
- * @author Fakhr Shaheen
- */
-public interface TripleStoreService {
+@Service
+public class TripleStoreService {
 
-    /**
-     * add a triple store  to the system
-     * @param tripleStore
-     */
-    void addTripleStore(TripleStore tripleStore);
+    private final TripleStoreRepository tripleStoreRepository;
 
-    /**
-     * retrieve a triple store
-     * @param id triple store's id
-     * @return
-     */
-    Optional<TripleStore> getTripleStore(Long id);
+    public TripleStoreService(TripleStoreRepository tripleStoreRepository) {
+        this.tripleStoreRepository = tripleStoreRepository;
+    }
 
-    /**
-     * retrieve a triple store
-     * @param id triple store's git repository id
-     * @return
-     */
-    Optional<TripleStore> getTripleStoreByGitRepoId(Long id);
+    public void addTripleStore(TripleStore tripleStore) {
+        tripleStoreRepository.save(tripleStore);
+    }
 
-    /**
-     * retrieve all triple stores
-     * @return
-     */
-    List<TripleStore> getAllTripleStores();
+    public Optional<TripleStore> getTripleStore(Long id) {
+        return tripleStoreRepository.findById(id);
+    }
 
+    public List<TripleStore> getAllTripleStores() {
+        return (List<TripleStore>) tripleStoreRepository.findAll();
+    }
 }

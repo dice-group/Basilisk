@@ -1,17 +1,16 @@
 package basilisk.jobsManagingService.services.benchmarking;
 
 import basilisk.jobsManagingService.core.exception.MessageSendingExecption;
-import basilisk.jobsManagingService.domain.DockerJobConfig;
-import basilisk.jobsManagingService.domain.GitJobConfig;
-import basilisk.jobsManagingService.domain.TripleStore;
-import basilisk.jobsManagingService.domain.benchmarking.*;
+import basilisk.jobsManagingService.model.DockerJobConfig;
+import basilisk.jobsManagingService.model.GitJobConfig;
+import basilisk.jobsManagingService.model.benchmarking.*;
 import basilisk.jobsManagingService.events.BenchmarkJob.BenchmarkJobAbortCommand;
 import basilisk.jobsManagingService.events.BenchmarkJob.BenchmarkJobCreatedEvent;
 import basilisk.jobsManagingService.events.DockerImageCreatedEvent;
 import basilisk.jobsManagingService.events.GitCommitAddedEvent;
 import basilisk.jobsManagingService.repositories.benchmarking.JobsRepository;
 import basilisk.jobsManagingService.services.TripleStoreService;
-import basilisk.jobsManagingService.web.messaging.MessageSender;
+import basilisk.jobsManagingService.web.messaging.benchmark.BenchmarkMessageSender;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -19,9 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * @author Fakhr Shaheen
- */
 
 @Service
 public class BenchmarkingJobsServiceImpl implements BenchmarkingJobsService{
@@ -29,10 +25,10 @@ public class BenchmarkingJobsServiceImpl implements BenchmarkingJobsService{
     private final JobsRepository jobsRepository;
     private final BenchmarkConfigurationService benchmarkConfigurationService;
     private final TripleStoreService tripleStoreService;
-    private final MessageSender messageSender;
+    private final BenchmarkMessageSender messageSender;
 
-    public BenchmarkingJobsServiceImpl(BenchmarkConfigurationService benchmarkConfigurationService,TripleStoreService tripleStoreService
-            , MessageSender messageSender,JobsRepository jobsRepository) {
+    public BenchmarkingJobsServiceImpl(BenchmarkConfigurationService benchmarkConfigurationService, TripleStoreService tripleStoreService
+            , BenchmarkMessageSender messageSender, JobsRepository jobsRepository) {
         this.benchmarkConfigurationService = benchmarkConfigurationService;
         this.tripleStoreService=tripleStoreService;
         this.jobsRepository=jobsRepository;
@@ -187,18 +183,18 @@ public class BenchmarkingJobsServiceImpl implements BenchmarkingJobsService{
                 .build();
 
         // check the corresponding triple store
-        Optional<TripleStore> tripleStore= tripleStoreService.getTripleStoreByGitRepoId(gitCommitAddedEvent.getRepoId());
-        if(tripleStore.isEmpty())
-        {
+        //Optional<TripleStore> tripleStore= tripleStoreService.getTripleStoreByGitRepoId(gitCommitAddedEvent.getRepoId());
+        //if(tripleStore.isEmpty())
+        //{
             //ToDo
-        }
+        //}
         dataSetConfigs.forEach(dataset ->
         {
             GitBenchmarkJob benchmarkJob=GitBenchmarkJob.builder()
                     .gitJobConfig(gitJobConfig)
                     .queryConfigs(activeQueryConfigs)
                     .dataSetConfig(dataset)
-                    .tripleStore(tripleStore.get()) // TODO!
+                    //.tripleStore(tripleStore.get()) // TODO!
                     .status(JobStatus.CREATED)
                     .build();
             jobs.add(benchmarkJob);
@@ -225,18 +221,18 @@ public class BenchmarkingJobsServiceImpl implements BenchmarkingJobsService{
                 .build();
 
         // check the corresponding triple store
-        Optional<TripleStore> tripleStore= tripleStoreService.getTripleStoreByGitRepoId(dockerImageCreatedEvent.getRepoId());
-        if(tripleStore.isEmpty())
-        {
-            //ToDo
-        }
+//        Optional<TripleStore> tripleStore= tripleStoreService.getTripleStoreByGitRepoId(dockerImageCreatedEvent.getRepoId());
+//        if(tripleStore.isEmpty())
+//        {
+//            //ToDo
+//        }
         dataSetConfigs.forEach(dataset ->
         {
             DockerBenchmarkJob benchmarkJob=DockerBenchmarkJob.builder()
                     .dockerJobConfig(dockerJobConfig)
                     .queryConfigs(activeQueryConfigs)
                     .dataSetConfig(dataset)
-                    .tripleStore(tripleStore.get()) // TODO!
+                    //.tripleStore(tripleStore.get()) // TODO!
                     .status(JobStatus.CREATED)
                     .build();
             jobs.add(benchmarkJob);

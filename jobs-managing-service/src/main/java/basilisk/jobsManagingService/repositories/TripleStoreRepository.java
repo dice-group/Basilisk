@@ -1,6 +1,6 @@
 package basilisk.jobsManagingService.repositories;
 
-import basilisk.jobsManagingService.domain.TripleStore;
+import basilisk.jobsManagingService.model.TripleStore;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,6 +12,4 @@ import java.util.Optional;
 
 @Repository
 public interface TripleStoreRepository extends CrudRepository<TripleStore,Long> {
-
-    Optional<TripleStore> findTripleStoreByGitRepoId(Long gitRepoId);
 }

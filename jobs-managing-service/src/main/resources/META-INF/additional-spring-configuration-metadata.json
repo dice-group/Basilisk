@@ -1,128 +1,73 @@
 {
   "properties": [
     {
-      "name": "hooks.rabbitmq.exchange",
+      "name": "rabbitmq.hooks.exchange",
       "type": "java.lang.String",
-      "description": "Description for hooks.rabbitmq.exchange."
+      "description": "Description for rabbitmq.hooks.exchange."
     },
     {
-      "name": "hooks.rabbitmq.docker.ImagesQueue",
+      "name": "rabbitmq.hooks.git.repoQueue",
       "type": "java.lang.String",
-      "description": "Description for hooks.rabbitmq.docker.ImagesQueue."
+      "description": "Description for rabbitmq.hooks.git.repoQueue."
     },
     {
-      "name": "hooks.rabbitmq.docker.ReposQueue",
+      "name": "rabbitmq.hooks.git.commitQueue",
       "type": "java.lang.String",
-      "description": "Description for hooks.rabbitmq.docker.ReposQueue."
+      "description": "Description for rabbitmq.hooks.git.commitQueue."
     },
     {
-      "name": "hooks.rabbitmq.docker.TagsQueue",
+      "name": "rabbitmq.hooks.git.routingKeys.repo",
       "type": "java.lang.String",
-      "description": "Description for hooks.rabbitmq.docker.TagsQueue."
+      "description": "Description for rabbitmq.hooks.git.routingKeys.repo."
     },
     {
-      "name": "hooks.rabbitmq.git.ReposQueue",
+      "name": "rabbitmq.hooks.git.routingKeys.commit",
       "type": "java.lang.String",
-      "description": "Description for hooks.rabbitmq.git.ReposQueue."
+      "description": "Description for rabbitmq.hooks.git.routingKeys.commit."
     },
     {
-      "name": "hooks.rabbitmq.git.CommitsQueue",
+      "name": "rabbitmq.hooks.docker.repoQueue",
       "type": "java.lang.String",
-      "description": "Description for hooks.rabbitmq.git.CommitsQueue."
+      "description": "Description for rabbitmq.hooks.docker.repoQueue."
     },
     {
-      "name": "hooks.rabbitmq.dockerRoutingkeys.Image",
+      "name": "rabbitmq.hooks.docker.tagQueue",
       "type": "java.lang.String",
-      "description": "Description for hooks.rabbitmq.dockerRoutingkeys.Image."
+      "description": "Description for rabbitmq.hooks.docker.tagQueue."
     },
     {
-      "name": "hooks.rabbitmq.dockerRoutingkeys.Repo",
+      "name": "rabbitmq.hooks.docker.routingKeys.repo",
       "type": "java.lang.String",
-      "description": "Description for hooks.rabbitmq.dockerRoutingkeys.Repo."
+      "description": "Description for rabbitmq.hooks.docker.routingKeys.repo."
     },
     {
-      "name": "hooks.rabbitmq.dockerRoutingkeys.Tag",
+      "name": "rabbitmq.hooks.docker.routingKeys.tag",
       "type": "java.lang.String",
-      "description": "Description for hooks.rabbitmq.dockerRoutingkeys.Tag."
+      "description": "Description for rabbitmq.hooks.docker.routingKeys.tag."
     },
     {
-      "name": "hooks.rabbitmq.gitRoutingkeys.Repo",
+      "name": "rabbitmq.benchmarks.exchange",
       "type": "java.lang.String",
-      "description": "Description for hooks.rabbitmq.gitRoutingkeys.Repo."
+      "description": "Description for rabbitmq.benchmarks.exchange."
     },
     {
-      "name": "hooks.rabbitmq.gitRoutingkeys.Commit",
+      "name": "rabbitmq.benchmarks.jobQueue",
       "type": "java.lang.String",
-      "description": "Description for hooks.rabbitmq.gitRoutingkeys.Commit."
+      "description": "Description for rabbitmq.benchmarks.jobQueue."
     },
     {
-      "name": "proxies.docker.apihost",
+      "name": "rabbitmq.benchmarks.resultQueue",
       "type": "java.lang.String",
-      "description": "Description for proxies.docker.apihost."
+      "description": "Description for rabbitmq.benchmarks.resultQueue."
     },
     {
-      "name": "jobs.benchmark.rabbitmq.exchange",
+      "name": "rabbitmq.benchmarks.routingKeys.job",
       "type": "java.lang.String",
-      "description": "Description for jobs.benchmark.rabbitmq.exchange."
+      "description": "Description for rabbitmq.benchmarks.routingKeys.job."
     },
     {
-      "name": "jobs.benchmark.rabbitmq.createdEventQueue",
+      "name": "rabbitmq.benchmarks.routingKeys.result",
       "type": "java.lang.String",
-      "description": "Description for jobs.benchmark.rabbitmq.createdEventQueue."
-    },
-    {
-      "name": "jobs.benchmark.rabbitmq.startedEventQueue",
-      "type": "java.lang.String",
-      "description": "Description for jobs.benchmark.rabbitmq.startedEventQueue."
-    },
-    {
-      "name": "jobs.benchmark.rabbitmq.finishedEventQueue",
-      "type": "java.lang.String",
-      "description": "Description for jobs.benchmark.rabbitmq.finishedEventQueue."
-    },
-    {
-      "name": "jobs.benchmark.rabbitmq.failedEventQueue",
-      "type": "java.lang.String",
-      "description": "Description for jobs.benchmark.rabbitmq.failedEventQueue."
-    },
-    {
-      "name": "jobs.benchmark.rabbitmq.abortedEventQueue",
-      "type": "java.lang.String",
-      "description": "Description for jobs.benchmark.rabbitmq.abortedEventQueue."
-    },
-    {
-      "name": "jobs.benchmark.rabbitmq.abortCommandQueue",
-      "type": "java.lang.String",
-      "description": "Description for jobs.benchmark.rabbitmq.abortCommandQueue."
-    },
-    {
-      "name": "jobs.benchmark.rabbitmq.createdEventRoutingkey",
-      "type": "java.lang.String",
-      "description": "Description for jobs.benchmark.rabbitmq.createdEventRoutingkey."
-    },
-    {
-      "name": "jobs.benchmark.rabbitmq.startedEventRoutingkey",
-      "type": "java.lang.String",
-      "description": "Description for jobs.benchmark.rabbitmq.startedEventRoutingkey."
-    },
-    {
-      "name": "jobs.benchmark.rabbitmq.finishedEventRoutingkey",
-      "type": "java.lang.String",
-      "description": "Description for jobs.benchmark.rabbitmq.finishedEventRoutingkey."
-    },
-    {
-      "name": "jobs.benchmark.rabbitmq.failedEventRoutingkey",
-      "type": "java.lang.String",
-      "description": "Description for jobs.benchmark.rabbitmq.failedEventRoutingkey."
-    },
-    {
-      "name": "jobs.benchmark.rabbitmq.abortedEventRoutingkey",
-      "type": "java.lang.String",
-      "description": "Description for jobs.benchmark.rabbitmq.abortedEventRoutingkey."
-    },
-    {
-      "name": "jobs.benchmark.rabbitmq.abortCommandRoutingkey",
-      "type": "java.lang.String",
-      "description": "Description for jobs.benchmark.rabbitmq.abortCommandRoutingkey."
+      "description": "Description for rabbitmq.benchmarks.routingKeys.result."
     }
   ] }

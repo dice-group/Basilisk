@@ -1,15 +1,15 @@
 package basilisk.jobsManagingService.services.benchmarking;
 
-import basilisk.jobsManagingService.domain.GitJobConfig;
-import basilisk.jobsManagingService.domain.TripleStore;
-import basilisk.jobsManagingService.domain.benchmarking.DataSetConfig;
-import basilisk.jobsManagingService.domain.benchmarking.GitBenchmarkJob;
-import basilisk.jobsManagingService.domain.benchmarking.JobStatus;
-import basilisk.jobsManagingService.domain.benchmarking.QueryConfig;
+import basilisk.jobsManagingService.model.GitJobConfig;
+import basilisk.jobsManagingService.model.TripleStore;
+import basilisk.jobsManagingService.model.benchmarking.DataSetConfig;
+import basilisk.jobsManagingService.model.benchmarking.GitBenchmarkJob;
+import basilisk.jobsManagingService.model.benchmarking.JobStatus;
+import basilisk.jobsManagingService.model.benchmarking.QueryConfig;
 import basilisk.jobsManagingService.events.GitCommitAddedEvent;
 import basilisk.jobsManagingService.repositories.benchmarking.JobsRepository;
 import basilisk.jobsManagingService.services.TripleStoreService;
-import basilisk.jobsManagingService.web.messaging.MessageSender;
+import basilisk.jobsManagingService.web.messaging.benchmark.BenchmarkMessageSender;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,22 +17,14 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-/**
- * @author Fakhr Shaheen
- */
 
 @ExtendWith(MockitoExtension.class)
 class BenchmarkingJobsServiceImplTest {
@@ -46,7 +38,7 @@ class BenchmarkingJobsServiceImplTest {
     private TripleStoreService tripleStoreService;
 
     @Mock
-    private MessageSender messageSender;
+    private BenchmarkMessageSender messageSender;
 
     @Mock
     private JobsRepository jobsRepository;
@@ -107,8 +99,8 @@ class BenchmarkingJobsServiceImplTest {
         given(benchmarkConfigurationService.getAllActiveBenchmarkDataSetConfigs())
                 .willReturn(List.of(dataSetConfig1,dataSetConfig2));
 
-        given(tripleStoreService.getTripleStoreByGitRepoId(1L))
-                .willReturn(Optional.of(tripleStore));
+//        given(tripleStoreService.getTripleStoreByGitRepoId(1L))
+//                .willReturn(Optional.of(tripleStore));
 
 
         //when

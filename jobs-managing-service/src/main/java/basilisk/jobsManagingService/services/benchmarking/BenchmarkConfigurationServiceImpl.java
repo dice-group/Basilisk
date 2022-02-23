@@ -1,7 +1,7 @@
 package basilisk.jobsManagingService.services.benchmarking;
 
-import basilisk.jobsManagingService.domain.benchmarking.DataSetConfig;
-import basilisk.jobsManagingService.domain.benchmarking.QueryConfig;
+import basilisk.jobsManagingService.model.benchmarking.DataSetConfig;
+import basilisk.jobsManagingService.model.benchmarking.QueryConfig;
 import basilisk.jobsManagingService.exception.ConfigNameAlreadyExistsException;
 import basilisk.jobsManagingService.repositories.benchmarking.BenchmarkDataSetConfigRepository;
 import basilisk.jobsManagingService.repositories.benchmarking.BenchmarkQueryConfigRepository;
@@ -9,9 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-/**
- * @author Fakhr Shaheen
- */
 
 @Component
 public class BenchmarkConfigurationServiceImpl implements BenchmarkConfigurationService {

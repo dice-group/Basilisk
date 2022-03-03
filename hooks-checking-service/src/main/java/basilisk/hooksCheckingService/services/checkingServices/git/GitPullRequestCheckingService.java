@@ -25,7 +25,6 @@ public class GitPullRequestCheckingService extends GitCheckingService {
         return this.gitRepoRepository.findAllByRepoType(GitRepoType.PULL_REQUEST);
     }
 
-
     @Override
     public void checkRepo(GitRepo gitRepo) throws GithubException {
         try {
@@ -35,11 +34,11 @@ public class GitPullRequestCheckingService extends GitCheckingService {
 
             List<GHPullRequest> pullRequests = repo.getPullRequests(GHIssueState.OPEN);
             for (GHPullRequest pullRequest : pullRequests) {
-                pullRequest.getUpdatedAt();
+
+                checkHooks(gitRepo, repo, pullRequest.getHead().getSha());
+
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new GithubException();
         }
     }

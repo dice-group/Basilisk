@@ -1,11 +1,14 @@
 package basilisk.hooksCheckingService.services.checkingServices.git;
 
 import basilisk.hooksCheckingService.core.exception.GithubException;
+import basilisk.hooksCheckingService.events.git.GitCommitAddedEvent;
+import basilisk.hooksCheckingService.model.git.GitHook;
 import basilisk.hooksCheckingService.model.git.GitRepo;
 import basilisk.hooksCheckingService.repositories.GitHookRepository;
 import basilisk.hooksCheckingService.repositories.GitRepoRepository;
 import basilisk.hooksCheckingService.services.checkingServices.CheckingService;
 import basilisk.hooksCheckingService.web.messaging.MessageSender;
+import org.kohsuke.github.GHCommit;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
@@ -13,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.Optional;
 
 
 public abstract class GitCheckingService implements CheckingService {
@@ -51,20 +55,45 @@ public abstract class GitCheckingService implements CheckingService {
 
     protected abstract void checkRepo(GitRepo gitrepo) throws GithubException;
 
+    protected void checkHooks(GitRepo gitRepo, GHRepository repo, String sha1) throws IOException {
+        Optional<GitHook> foundHook = this.gitHookRepository.findByCommitSha1(sha1);
+
+        if (foundHook.isEmpty()) {
+            GHCommit commit = repo.getCommit(sha1);
+            GitHook hook = createGitHook(gitRepo, commit);
+
+            this.gitHookRepository.save(hook);
+            this.messageSender.send(createGitCommitAddedEvent(gitRepo, hook));
+        }
+    }
 
     protected GHRepository getRepoFromGitHub(GitRepo gitRepo) throws IOException {
         GitHub github;
-        if (gitRepo.isPrivate())
+        if (gitRepo.isPrivate()) {
             github = new GitHubBuilder().withOAuthToken(gitRepo.getOAuthToken()).build();
-        else
-            github =GitHub.connectAnonymously();
+        } else {
+            github = GitHub.connectAnonymously();
+        }
 
         logger.info("GitHub rate limit: {}", github.getRateLimit());
 
         return github.getUser(gitRepo.getRepoOwner()).getRepository(gitRepo.getRepoName());
     }
 
+    private GitHook createGitHook(GitRepo gitRepo, GHCommit commit) throws IOException {
+        return GitHook.builder()
+                .gitRepo(gitRepo)
+                .commitCreationDate(commit.getCommitDate())
+                .commitSha1(commit.getSHA1())
+                .commitUrl(commit.getHtmlUrl().toString())
+                .build();
+    }
 
-
-
+    private GitCommitAddedEvent createGitCommitAddedEvent(GitRepo gitRepo, GitHook gitHook) {
+        return GitCommitAddedEvent.builder()
+                .commit_sha1(gitHook.getCommitSha1())
+                .repoId(gitRepo.getId())
+                .url(gitHook.getCommitUrl())
+                .build();
+    }
 }

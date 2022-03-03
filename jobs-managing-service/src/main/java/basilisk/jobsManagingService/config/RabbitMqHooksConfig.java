@@ -14,35 +14,27 @@ public class RabbitMqHooksConfig {
     @Value("${rabbitmq.hooks.exchange}")
     String hooksExchange;
 
-    @Value("${rabbitmq.hooks.docker.repoAddedQueue}")
-    String dockerRepoAddedQueue;
-    @Value("${rabbitmq.hooks.docker.repoDeletedQueue}")
-    String dockerRepoDeletedQueue;
+    @Value("${rabbitmq.hooks.docker.repoQueue}")
+    String dockerRepoQueue;
 
     @Value("${rabbitmq.hooks.docker.tagQueue}")
     String dockerTagQueue;
 
-    @Value("${rabbitmq.hooks.docker.routingKeys.repoAdded}")
-    private String dockerRepoAddedRoutingKey;
-    @Value("${rabbitmq.hooks.docker.routingKeys.repoDeleted}")
-    private String dockerRepoDeletedRoutingKey;
+    @Value("${rabbitmq.hooks.docker.routingKeys.repo}")
+    private String dockerRepoRoutingKey;
 
     @Value("${rabbitmq.hooks.docker.routingKeys.tag}")
     private String dockerTagRoutingKey;
 
 
-    @Value("${rabbitmq.hooks.git.repoAddedQueue}")
-    String gitRepoAddedQueue;
-    @Value("${rabbitmq.hooks.git.repoDeletedQueue}")
-    String gitRepoDeletedQueue;
+    @Value("${rabbitmq.hooks.git.repoQueue}")
+    String gitRepoQueue;
 
     @Value("${rabbitmq.hooks.git.commitQueue}")
     String gitCommitQueue;
 
-    @Value("${rabbitmq.hooks.git.routingKeys.repoAdded}")
-    private String gitRepoAddedRoutingKey;
-    @Value("${rabbitmq.hooks.git.routingKeys.repoDeleted}")
-    private String gitRepoDeletedRoutingKey;
+    @Value("${rabbitmq.hooks.git.routingKeys.repo}")
+    private String gitRepoRoutingKey;
 
     @Value("${rabbitmq.hooks.git.routingKeys.commit}")
     private String gitCommitRoutingKey;
@@ -55,12 +47,8 @@ public class RabbitMqHooksConfig {
 
 
     @Bean
-    Queue dockerRepoAddedQueue() {
-        return new Queue(this.dockerRepoAddedQueue, false);
-    }
-    @Bean
-    Queue dockerRepoDeletedQueue() {
-        return new Queue(this.dockerRepoDeletedQueue, false);
+    Queue dockerRepoQueue() {
+        return new Queue(this.dockerRepoQueue, false);
     }
 
     @Bean
@@ -69,12 +57,8 @@ public class RabbitMqHooksConfig {
     }
 
     @Bean
-    Queue gitRepoAddedQueue() {
-        return new Queue(this.gitRepoAddedQueue, false);
-    }
-    @Bean
-    Queue gitRepoDeletedQueue() {
-        return new Queue(this.gitRepoDeletedQueue, false);
+    Queue gitRepoQueue() {
+        return new Queue(this.gitRepoQueue, false);
     }
 
     @Bean
@@ -85,12 +69,8 @@ public class RabbitMqHooksConfig {
 
 
     @Bean
-    Binding dockerRepoAddedBinding(Queue dockerRepoAddedQueue, DirectExchange hooksExchange) {
-        return BindingBuilder.bind(dockerRepoAddedQueue).to(hooksExchange).with(this.dockerRepoAddedRoutingKey);
-    }
-    @Bean
-    Binding dockerRepoDeletedBinding(Queue dockerRepoDeletedQueue, DirectExchange hooksExchange) {
-        return BindingBuilder.bind(dockerRepoDeletedQueue).to(hooksExchange).with(this.dockerRepoDeletedRoutingKey);
+    Binding dockerRepoBinding(Queue dockerRepoQueue, DirectExchange hooksExchange) {
+        return BindingBuilder.bind(dockerRepoQueue).to(hooksExchange).with(this.dockerRepoRoutingKey);
     }
 
     @Bean
@@ -99,12 +79,8 @@ public class RabbitMqHooksConfig {
     }
 
     @Bean
-    Binding gitRepoAddedBinding(Queue gitRepoAddedQueue, DirectExchange hooksExchange) {
-        return BindingBuilder.bind(gitRepoAddedQueue).to(hooksExchange).with(this.gitRepoAddedRoutingKey);
-    }
-    @Bean
-    Binding gitRepoDeletedBinding(Queue gitRepoDeletedQueue, DirectExchange hooksExchange) {
-        return BindingBuilder.bind(gitRepoDeletedQueue).to(hooksExchange).with(this.gitRepoDeletedRoutingKey);
+    Binding gitRepoBinding(Queue gitRepoQueue, DirectExchange hooksExchange) {
+        return BindingBuilder.bind(gitRepoQueue).to(hooksExchange).with(this.gitRepoRoutingKey);
     }
 
     @Bean

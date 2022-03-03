@@ -1,7 +1,7 @@
 package basilisk.jobsManagingService.services.repo;
 
-import basilisk.jobsManagingService.events.hooks.GitRepoAddedEvent;
-import basilisk.jobsManagingService.events.hooks.GitRepoDeletedEvent;
+import basilisk.jobsManagingService.events.hooks.GitRepoEvent;
+import basilisk.jobsManagingService.events.hooks.RepoEventType;
 import basilisk.jobsManagingService.model.repo.GitRepo;
 import basilisk.jobsManagingService.model.repo.GitRepoType;
 import basilisk.jobsManagingService.repositories.repo.GitRepoRepository;
@@ -41,14 +41,14 @@ public class GitRepoService {
 
         GitRepo createdRepo = this.gitRepoRepository.save(repo);
 
-        GitRepoAddedEvent event = new GitRepoAddedEvent(createdRepo);
+        GitRepoEvent event = new GitRepoEvent(RepoEventType.CREATED, createdRepo);
         this.messageSender.send(event);
 
         return createdRepo;
     }
 
     public void deleteRepo(GitRepo repo) {
-        GitRepoDeletedEvent event = new GitRepoDeletedEvent(repo);
+        GitRepoEvent event = new GitRepoEvent(RepoEventType.DELETED, repo);
         this.messageSender.send(event);
 
         this.gitRepoRepository.delete(repo);

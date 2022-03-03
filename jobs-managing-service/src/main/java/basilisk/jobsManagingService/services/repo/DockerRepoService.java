@@ -1,7 +1,7 @@
 package basilisk.jobsManagingService.services.repo;
 
-import basilisk.jobsManagingService.events.hooks.DockerRepoAddedEvent;
-import basilisk.jobsManagingService.events.hooks.DockerRepoDeletedEvent;
+import basilisk.jobsManagingService.events.hooks.DockerRepoEvent;
+import basilisk.jobsManagingService.events.hooks.RepoEventType;
 import basilisk.jobsManagingService.model.repo.DockerRepo;
 import basilisk.jobsManagingService.repositories.repo.DockerRepoRepository;
 import basilisk.jobsManagingService.web.messaging.hooks.HooksMessageSender;
@@ -34,14 +34,14 @@ public class DockerRepoService {
     public DockerRepo addRepo(DockerRepo repo) {
         DockerRepo createdRepo = this.repoRepository.save(repo);
 
-        DockerRepoAddedEvent event = new DockerRepoAddedEvent(createdRepo);
+        DockerRepoEvent event = new DockerRepoEvent(RepoEventType.CREATED, createdRepo);
         this.messageSender.send(event);
 
         return createdRepo;
     }
 
     public void deleteRepo(DockerRepo repo) {
-        DockerRepoDeletedEvent event = new DockerRepoDeletedEvent(repo);
+        DockerRepoEvent event = new DockerRepoEvent(RepoEventType.DELETED, repo);
         this.messageSender.send(event);
 
         this.repoRepository.delete(repo);

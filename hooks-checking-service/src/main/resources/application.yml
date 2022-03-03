@@ -31,20 +31,16 @@ rabbitmq:
   hooks:
     exchange: hooksExchange
     git:
-      repoAddedQueue: gitRepoAddedQueue
-      repoDeletedQueue: gitRepoDeletedQueue
+      repoQueue: gitRepoQueue
       commitQueue: gitCommitQueue
       routingKeys:
-        repoAdded: gitRepoAddedKey
-        repoDeleted: gitRepoDeletedKey
+        repo: gitRepoKey
         commit: gitCommitKey
     docker:
-      repoAddedQueue: dockerRepoAddedQueue
-      repoDeletedQueue: dockerRepoDeletedQueue
+      repoQueue: dockerRepoQueue
       tagQueue: dockerTagQueue
       routingKeys:
-        repoAdded: dockerRepoAddedKey
-        repoDeleted: dockerRepoDeletedKey
+        repo: dockerRepoKey
         tag: dockerTagKey
 
 proxies:

@@ -42,16 +42,14 @@ public class GitReleaseCheckingService extends GitCheckingService {
             //  check whether the hook is already saved
             Optional<GitHook> foundHook = gitHookRepository.findByCommitSha1(commit.getSHA1());
 
-            if (foundHook.isPresent()) {
-                //ToDo nothing so far
-            } else {
+            if (foundHook.isEmpty()) {
                 //add it to the database and send it as message
                 GitHook gitHook = GitHook.builder().gitRepo(gitRepo).commitCreationDate(commit.getCommitDate()).commitSha1(commit.getSHA1()).
                         commitUrl(commit.getHtmlUrl().toString()).build();
 
                 gitHookRepository.save(gitHook);
                 //send git commit added event
-                GitCommitAddedEvent gitCommitAddedEvent=GitCommitAddedEvent.builder()
+                GitCommitAddedEvent gitCommitAddedEvent = GitCommitAddedEvent.builder()
                         .commit_sha1(gitHook.getCommitSha1())
                         .repoId(gitRepo.getId())
                         .url(gitHook.getCommitUrl())

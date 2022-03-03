@@ -30,7 +30,7 @@ public class DockerRepoService {
         return this.dockerRepoRepository.findById(id);
     }
 
-    public void addDockerRepo(DockerRepo dockerRepo) {
+    public void addRepo(DockerRepo dockerRepo) {
         DockerRepo createdRepo = this.dockerRepoRepository.save(dockerRepo);
         logger.info("Added Docker repo with id: {}", createdRepo.getId());
         this.dockerRepoRepository.save(dockerRepo);

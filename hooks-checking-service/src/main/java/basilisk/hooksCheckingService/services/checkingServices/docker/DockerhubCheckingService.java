@@ -1,7 +1,6 @@
 package basilisk.hooksCheckingService.services.checkingServices.docker;
 
 import basilisk.hooksCheckingService.core.exception.DockerhubException;
-import basilisk.hooksCheckingService.core.exception.MessageSendingExecption;
 import basilisk.hooksCheckingService.events.docker.DockerImageCreatedEvent;
 import basilisk.hooksCheckingService.events.docker.DockerTagAddedEvent;
 import basilisk.hooksCheckingService.events.docker.DockerTagUpdatedEvent;
@@ -57,20 +56,13 @@ public class DockerhubCheckingService implements CheckingService {
 
         var retrievedTags = this.dockerHubRestProxy.getTags(dockerRepo.getRepoOwner(), dockerRepo.getRepoName());
         for (DockerApiTag apiTag : retrievedTags) {
-            try {
-
-                DockerImage dockerImage = processDockerImage(apiTag, dockerRepo);
-                processDockerTag(apiTag, dockerImage);
-            } catch (MessageSendingExecption e) {
-
-            } catch (Exception e) {
-                throw new DockerhubException();
-            }
+            DockerImage dockerImage = processDockerImage(apiTag, dockerRepo);
+            processDockerTag(apiTag, dockerImage);
         }
     }
 
 
-    private DockerImage processDockerImage(DockerApiTag apiTag, DockerRepo dockerRepo) throws MessageSendingExecption, DockerhubException {
+    private DockerImage processDockerImage(DockerApiTag apiTag, DockerRepo dockerRepo) throws DockerhubException {
         // check whether the image assigned to the tag exists
         DockerImage dockerImage;
         var savedDockerImage = dockerImageRepository.findByDigest(apiTag.getImages().get(0).getDigest());
@@ -93,7 +85,7 @@ public class DockerhubCheckingService implements CheckingService {
 
     }
 
-    private void processDockerTag(DockerApiTag apiTag, DockerImage dockerImage) throws MessageSendingExecption {
+    private void processDockerTag(DockerApiTag apiTag, DockerImage dockerImage) {
         // check whether the tag exists
         var savedTag = dockerTagRepository.findDockerTagByName(apiTag.getName());
         // If the tag is not stored

@@ -42,13 +42,15 @@ public class GitBranchCheckingService extends GitCheckingService {
             //  check whether the hook is already saved
             Optional<GitHook> foundHook = gitHookRepository.findByCommitSha1(branch.getSHA1());
 
-            if (foundHook.isPresent()) {
-                //ToDo nothing so far
-            } else {
+            if (foundHook.isEmpty()) {
                 //save the hook and send it as event
                 GHCommit commit = repo.getCommit(branch.getSHA1());
-                GitHook gitHook = GitHook.builder().gitRepo(gitRepo).commitCreationDate(commit.getCommitDate()).commitSha1(commit.getSHA1()).
-                        commitUrl(commit.getHtmlUrl().toString()).build();
+                GitHook gitHook = GitHook.builder()
+                        .gitRepo(gitRepo)
+                        .commitCreationDate(commit.getCommitDate())
+                        .commitSha1(commit.getSHA1())
+                        .commitUrl(commit.getHtmlUrl().toString())
+                        .build();
 
                 gitHookRepository.save(gitHook);
                 //send git commit added event

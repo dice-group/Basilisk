@@ -1,9 +1,8 @@
 package basilisk.hooksCheckingService.web.messaging;
 
-import basilisk.hooksCheckingService.events.docker.DockerRepoAddedEvent;
-import basilisk.hooksCheckingService.events.docker.DockerRepoDeletedEvent;
-import basilisk.hooksCheckingService.events.git.GitRepoAddedEvent;
-import basilisk.hooksCheckingService.events.git.GitRepoDeletedEvent;
+import basilisk.hooksCheckingService.events.RepoEventType;
+import basilisk.hooksCheckingService.events.docker.DockerRepoEvent;
+import basilisk.hooksCheckingService.events.git.GitRepoEvent;
 import basilisk.hooksCheckingService.services.HooksServices.DockerRepoService;
 import basilisk.hooksCheckingService.services.HooksServices.GitRepoService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -22,23 +21,21 @@ public class MessageReceiver {
     }
 
 
-    @RabbitListener(queues = "${rabbitmq.hooks.docker.repoAddedQueue}")
-    public void receiveDockerRepoAddedEvent(DockerRepoAddedEvent event) {
-        this.dockerRepoService.addDockerRepo(event.getRepo());
+    @RabbitListener(queues = "${rabbitmq.hooks.docker.repoQueue}")
+    public void receiveDockerRepoEvent(DockerRepoEvent event) {
+        if (event.getEventType() == RepoEventType.CREATED) {
+            this.dockerRepoService.addRepo(event.getRepo());
+        } else {
+            this.dockerRepoService.deleteRepo(event.getRepo());
+        }
     }
 
-    @RabbitListener(queues = "${rabbitmq.hooks.docker.repoDeletedQueue}")
-    public void receiveDockerRepoDeletedEvent(DockerRepoDeletedEvent event) {
-        this.dockerRepoService.deleteRepo(event.getRepo());
-    }
-
-    @RabbitListener(queues = "${rabbitmq.hooks.git.repoAddedQueue}")
-    public void receiveGitRepoAddedEvent(GitRepoAddedEvent event) {
-        this.gitRepoService.addRepo(event.getRepo());
-    }
-
-    @RabbitListener(queues = "${rabbitmq.hooks.git.repoDeletedQueue}")
-    public void receiveGitRepoDeletedEvent(GitRepoDeletedEvent event) {
-        this.gitRepoService.deleteRepo(event.getRepo());
+    @RabbitListener(queues = "${rabbitmq.hooks.git.repoQueue}")
+    public void receiveGitRepoEvent(GitRepoEvent event) {
+        if (event.getEventType() == RepoEventType.CREATED) {
+            this.gitRepoService.addRepo(event.getRepo());
+        } else {
+            this.gitRepoService.deleteRepo(event.getRepo());
+        }
     }
 }

@@ -1,5 +1,6 @@
 package basilisk.hooksCheckingService.events.git;
 
+import basilisk.hooksCheckingService.events.RepoEventType;
 import basilisk.hooksCheckingService.model.git.GitRepo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,8 +14,9 @@ import java.io.Serializable;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GitRepoAddedEvent implements Serializable {
+public class GitRepoEvent implements Serializable {
 
+    private RepoEventType eventType;
     private GitRepo repo;
 
 }

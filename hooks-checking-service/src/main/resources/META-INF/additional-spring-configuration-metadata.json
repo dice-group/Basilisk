@@ -31,9 +31,9 @@
       "description": "Description for rabbitmq.hooks.docker.routingKeys.tag."
     },
     {
-      "name": "proxies.docker.apihost",
+      "name": "proxies.docker.registryUrl",
       "type": "java.lang.String",
-      "description": "Description for proxies.docker.apihost."
+      "description": "Description for proxies.docker.registryUrl."
     },
     {
       "name": "rabbitmq.hooks.git.repoQueue",

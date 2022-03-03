@@ -2,12 +2,10 @@ package basilisk.hooksCheckingService.services.HooksServices;
 
 import basilisk.hooksCheckingService.model.docker.DockerRepo;
 import basilisk.hooksCheckingService.repositories.DockerRepoRepository;
-import org.apache.commons.collections4.IteratorUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 
@@ -20,10 +18,6 @@ public class DockerRepoService {
 
     public DockerRepoService(DockerRepoRepository dockerRepoRepository) {
         this.dockerRepoRepository = dockerRepoRepository;
-    }
-
-    public List<DockerRepo> findAllDockerRepos() {
-        return IteratorUtils.toList(this.dockerRepoRepository.findAll().iterator());
     }
 
     public Optional<DockerRepo> findRepo(long id) {

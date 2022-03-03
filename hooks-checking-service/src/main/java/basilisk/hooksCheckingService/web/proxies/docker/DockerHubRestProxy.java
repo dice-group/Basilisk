@@ -21,15 +21,15 @@ public class DockerHubRestProxy {
 
     private final Logger logger = LoggerFactory.getLogger(DockerHubRestProxy.class);
     private final RestTemplate restTemplate;
-    @Value("${proxies.docker.apihost}")
-    private String dockerRegistry;
+    @Value("${proxies.docker.registryUrl}")
+    private String dockerRegistryUrl;
 
     public DockerHubRestProxy(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplate = restTemplateBuilder.build();
     }
 
     public List<DockerApiTag> getTags(String ownerName, String repoName) {
-        String resourceUrl = this.dockerRegistry + "/v2/repositories/" + ownerName + "/" + repoName + "/tags";
+        String resourceUrl = this.dockerRegistryUrl + "/v2/repositories/" + ownerName + "/" + repoName + "/tags";
 
         ResponseEntity<DockerTagApiCall> responseEntity = this.restTemplate.getForEntity(resourceUrl, DockerTagApiCall.class);
         HttpHeaders headers = responseEntity.getHeaders();

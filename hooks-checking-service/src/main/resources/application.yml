@@ -45,4 +45,4 @@ rabbitmq:
 
 proxies:
   docker:
-    apihost: https://registry.hub.docker.com
+    registryUrl: https://registry.hub.docker.com

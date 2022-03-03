@@ -1,14 +1,11 @@
 package basilisk.hooksCheckingService.services.HooksServices;
 
 import basilisk.hooksCheckingService.model.git.GitRepo;
-import basilisk.hooksCheckingService.model.git.GitRepoType;
 import basilisk.hooksCheckingService.repositories.GitRepoRepository;
-import org.apache.commons.collections4.IteratorUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 
@@ -26,22 +23,6 @@ public class GitRepoService {
 
     public Optional<GitRepo> findRepo(long id) {
         return this.gitRepoRepository.findById(id);
-    }
-
-    public List<GitRepo> findAllRepos() {
-        return IteratorUtils.toList(this.gitRepoRepository.findAll().iterator());
-    }
-
-    public List<GitRepo> findAllGitReleaseRepos() {
-        return IteratorUtils.toList(this.gitRepoRepository.findAllByRepoType(GitRepoType.RELEASE).iterator());
-    }
-
-    public List<GitRepo> findAllGitPullRequestRepos() {
-        return IteratorUtils.toList(this.gitRepoRepository.findAllByRepoType(GitRepoType.PULL_REQUEST).iterator());
-    }
-
-    public List<GitRepo> findAllGitBranchRepos() {
-        return IteratorUtils.toList(this.gitRepoRepository.findAllByRepoType(GitRepoType.BRANCH).iterator());
     }
 
     public void addRepo(GitRepo gitRepo) {

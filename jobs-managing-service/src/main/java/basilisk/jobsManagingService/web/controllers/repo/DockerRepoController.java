@@ -1,8 +1,10 @@
 package basilisk.jobsManagingService.web.controllers.repo;
 
-import basilisk.jobsManagingService.dto.repo.DockerRepoDto;
 import basilisk.jobsManagingService.dto.Views;
+import basilisk.jobsManagingService.dto.repo.DockerRepoDto;
+import basilisk.jobsManagingService.model.benchmarking.TripleStore;
 import basilisk.jobsManagingService.model.repo.DockerRepo;
+import basilisk.jobsManagingService.services.benchmarking.TripleStoreService;
 import basilisk.jobsManagingService.services.repo.DockerRepoService;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.sun.istack.NotNull;
@@ -21,10 +23,12 @@ import java.util.stream.Collectors;
 public class DockerRepoController {
 
     private final DockerRepoService repoService;
+    private final TripleStoreService tsService;
     private final ModelMapper modelMapper;
 
-    public DockerRepoController(DockerRepoService repoService, ModelMapper mapper) {
+    public DockerRepoController(DockerRepoService repoService, TripleStoreService tsService, ModelMapper mapper) {
         this.repoService = repoService;
+        this.tsService = tsService;
         this.modelMapper = mapper;
     }
 
@@ -37,7 +41,13 @@ public class DockerRepoController {
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     public ResponseEntity<DockerRepoDto> addRepo(@RequestBody @NotNull DockerRepoDto repoDto) {
-        DockerRepo createdRepo = this.repoService.addRepo(convertToEntity(repoDto));
+        DockerRepo repo = convertToEntity(repoDto);
+        if (repoDto.getTripleStore() != null && repoDto.getTripleStore().getId() != null) {
+            Optional<TripleStore> tsOptional = this.tsService.getTripleStore(repoDto.getTripleStore().getId());
+            tsOptional.ifPresent(repo::setTripleStore);
+        }
+
+        DockerRepo createdRepo = this.repoService.addRepo(repo);
         return new ResponseEntity<>(convertToDto(createdRepo), HttpStatus.CREATED);
     }
 

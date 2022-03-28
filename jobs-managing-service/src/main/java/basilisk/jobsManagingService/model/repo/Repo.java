@@ -26,4 +26,5 @@ public abstract class Repo extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "triple_store_id")
     private TripleStore tripleStore;
+
 }

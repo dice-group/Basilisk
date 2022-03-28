@@ -5,7 +5,7 @@ import basilisk.jobsManagingService.events.hooks.RepoEventType;
 import basilisk.jobsManagingService.model.repo.DockerRepo;
 import basilisk.jobsManagingService.repositories.repo.DockerRepoRepository;
 import basilisk.jobsManagingService.web.messaging.hooks.HooksMessageSender;
-import org.apache.commons.collections4.IteratorUtils;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,10 +17,12 @@ public class DockerRepoService {
 
     private final DockerRepoRepository repoRepository;
     private final HooksMessageSender messageSender;
+    private final ModelMapper mapper;
 
-    public DockerRepoService(DockerRepoRepository repository, HooksMessageSender sender) {
+    public DockerRepoService(DockerRepoRepository repository, HooksMessageSender sender, ModelMapper mapper) {
         this.repoRepository = repository;
         this.messageSender = sender;
+        this.mapper = mapper;
     }
 
     public Optional<DockerRepo> getRepo(Long id) {
@@ -32,6 +34,15 @@ public class DockerRepoService {
     }
 
     public DockerRepo addRepo(DockerRepo repo) {
+        if (repo.getId() != null) {
+            Optional<DockerRepo> oldRepo = getRepo(repo.getId());
+
+            if (oldRepo.isPresent()) {
+                DockerRepo or = oldRepo.get();
+                this.mapper.map(repo, or);
+                repo = or;
+            }
+        }
         DockerRepo createdRepo = this.repoRepository.save(repo);
 
         DockerRepoEvent event = new DockerRepoEvent(RepoEventType.CREATED, createdRepo);

@@ -6,7 +6,7 @@ import basilisk.jobsManagingService.model.repo.GitRepo;
 import basilisk.jobsManagingService.model.repo.GitRepoType;
 import basilisk.jobsManagingService.repositories.repo.GitRepoRepository;
 import basilisk.jobsManagingService.web.messaging.hooks.HooksMessageSender;
-import org.apache.commons.collections4.IteratorUtils;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,10 +18,12 @@ public class GitRepoService {
 
     private final GitRepoRepository gitRepoRepository;
     private final HooksMessageSender messageSender;
+    private final ModelMapper mapper;
 
-    public GitRepoService(GitRepoRepository repository, HooksMessageSender sender) {
+    public GitRepoService(GitRepoRepository repository, HooksMessageSender sender, ModelMapper mapper) {
         this.gitRepoRepository = repository;
         this.messageSender = sender;
+        this.mapper = mapper;
     }
 
     public Optional<GitRepo> getRepo(Long id) {
@@ -38,6 +40,16 @@ public class GitRepoService {
 
     public GitRepo addRepo(GitRepo repo, GitRepoType type) {
         repo.setRepoType(type);
+
+        if (repo.getId() != null) {
+            Optional<GitRepo> oldRepo = getRepo(repo.getId());
+
+            if (oldRepo.isPresent()) {
+                GitRepo or = oldRepo.get();
+                this.mapper.map(repo, or);
+                repo = or;
+            }
+        }
 
         GitRepo createdRepo = this.gitRepoRepository.save(repo);
 

@@ -1,9 +1,11 @@
 package basilisk.jobsManagingService.web.controllers.repo;
 
-import basilisk.jobsManagingService.dto.repo.GitRepoDto;
 import basilisk.jobsManagingService.dto.Views;
+import basilisk.jobsManagingService.dto.repo.GitRepoDto;
+import basilisk.jobsManagingService.model.benchmarking.TripleStore;
 import basilisk.jobsManagingService.model.repo.GitRepo;
 import basilisk.jobsManagingService.model.repo.GitRepoType;
+import basilisk.jobsManagingService.services.benchmarking.TripleStoreService;
 import basilisk.jobsManagingService.services.repo.GitRepoService;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.google.common.base.Preconditions;
@@ -22,10 +24,12 @@ import java.util.stream.Collectors;
 public class GitRepoController {
 
     private final GitRepoService repoService;
+    private final TripleStoreService tsService;
     private final ModelMapper modelMapper;
 
-    public GitRepoController(GitRepoService repoService, ModelMapper mapper) {
+    public GitRepoController(GitRepoService repoService, TripleStoreService tsService, ModelMapper mapper) {
         this.repoService = repoService;
+        this.tsService = tsService;
         this.modelMapper = mapper;
     }
 
@@ -59,19 +63,25 @@ public class GitRepoController {
 
     @PostMapping(path = "/release", consumes = "application/json", produces = "application/json")
     public ResponseEntity<GitRepoDto> addReleaseRepo(@RequestBody @NotNull GitRepoDto gitRepoDto) {
-        GitRepo createdRepo = this.repoService.addRepo(convertToEntity(gitRepoDto), GitRepoType.RELEASE);
+        GitRepo repo = getRepoEntity(gitRepoDto);
+
+        GitRepo createdRepo = this.repoService.addRepo(repo, GitRepoType.RELEASE);
         return new ResponseEntity<>(convertToDto(createdRepo), HttpStatus.CREATED);
     }
 
     @PostMapping(path = "/branch", consumes = "application/json", produces = "application/json")
     public ResponseEntity<GitRepoDto> addBranchRepo(@RequestBody @NotNull GitRepoDto gitRepoDto) {
-        GitRepo createdRepo = this.repoService.addRepo(convertToEntity(gitRepoDto), GitRepoType.BRANCH);
+        GitRepo repo = getRepoEntity(gitRepoDto);
+
+        GitRepo createdRepo = this.repoService.addRepo(repo, GitRepoType.BRANCH);
         return new ResponseEntity<>(convertToDto(createdRepo), HttpStatus.CREATED);
     }
 
     @PostMapping(path = "/pullRequest", consumes = "application/json", produces = "application/json")
     public ResponseEntity<GitRepoDto> addPullRequestRepo(@RequestBody @NotNull GitRepoDto gitRepoDto) {
-        GitRepo createdRepo = this.repoService.addRepo(convertToEntity(gitRepoDto), GitRepoType.PULL_REQUEST);
+        GitRepo repo = getRepoEntity(gitRepoDto);
+
+        GitRepo createdRepo = this.repoService.addRepo(repo, GitRepoType.PULL_REQUEST);
         return new ResponseEntity<>(convertToDto(createdRepo), HttpStatus.CREATED);
     }
 
@@ -85,6 +95,15 @@ public class GitRepoController {
         } else {
             return new ResponseEntity<>("There is no Git repository with ID " + id, HttpStatus.OK);
         }
+    }
+
+    private GitRepo getRepoEntity(GitRepoDto gitRepoDto) {
+        GitRepo repo = convertToEntity(gitRepoDto);
+        if (gitRepoDto.getTripleStore() != null && gitRepoDto.getTripleStore().getId() != null) {
+            Optional<TripleStore> tsOptional = this.tsService.getTripleStore(gitRepoDto.getTripleStore().getId());
+            tsOptional.ifPresent(repo::setTripleStore);
+        }
+        return repo;
     }
 
     private List<GitRepoDto> convertToDtoList(List<GitRepo> repos) {

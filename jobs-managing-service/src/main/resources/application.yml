@@ -18,7 +18,7 @@ spring:
     show-sql: true
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
   rabbitmq:
     host: localhost
     port: '5672'

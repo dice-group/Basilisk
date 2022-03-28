@@ -3,6 +3,7 @@ package basilisk.jobsManagingService.services.benchmarking;
 
 import basilisk.jobsManagingService.model.benchmarking.Benchmark;
 import basilisk.jobsManagingService.repositories.benchmarking.BenchmarkRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,9 +14,11 @@ import java.util.Optional;
 public class BenchmarkService {
 
     private final BenchmarkRepository repo;
+    private final ModelMapper mapper;
 
-    public BenchmarkService(BenchmarkRepository repo) {
+    public BenchmarkService(BenchmarkRepository repo, ModelMapper mapper) {
         this.repo = repo;
+        this.mapper = mapper;
     }
 
     public Benchmark addBenchmark(Benchmark benchmark) {
@@ -23,7 +26,9 @@ public class BenchmarkService {
             Optional<Benchmark> oldBenchmark = getBenchmark(benchmark.getId());
 
             if (oldBenchmark.isPresent()) {
-                benchmark = updateBenchmark(oldBenchmark.get(), benchmark);
+                Benchmark bm = oldBenchmark.get();
+                this.mapper.map(benchmark, bm);
+                benchmark = bm;
             }
         }
 
@@ -46,21 +51,5 @@ public class BenchmarkService {
         // TODO Delete queryfile
 
         this.repo.delete(benchmark);
-    }
-
-    private Benchmark updateBenchmark(Benchmark oldBenchmark, Benchmark updatedBenchmark) {
-        if (updatedBenchmark.getName() != null) {
-            oldBenchmark.setName(updatedBenchmark.getName());
-        }
-
-        if (updatedBenchmark.getDataSet() != null) {
-            oldBenchmark.setDataSet(updatedBenchmark.getDataSet());
-        }
-
-        if (updatedBenchmark.getQueryFileUrl() != null) {
-            oldBenchmark.setQueryFileUrl(updatedBenchmark.getQueryFileUrl());
-        }
-
-        return oldBenchmark;
     }
 }

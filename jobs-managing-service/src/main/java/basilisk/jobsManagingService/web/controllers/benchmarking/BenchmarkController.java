@@ -3,7 +3,9 @@ package basilisk.jobsManagingService.web.controllers.benchmarking;
 
 import basilisk.jobsManagingService.dto.configs.BenchmarkDto;
 import basilisk.jobsManagingService.model.benchmarking.Benchmark;
+import basilisk.jobsManagingService.model.benchmarking.DataSet;
 import basilisk.jobsManagingService.services.benchmarking.BenchmarkService;
+import basilisk.jobsManagingService.services.benchmarking.DataSetService;
 import com.sun.istack.NotNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -20,10 +22,12 @@ import java.util.stream.Collectors;
 public class BenchmarkController {
 
     private final BenchmarkService service;
+    private final DataSetService dsService;
     private final ModelMapper mapper;
 
-    public BenchmarkController(BenchmarkService service, ModelMapper mapper) {
+    public BenchmarkController(BenchmarkService service, DataSetService dsService, ModelMapper mapper) {
         this.service = service;
+        this.dsService = dsService;
         this.mapper = mapper;
     }
 
@@ -35,7 +39,13 @@ public class BenchmarkController {
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     public ResponseEntity<BenchmarkDto> addBenchmark(@RequestBody @NotNull BenchmarkDto bmDto) {
-        Benchmark createdBm = this.service.addBenchmark(convertToEntity(bmDto));
+        Benchmark benchmark = convertToEntity(bmDto);
+        if (benchmark.getDataSet() != null && benchmark.getDataSet().getId() != null) {
+            Optional<DataSet> dsOptional = this.dsService.getDataSet(benchmark.getDataSet().getId());
+            dsOptional.ifPresent(benchmark::setDataSet);
+        }
+
+        Benchmark createdBm = this.service.addBenchmark(benchmark);
         return new ResponseEntity<>(convertToDto(createdBm), HttpStatus.CREATED);
     }
 

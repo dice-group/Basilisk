@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table
+@Table(name = "DOCKER_REPO")
 public class DockerRepo extends Repo {
 
 }

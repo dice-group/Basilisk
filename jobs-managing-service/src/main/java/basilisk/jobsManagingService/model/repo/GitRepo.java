@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table
+@Table(name = "GIT_REPO")
 @Getter
 @Setter
 public class GitRepo extends Repo {

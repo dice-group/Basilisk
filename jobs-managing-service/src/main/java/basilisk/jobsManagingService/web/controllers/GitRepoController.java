@@ -92,10 +92,10 @@ public class GitRepoController {
     }
 
     private GitRepoDto convertToDto(GitRepo gitRepo) {
-        return modelMapper.map(gitRepo, GitRepoDto.class);
+        return this.modelMapper.map(gitRepo, GitRepoDto.class);
     }
 
     private GitRepo convertToEntity(GitRepoDto gitRepoDto) {
-        return modelMapper.map(gitRepoDto, GitRepo.class);
+        return this.modelMapper.map(gitRepoDto, GitRepo.class);
     }
 }

@@ -16,15 +16,19 @@ public class TripleStoreService {
         this.tripleStoreRepository = tripleStoreRepository;
     }
 
-    public void addTripleStore(TripleStore tripleStore) {
-        tripleStoreRepository.save(tripleStore);
+    public TripleStore addTripleStore(TripleStore tripleStore) {
+        return this.tripleStoreRepository.save(tripleStore);
     }
 
     public Optional<TripleStore> getTripleStore(Long id) {
-        return tripleStoreRepository.findById(id);
+        return this.tripleStoreRepository.findById(id);
     }
 
     public List<TripleStore> getAllTripleStores() {
-        return (List<TripleStore>) tripleStoreRepository.findAll();
+        return (List<TripleStore>) this.tripleStoreRepository.findAll();
+    }
+
+    public void deleteTripleStore(TripleStore ts) {
+        this.tripleStoreRepository.delete(ts);
     }
 }

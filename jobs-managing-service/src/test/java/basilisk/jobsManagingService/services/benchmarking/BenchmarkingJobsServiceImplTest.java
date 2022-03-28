@@ -2,10 +2,9 @@ package basilisk.jobsManagingService.services.benchmarking;
 
 import basilisk.jobsManagingService.model.GitJobConfig;
 import basilisk.jobsManagingService.model.benchmarking.TripleStore;
-import basilisk.jobsManagingService.model.benchmarking.DataSetConfig;
+import basilisk.jobsManagingService.model.benchmarking.DataSet;
 import basilisk.jobsManagingService.model.benchmarking.GitBenchmarkJob;
 import basilisk.jobsManagingService.model.benchmarking.JobStatus;
-import basilisk.jobsManagingService.model.benchmarking.QueryConfig;
 import basilisk.jobsManagingService.events.GitCommitAddedEvent;
 import basilisk.jobsManagingService.repositories.benchmarking.JobsRepository;
 import basilisk.jobsManagingService.web.messaging.benchmarking.BenchmarkMessageSender;
@@ -30,9 +29,7 @@ class BenchmarkingJobsServiceImplTest {
     BenchmarkingJobsService benchmarkingJobsService;
 
     @Mock
-    private QueryConfigService qcService;
-    @Mock
-    private DataSetConfigService dcService;
+    private DataSetService dcService;
 
     @Mock
     private TripleStoreService tripleStoreService;
@@ -47,7 +44,7 @@ class BenchmarkingJobsServiceImplTest {
     void setUp()
     {
         MockitoAnnotations.openMocks(this);
-        benchmarkingJobsService=new BenchmarkingJobsService(qcService, tripleStoreService,messageSender,jobsRepository, dcService);
+        benchmarkingJobsService=new BenchmarkingJobsService(tripleStoreService,messageSender,jobsRepository, dcService);
     }
 
     @Test
@@ -75,29 +72,27 @@ class BenchmarkingJobsServiceImplTest {
 
         String queryName="query1";
         String queryUrl="query1Url";
-        QueryConfig queryConfig=new QueryConfig(queryName,queryUrl);
+//        QueryConfig queryConfig=new QueryConfig(queryName,queryUrl);
 
-        given(qcService.getAllActiveQueryConfigs())
-                .willReturn(List.of(queryConfig));
+//        given(qcService.getAllActiveQueryConfigs())
+//                .willReturn(List.of(queryConfig));
 
 
         String dataset1Name="dataset1";
         String dataset1Url="dataset1Url";
-        DataSetConfig dataSetConfig1=new DataSetConfig(dataset1Name,dataset1Url);
+        DataSet dataSet1 =new DataSet(dataset1Name,dataset1Url);
         String dataset2Name="dataset2";
         String dataset2Url="dataset2Url";
-        DataSetConfig dataSetConfig2=new DataSetConfig(dataset2Name,dataset2Url);
+        DataSet dataSet2 =new DataSet(dataset2Name,dataset2Url);
 
         GitBenchmarkJob benchmarkJob=GitBenchmarkJob.builder()
                 .gitJobConfig(gitJobConfig)
-                .queryConfigs(List.of(queryConfig))
                 .status(JobStatus.CREATED)
-                .dataSetConfig(dataSetConfig1)
                 .tripleStore(tripleStore)
                 .build();
 
-        given(dcService.getAllActiveDataSetConfigs())
-                .willReturn(List.of(dataSetConfig1,dataSetConfig2));
+        given(dcService.getAllDataSets())
+                .willReturn(List.of(dataSet1, dataSet2));
 
 //        given(tripleStoreService.getTripleStoreByGitRepoId(1L))
 //                .willReturn(Optional.of(tripleStore));

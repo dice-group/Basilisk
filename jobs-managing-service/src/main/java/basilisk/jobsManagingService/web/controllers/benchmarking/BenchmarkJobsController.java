@@ -12,14 +12,13 @@ public class BenchmarkJobsController {
 
     private final BenchmarkingJobsService benchmarkingJobsService;
 
-    public BenchmarkJobsController(BenchmarkingJobsService benchmarkingJobsService)
-    {
+    public BenchmarkJobsController(BenchmarkingJobsService benchmarkingJobsService) {
         this.benchmarkingJobsService=benchmarkingJobsService;
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<HttpStatus> addDockerRepo(@RequestBody long jobId)
+    public ResponseEntity<HttpStatus> abortBenchmarkJob(@RequestBody long jobId)
     {
         this.benchmarkingJobsService.abortJob(jobId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

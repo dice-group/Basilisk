@@ -22,13 +22,11 @@ import java.util.Optional;
 public class BenchmarkingJobsService {
 
     private final JobsRepository jobsRepository;
-    private final QueryConfigService qcService;
-    private final DataSetConfigService dcService;
+    private final DataSetService dcService;
     private final TripleStoreService tripleStoreService;
     private final BenchmarkMessageSender messageSender;
 
-    public BenchmarkingJobsService(QueryConfigService qcService, TripleStoreService tripleStoreService, BenchmarkMessageSender messageSender, JobsRepository jobsRepository, DataSetConfigService dcService) {
-        this.qcService = qcService;
+    public BenchmarkingJobsService(TripleStoreService tripleStoreService, BenchmarkMessageSender messageSender, JobsRepository jobsRepository, DataSetService dcService) {
         this.tripleStoreService = tripleStoreService;
         this.jobsRepository = jobsRepository;
         this.messageSender = messageSender;
@@ -145,8 +143,7 @@ public class BenchmarkingJobsService {
     private List<GitBenchmarkJob> generateGitBenchmarkingJobsConfigs(GitCommitAddedEvent gitCommitAddedEvent) {
         List<GitBenchmarkJob> jobs = new ArrayList<>();
         //get all active query and dataset configs
-        List<QueryConfig> activeQueryConfigs = this.qcService.getAllActiveQueryConfigs();
-        List<DataSetConfig> dataSetConfigs = this.dcService.getAllActiveDataSetConfigs();
+        List<DataSet> dataSets = this.dcService.getAllDataSets();
         GitJobConfig gitJobConfig = GitJobConfig.builder()
                 .commit_sha1(gitCommitAddedEvent.getCommit_sha1())
                 .url(gitCommitAddedEvent.getUrl())
@@ -158,11 +155,9 @@ public class BenchmarkingJobsService {
         //{
         //ToDo
         //}
-        dataSetConfigs.forEach(dataset -> {
+        dataSets.forEach(dataset -> {
             GitBenchmarkJob benchmarkJob = GitBenchmarkJob.builder()
                     .gitJobConfig(gitJobConfig)
-                    .queryConfigs(activeQueryConfigs)
-                    .dataSetConfig(dataset)
                     //.tripleStore(tripleStore.get()) // TODO!
                     .status(JobStatus.CREATED)
                     .build();
@@ -181,8 +176,8 @@ public class BenchmarkingJobsService {
     private List<DockerBenchmarkJob> generateDockerBenchmarkingJobsConfigs(DockerImageCreatedEvent dockerImageCreatedEvent) {
         List<DockerBenchmarkJob> jobs = new ArrayList<>();
         //get all active query and dataset configs
-        List<QueryConfig> activeQueryConfigs = this.qcService.getAllActiveQueryConfigs();
-        List<DataSetConfig> dataSetConfigs = this.dcService.getAllActiveDataSetConfigs();
+//        List<QueryConfig> activeQueryConfigs = this.qcService.getAllActiveQueryConfigs();
+        List<DataSet> dataSets = this.dcService.getAllDataSets();
         DockerJobConfig dockerJobConfig = DockerJobConfig.builder()
                 .imageId(dockerImageCreatedEvent.getImageId())
                 .digest(dockerImageCreatedEvent.getDigest())
@@ -195,12 +190,10 @@ public class BenchmarkingJobsService {
 //        {
 //            //ToDo
 //        }
-        dataSetConfigs.forEach(dataset ->
+        dataSets.forEach(dataset ->
         {
             DockerBenchmarkJob benchmarkJob = DockerBenchmarkJob.builder()
                     .dockerJobConfig(dockerJobConfig)
-                    .queryConfigs(activeQueryConfigs)
-                    .dataSetConfig(dataset)
                     //.tripleStore(tripleStore.get()) // TODO!
                     .status(JobStatus.CREATED)
                     .build();

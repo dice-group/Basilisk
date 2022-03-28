@@ -1,30 +1,20 @@
 package basilisk.jobsManagingService.model.benchmarking;
 
-import basilisk.jobsManagingService.model.BaseEntity;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
-/**
- * @author Fakhr Shaheen
- */
 
-@Getter
 @Entity
+@Table(name = "QUERY_CONFIG")
 @SuperBuilder
 @NoArgsConstructor
-public class QueryConfig extends BaseEntity {
+public class QueryConfig extends Config {
 
-    String name;
-    String url;
-    boolean active;
-
-    public QueryConfig(String name,String url)
-    {
-        this.name=name;
-        this.url=url;
+    public QueryConfig(String name, String url) {
+        super(name, url);
     }
 
 }

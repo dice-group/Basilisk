@@ -1,14 +1,13 @@
 package basilisk.jobsManagingService.services.benchmarking;
 
 import basilisk.jobsManagingService.model.GitJobConfig;
-import basilisk.jobsManagingService.model.TripleStore;
+import basilisk.jobsManagingService.model.benchmarking.TripleStore;
 import basilisk.jobsManagingService.model.benchmarking.DataSetConfig;
 import basilisk.jobsManagingService.model.benchmarking.GitBenchmarkJob;
 import basilisk.jobsManagingService.model.benchmarking.JobStatus;
 import basilisk.jobsManagingService.model.benchmarking.QueryConfig;
 import basilisk.jobsManagingService.events.GitCommitAddedEvent;
 import basilisk.jobsManagingService.repositories.benchmarking.JobsRepository;
-import basilisk.jobsManagingService.services.TripleStoreService;
 import basilisk.jobsManagingService.web.messaging.benchmarking.BenchmarkMessageSender;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,7 +30,9 @@ class BenchmarkingJobsServiceImplTest {
     BenchmarkingJobsService benchmarkingJobsService;
 
     @Mock
-    private BenchmarkConfigurationService benchmarkConfigurationService;
+    private QueryConfigService qcService;
+    @Mock
+    private DataSetConfigService dcService;
 
     @Mock
     private TripleStoreService tripleStoreService;
@@ -46,7 +47,7 @@ class BenchmarkingJobsServiceImplTest {
     void setUp()
     {
         MockitoAnnotations.openMocks(this);
-        benchmarkingJobsService=new BenchmarkingJobsService(benchmarkConfigurationService,tripleStoreService,messageSender,jobsRepository);
+        benchmarkingJobsService=new BenchmarkingJobsService(qcService, tripleStoreService,messageSender,jobsRepository, dcService);
     }
 
     @Test
@@ -76,7 +77,7 @@ class BenchmarkingJobsServiceImplTest {
         String queryUrl="query1Url";
         QueryConfig queryConfig=new QueryConfig(queryName,queryUrl);
 
-        given(benchmarkConfigurationService.getAllActiveBenchmarkQueryConfigs())
+        given(qcService.getAllActiveQueryConfigs())
                 .willReturn(List.of(queryConfig));
 
 
@@ -95,7 +96,7 @@ class BenchmarkingJobsServiceImplTest {
                 .tripleStore(tripleStore)
                 .build();
 
-        given(benchmarkConfigurationService.getAllActiveBenchmarkDataSetConfigs())
+        given(dcService.getAllActiveDataSetConfigs())
                 .willReturn(List.of(dataSetConfig1,dataSetConfig2));
 
 //        given(tripleStoreService.getTripleStoreByGitRepoId(1L))

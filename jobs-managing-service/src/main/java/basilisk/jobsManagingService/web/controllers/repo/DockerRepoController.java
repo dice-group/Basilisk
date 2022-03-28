@@ -1,6 +1,6 @@
-package basilisk.jobsManagingService.web.controllers;
+package basilisk.jobsManagingService.web.controllers.repo;
 
-import basilisk.jobsManagingService.dto.DockerRepoDto;
+import basilisk.jobsManagingService.dto.repo.DockerRepoDto;
 import basilisk.jobsManagingService.dto.Views;
 import basilisk.jobsManagingService.model.repo.DockerRepo;
 import basilisk.jobsManagingService.services.repo.DockerRepoService;
@@ -57,10 +57,10 @@ public class DockerRepoController {
     }
 
     private DockerRepoDto convertToDto(DockerRepo repo) {
-        return modelMapper.map(repo, DockerRepoDto.class);
+        return this.modelMapper.map(repo, DockerRepoDto.class);
     }
 
     private DockerRepo convertToEntity(DockerRepoDto repoDto) {
-        return modelMapper.map(repoDto, DockerRepo.class);
+        return this.modelMapper.map(repoDto, DockerRepo.class);
     }
 }

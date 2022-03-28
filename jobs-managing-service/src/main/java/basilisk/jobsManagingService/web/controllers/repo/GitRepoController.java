@@ -1,6 +1,6 @@
-package basilisk.jobsManagingService.web.controllers;
+package basilisk.jobsManagingService.web.controllers.repo;
 
-import basilisk.jobsManagingService.dto.GitRepoDto;
+import basilisk.jobsManagingService.dto.repo.GitRepoDto;
 import basilisk.jobsManagingService.dto.Views;
 import basilisk.jobsManagingService.model.repo.GitRepo;
 import basilisk.jobsManagingService.model.repo.GitRepoType;

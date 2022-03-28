@@ -1,4 +1,4 @@
-package basilisk.jobsManagingService.web.controllers;
+package basilisk.jobsManagingService.web.controllers.benchmarking;
 
 import basilisk.jobsManagingService.services.benchmarking.BenchmarkingJobsService;
 import org.springframework.http.HttpStatus;
@@ -6,15 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
-
-/**
- * @author Fakhr Shaheen
- */
 @RestController
 @RequestMapping("benchmarkJob")
 public class BenchmarkJobsController {
 
-    private BenchmarkingJobsService benchmarkingJobsService;
+    private final BenchmarkingJobsService benchmarkingJobsService;
 
     public BenchmarkJobsController(BenchmarkingJobsService benchmarkingJobsService)
     {
@@ -25,7 +21,7 @@ public class BenchmarkJobsController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<HttpStatus> addDockerRepo(@RequestBody long jobId)
     {
-        benchmarkingJobsService.abortJob(jobId);
+        this.benchmarkingJobsService.abortJob(jobId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

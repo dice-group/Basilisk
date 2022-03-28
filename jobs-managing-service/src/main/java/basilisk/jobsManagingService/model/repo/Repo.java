@@ -1,7 +1,7 @@
 package basilisk.jobsManagingService.model.repo;
 
 import basilisk.jobsManagingService.model.BaseEntity;
-import basilisk.jobsManagingService.model.TripleStore;
+import basilisk.jobsManagingService.model.benchmarking.TripleStore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

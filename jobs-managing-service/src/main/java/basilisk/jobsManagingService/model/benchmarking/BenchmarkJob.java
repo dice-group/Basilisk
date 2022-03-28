@@ -1,7 +1,6 @@
 package basilisk.jobsManagingService.model.benchmarking;
 
 import basilisk.jobsManagingService.model.BaseEntity;
-import basilisk.jobsManagingService.model.TripleStore;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 

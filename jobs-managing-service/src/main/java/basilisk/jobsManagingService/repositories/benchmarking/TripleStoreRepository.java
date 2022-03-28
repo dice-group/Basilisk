@@ -1,14 +1,9 @@
-package basilisk.jobsManagingService.repositories;
+package basilisk.jobsManagingService.repositories.benchmarking;
 
-import basilisk.jobsManagingService.model.TripleStore;
+import basilisk.jobsManagingService.model.benchmarking.TripleStore;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
-/**
- * @author Fakhr Shaheen
- */
 
 @Repository
 public interface TripleStoreRepository extends CrudRepository<TripleStore,Long> {

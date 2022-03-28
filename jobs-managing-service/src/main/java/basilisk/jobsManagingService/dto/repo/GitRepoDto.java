@@ -1,5 +1,6 @@
-package basilisk.jobsManagingService.dto;
+package basilisk.jobsManagingService.dto.repo;
 
+import basilisk.jobsManagingService.dto.Views;
 import basilisk.jobsManagingService.model.repo.GitRepoType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;

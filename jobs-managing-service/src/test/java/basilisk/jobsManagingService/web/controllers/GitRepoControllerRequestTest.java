@@ -3,6 +3,7 @@ package basilisk.jobsManagingService.web.controllers;
 import basilisk.jobsManagingService.model.repo.GitRepo;
 import basilisk.jobsManagingService.model.repo.GitRepoType;
 import basilisk.jobsManagingService.services.repo.GitRepoService;
+import basilisk.jobsManagingService.web.controllers.repo.GitRepoController;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -25,6 +25,6 @@ public class HooksMessageReceiver {
     @RabbitListener(queues = "${rabbitmq.hooks.git.commitQueue}")
     public void receiveGitCommitEvent(GitCommitAddedEvent gitCommitAddedEvent) {
         this.logger.info("Git commit added event: {}", gitCommitAddedEvent);
-        // this.benchmarkingJobsService.generateBenchmarkingJobs(gitCommitAddedEvent);
+        this.benchmarkingJobsService.generateBenchmarkingJobs(gitCommitAddedEvent);
     }
 }

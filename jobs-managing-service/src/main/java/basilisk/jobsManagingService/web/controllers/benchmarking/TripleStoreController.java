@@ -1,8 +1,8 @@
-package basilisk.jobsManagingService.web.controllers;
+package basilisk.jobsManagingService.web.controllers.benchmarking;
 
-import basilisk.jobsManagingService.dto.TripleStoreDto;
-import basilisk.jobsManagingService.model.TripleStore;
-import basilisk.jobsManagingService.services.TripleStoreService;
+import basilisk.jobsManagingService.dto.configs.TripleStoreDto;
+import basilisk.jobsManagingService.model.benchmarking.TripleStore;
+import basilisk.jobsManagingService.services.benchmarking.TripleStoreService;
 import com.sun.istack.NotNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;

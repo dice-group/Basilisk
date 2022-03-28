@@ -1,25 +1,17 @@
 package basilisk.jobsManagingService.model.benchmarking;
 
-import basilisk.jobsManagingService.model.BaseEntity;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
-
-@Getter
-@NoArgsConstructor
 @Entity
-public class DataSetConfig extends BaseEntity {
+@Table(name = "DATASET_CONFIG")
+@NoArgsConstructor
+public class DataSetConfig extends Config {
 
-    String name;
-    String url;
-    boolean active;
-
-    public DataSetConfig(String name,String url)
-    {
-        this.name=name;
-        this.url=url;
+    public DataSetConfig(String name, String url) {
+        super(name, url);
     }
 
 }

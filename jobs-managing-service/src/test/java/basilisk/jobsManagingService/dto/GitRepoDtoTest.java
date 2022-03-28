@@ -1,5 +1,6 @@
 package basilisk.jobsManagingService.dto;
 
+import basilisk.jobsManagingService.dto.repo.GitRepoDto;
 import basilisk.jobsManagingService.model.repo.GitRepo;
 import org.junit.Test;
 import org.modelmapper.ModelMapper;

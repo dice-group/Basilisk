@@ -1,7 +1,7 @@
-package basilisk.jobsManagingService.services;
+package basilisk.jobsManagingService.services.benchmarking;
 
-import basilisk.jobsManagingService.model.TripleStore;
-import basilisk.jobsManagingService.repositories.TripleStoreRepository;
+import basilisk.jobsManagingService.model.benchmarking.TripleStore;
+import basilisk.jobsManagingService.repositories.benchmarking.TripleStoreRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

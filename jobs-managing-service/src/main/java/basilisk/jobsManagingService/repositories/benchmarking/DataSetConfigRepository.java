@@ -10,7 +10,7 @@ import java.util.Optional;
 
 
 @Repository
-public interface BenchmarkDataSetConfigRepository extends CrudRepository<DataSetConfig,Long> {
+public interface DataSetConfigRepository extends CrudRepository<DataSetConfig,Long> {
 
     Optional<DataSetConfig> findByName(String name);
 

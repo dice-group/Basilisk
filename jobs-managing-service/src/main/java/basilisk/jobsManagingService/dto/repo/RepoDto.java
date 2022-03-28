@@ -1,6 +1,8 @@
-package basilisk.jobsManagingService.dto;
+package basilisk.jobsManagingService.dto.repo;
 
-import basilisk.jobsManagingService.model.TripleStore;
+import basilisk.jobsManagingService.dto.BaseDto;
+import basilisk.jobsManagingService.dto.Views;
+import basilisk.jobsManagingService.model.benchmarking.TripleStore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
@@ -12,11 +14,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class RepoDto {
-
-    @JsonProperty("repo_id")
-    @JsonView(Views.Api.class)
-    private Long id;
+public abstract class RepoDto extends BaseDto {
 
     @JsonProperty("repo_name")
     @JsonView(Views.Api.class)
@@ -37,4 +35,5 @@ public abstract class RepoDto {
     @JsonProperty("triple_store")
     @JsonView(Views.Api.class)
     private TripleStore tripleStore;
+
 }

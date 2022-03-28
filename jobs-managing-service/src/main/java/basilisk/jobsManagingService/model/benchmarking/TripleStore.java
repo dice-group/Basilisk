@@ -1,5 +1,6 @@
-package basilisk.jobsManagingService.model;
+package basilisk.jobsManagingService.model.benchmarking;
 
+import basilisk.jobsManagingService.model.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,7 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @Getter
 @Setter
-public class TripleStore extends BaseEntity{
+public class TripleStore extends BaseEntity {
     private String name;
     private String endpoint;
     private String updateEndpoint;

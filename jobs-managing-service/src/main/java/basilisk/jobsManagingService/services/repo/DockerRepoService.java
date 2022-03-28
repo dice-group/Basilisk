@@ -28,7 +28,7 @@ public class DockerRepoService {
     }
 
     public List<DockerRepo> getAllRepos() {
-        return IteratorUtils.toList(this.repoRepository.findAll().iterator());
+        return (List<DockerRepo>) this.repoRepository.findAll();
     }
 
     public DockerRepo addRepo(DockerRepo repo) {

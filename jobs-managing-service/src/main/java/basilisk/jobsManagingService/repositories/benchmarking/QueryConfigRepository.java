@@ -9,7 +9,7 @@ import java.util.Optional;
 
 
 @Repository
-public interface BenchmarkQueryConfigRepository extends CrudRepository<QueryConfig,Long> {
+public interface QueryConfigRepository extends CrudRepository<QueryConfig,Long> {
 
     Optional<QueryConfig> findByName(String QueryConfigName );
 

@@ -1,4 +1,4 @@
-package basilisk.jobsManagingService.dto;
+package basilisk.jobsManagingService.dto.repo;
 
 public class DockerRepoDto extends RepoDto {
 }

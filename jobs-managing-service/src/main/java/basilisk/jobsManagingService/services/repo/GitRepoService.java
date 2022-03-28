@@ -29,11 +29,11 @@ public class GitRepoService {
     }
 
     public List<GitRepo> getAllRepos() {
-        return IteratorUtils.toList(this.gitRepoRepository.findAll().iterator());
+        return (List<GitRepo>) this.gitRepoRepository.findAll();
     }
 
     public List<GitRepo> getAllReposByRepoType(GitRepoType type) {
-        return IteratorUtils.toList(this.gitRepoRepository.findAllByRepoType(type).iterator());
+        return this.gitRepoRepository.findAllByRepoType(type);
     }
 
     public GitRepo addRepo(GitRepo repo, GitRepoType type) {

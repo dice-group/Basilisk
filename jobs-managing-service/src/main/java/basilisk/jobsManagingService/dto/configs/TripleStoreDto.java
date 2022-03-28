@@ -1,5 +1,6 @@
-package basilisk.jobsManagingService.dto;
+package basilisk.jobsManagingService.dto.configs;
 
+import basilisk.jobsManagingService.dto.BaseDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,10 +11,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TripleStoreDto {
-
-    @JsonProperty("id")
-    private Long id;
+public class TripleStoreDto extends BaseDto {
 
     @JsonProperty("name")
     private String name;

@@ -34,21 +34,13 @@ public abstract class GitCheckingService implements CheckingService {
     }
 
     public void performChecking() {
-
-        //get the github repos
-        Iterable<GitRepo> gitRepos = getRelatedGitRepos();
-        //go through them
-        for (GitRepo gitrepo : gitRepos) {
-            //do the logic for checking
+        for (GitRepo gitrepo : getRelatedGitRepos()) {
             try {
                 checkRepo(gitrepo);
             } catch (GithubException e) {
-                //ToDo log
-                System.out.println("not valid git thing");
+                logger.error("Problem while checking the Git repo");
             }
-            //
         }
-
     }
 
     protected abstract Iterable<GitRepo> getRelatedGitRepos();

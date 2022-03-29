@@ -3,12 +3,11 @@ package basilisk.hooksCheckingService.model.docker;
 import basilisk.hooksCheckingService.model.BaseEntity;
 import lombok.*;
 
-import javax.persistence.*;
-import java.util.Date;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 
 @Entity
-@Table(name = "docker_tag")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,14 +15,12 @@ import java.util.Date;
 @Builder
 public class DockerTag extends BaseEntity {
 
-
     private String name;
 
-    @Column(name = "last_pushed")
-    private Date lastPushedDate;
+    @ManyToOne
+    private DockerRepo dockerRepo;
 
     @ManyToOne
-    @JoinColumn(name = "docker_image_id")
     private DockerImage dockerImage;
 
 }

@@ -1,7 +1,6 @@
 package basilisk.hooksCheckingService.web.messaging;
 
-import basilisk.hooksCheckingService.events.docker.DockerTagAddedEvent;
-import basilisk.hooksCheckingService.events.docker.DockerTagUpdatedEvent;
+import basilisk.hooksCheckingService.events.docker.DockerTagEvent;
 import basilisk.hooksCheckingService.events.git.GitCommitAddedEvent;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,11 +26,7 @@ public class MessageSender {
         this.rabbitTemplate.convertAndSend(this.exchange, this.gitCommitRoutingKey, addedHook);
     }
 
-    public void send(DockerTagAddedEvent addedTag) {
-        this.rabbitTemplate.convertAndSend(this.exchange, this.dockerTagRoutingKey, addedTag);
-    }
-
-    public void send(DockerTagUpdatedEvent updatedTag) {
-        this.rabbitTemplate.convertAndSend(this.exchange, this.dockerTagRoutingKey, updatedTag);
+    public void send(DockerTagEvent tagEvent) {
+        this.rabbitTemplate.convertAndSend(this.exchange, this.dockerTagRoutingKey, tagEvent);
     }
 }

@@ -4,12 +4,11 @@ package basilisk.hooksCheckingService.model.docker;
 import basilisk.hooksCheckingService.model.BaseEntity;
 import lombok.*;
 
-import javax.persistence.*;
-import java.util.Date;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 
 @Entity
-@Table(name = "docker_image")
 @Setter
 @Getter
 @NoArgsConstructor
@@ -19,10 +18,6 @@ public class DockerImage extends BaseEntity {
 
     private String digest;
 
-    @Column(name = "last_pushed")
-    private Date lastPushedDate;
-
     @ManyToOne
-    @JoinColumn(name = "docker_repo_id")
     private DockerRepo dockerRepo;
 }

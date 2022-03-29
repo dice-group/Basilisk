@@ -16,9 +16,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class GitRepoDto extends RepoDto {
 
-    @JsonProperty("repo_type")
+    @JsonProperty("git_repo_type")
     @JsonView(Views.Api.class)
-    private GitRepoType repoType;
+    private GitRepoType gitRepoType;
 
     @JsonProperty("branch_name")
     @JsonView(Views.Api.class)

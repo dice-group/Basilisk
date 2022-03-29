@@ -35,11 +35,11 @@ public class GitRepoService {
     }
 
     public List<GitRepo> getAllReposByRepoType(GitRepoType type) {
-        return this.gitRepoRepository.findAllByRepoType(type);
+        return this.gitRepoRepository.findAllByGitRepoType(type);
     }
 
     public GitRepo addRepo(GitRepo repo, GitRepoType type) {
-        repo.setRepoType(type);
+        repo.setGitRepoType(type);
 
         if (repo.getId() != null) {
             Optional<GitRepo> oldRepo = getRepo(repo.getId());

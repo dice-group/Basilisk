@@ -1,7 +1,9 @@
 package basilisk.jobsManagingService.model.benchmarking;
 
 import basilisk.jobsManagingService.model.BaseEntity;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Entity;
@@ -19,9 +21,6 @@ public abstract class BenchmarkJob extends BaseEntity {
 
     @ManyToOne
     private Benchmark benchmark;
-
-    @ManyToOne
-    private TripleStore tripleStore;
 
     private JobStatus status;
 

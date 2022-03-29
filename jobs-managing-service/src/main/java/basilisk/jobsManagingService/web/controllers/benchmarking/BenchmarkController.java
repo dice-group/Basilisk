@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 
 @RestController
-@RequestMapping("/benchmarks")
+@RequestMapping("benchmarks")
 public class BenchmarkController {
 
     private final BenchmarkService service;

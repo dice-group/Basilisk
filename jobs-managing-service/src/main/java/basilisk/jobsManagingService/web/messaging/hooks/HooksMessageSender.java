@@ -10,19 +10,16 @@ import org.springframework.stereotype.Service;
 public class HooksMessageSender {
 
     private final RabbitTemplate rabbitTemplate;
+    @Value("${rabbitmq.hooks.exchange}")
+    private String exchange;
+    @Value("${rabbitmq.hooks.docker.routingKeys.repo}")
+    private String dockerRepoRoutingKey;
+    @Value("${rabbitmq.hooks.git.routingKeys.repo}")
+    private String gitRepoRoutingKey;
 
     public HooksMessageSender(RabbitTemplate template) {
         this.rabbitTemplate = template;
     }
-
-    @Value("${rabbitmq.hooks.exchange}")
-    private String exchange;
-
-    @Value("${rabbitmq.hooks.docker.routingKeys.repo}")
-    private String dockerRepoRoutingKey;
-
-    @Value("${rabbitmq.hooks.git.routingKeys.repo}")
-    private String gitRepoRoutingKey;
 
     public void send(GitRepoEvent event) {
         this.rabbitTemplate.convertAndSend(this.exchange, this.gitRepoRoutingKey, event);

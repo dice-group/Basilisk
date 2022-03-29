@@ -10,5 +10,5 @@ import java.util.List;
 
 @Repository
 public interface GitRepoRepository extends CrudRepository<GitRepo, Long> {
-    List<GitRepo> findAllByRepoType(GitRepoType type);
+    List<GitRepo> findAllByGitRepoType(GitRepoType type);
 }

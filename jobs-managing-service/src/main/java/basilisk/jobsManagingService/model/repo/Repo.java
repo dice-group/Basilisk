@@ -7,15 +7,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.JoinColumn;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
 import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
 
-@MappedSuperclass
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Inheritance
 public abstract class Repo extends BaseEntity {
 
     private String repoName;
@@ -24,7 +25,6 @@ public abstract class Repo extends BaseEntity {
     private String oAuthToken;
 
     @ManyToOne
-    @JoinColumn(name = "triple_store_id")
     private TripleStore tripleStore;
 
 }

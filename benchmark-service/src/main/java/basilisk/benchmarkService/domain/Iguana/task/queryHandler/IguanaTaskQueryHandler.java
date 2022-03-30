@@ -1,9 +1,13 @@
 package basilisk.benchmarkService.domain.Iguana.task.queryHandler;
 
-/**
- * @author Fakhr Shaheen
- */
-public class IguanaTaskQueryHandler {
+import basilisk.benchmarkService.domain.BaseEntity;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.Entity;
+
+@Entity
+@NoArgsConstructor
+public class IguanaTaskQueryHandler extends BaseEntity {
     protected String className;
 
     public IguanaTaskQueryHandler(String className) {

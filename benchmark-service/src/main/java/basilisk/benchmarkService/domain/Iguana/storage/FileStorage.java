@@ -1,13 +1,13 @@
 package basilisk.benchmarkService.domain.Iguana.storage;
 
 
-/**
- * @author Fakhr Shaheen
- */
-public class FileStorage extends Storage{
+import javax.persistence.Entity;
+
+@Entity
+public class FileStorage extends Storage {
 
 
      public FileStorage() {
-          super( "NTFileStorage");
+          super("NTFileStorage");
      }
 }

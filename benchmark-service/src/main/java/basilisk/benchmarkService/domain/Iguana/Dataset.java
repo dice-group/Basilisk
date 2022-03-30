@@ -1,17 +1,19 @@
 package basilisk.benchmarkService.domain.Iguana;
 
 
+import basilisk.benchmarkService.domain.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-/**
- * @author Fakhr Shaheen
- */
+import javax.persistence.Entity;
+
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class Dataset {
+@Entity
+public class Dataset extends BaseEntity {
 
     private String name;
     private String file;

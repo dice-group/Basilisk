@@ -1,17 +1,19 @@
 package basilisk.benchmarkService.domain.Iguana.storage;
 
 
+import basilisk.benchmarkService.domain.BaseEntity;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-/**
- * @author Fakhr Shaheen
- */
+import javax.persistence.Entity;
 
 
 @Getter
-public abstract class Storage  {
+@Entity
+@NoArgsConstructor
+public abstract class Storage extends BaseEntity {
 
-    private  String className;
+    private String className;
 
     public Storage(String className) {
         this.className = className;

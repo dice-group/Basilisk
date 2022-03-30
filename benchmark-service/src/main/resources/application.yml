@@ -1,0 +1,25 @@
+spring:
+  rabbitmq:
+    host: localhost
+    port: '5672'
+    username: guest
+    password: guest
+
+server:
+  port: '8082'
+
+iguana:
+  resultStorage:
+    endpoint: 'localhost'
+    updateEndpoint: 'localhost/update'
+    user: 'guest'
+    password: 'guest'
+
+rabbitmq:
+  benchmarks:
+    exchange: benchmarkExchange
+    jobQueue: jobQueue
+    resultQueue: resultQueue
+    routingKeys:
+      job: jobKey
+      result: resultKey

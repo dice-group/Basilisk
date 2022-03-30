@@ -1,25 +1,32 @@
 package basilisk.benchmarkService.domain.Iguana;
 
 
+import basilisk.benchmarkService.domain.BaseEntity;
 import basilisk.benchmarkService.domain.Iguana.storage.Storage;
-import basilisk.benchmarkService.domain.Iguana.task.IguanaTask;
-import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
-/**
- * @author Fakhr Shaheen
- */
+
 @Setter
 @Getter
-@Builder
-public class IguanaConfiguration  {
+@Entity
+@NoArgsConstructor
+@SuperBuilder
+public class IguanaConfiguration extends BaseEntity {
 
+    @ManyToOne
     private IguanaConnection iguanaConnection;
+    @ManyToOne
     private Dataset dataset;
+    @ManyToOne
     private Storage storage;
-    private List<IguanaTask> iguanaTasks;
-    private List<String> iguanaMetrics;
+
+//    private List<IguanaTask> iguanaTasks;
+//    private List<String> iguanaMetrics;
+
 }

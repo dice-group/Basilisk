@@ -1,12 +1,15 @@
 package basilisk.benchmarkService.domain.Iguana.task.worker;
 
 
-/**
- * @author Fakhr Shaheen
- */
+import basilisk.benchmarkService.domain.BaseEntity;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.Entity;
 
 
-public abstract class TaskWorker {
+@Entity
+@NoArgsConstructor
+public abstract class TaskWorker extends BaseEntity {
 
     public TaskWorker(int threads, String queriesFile, int timeOut, int fixedLatency, int gaussianLatency, String classname) {
         this.threads = threads;

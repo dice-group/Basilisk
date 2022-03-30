@@ -1,14 +1,16 @@
 package basilisk.benchmarkService.domain.Iguana;
 
+import basilisk.benchmarkService.domain.BaseEntity;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
-/**
- * @author Fakhr Shaheen
- */
+import javax.persistence.Entity;
+
+
 @Builder
 @NoArgsConstructor
-public class IguanaConnection  {
+@Entity
+public class IguanaConnection extends BaseEntity {
 
     private String name;
     private String endpoint;
@@ -18,7 +20,7 @@ public class IguanaConnection  {
     public IguanaConnection(String name, String endpoint, String updateEndpoint) {
         this.name = name;
         this.endpoint = endpoint;
-        this.updateEndpoint=updateEndpoint;
+        this.updateEndpoint = updateEndpoint;
     }
 
 }

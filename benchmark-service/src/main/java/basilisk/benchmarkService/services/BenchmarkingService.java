@@ -1,14 +1,16 @@
 package basilisk.benchmarkService.services;
 
+import org.springframework.stereotype.Service;
 
-/**
- * @author Fakhr Shaheen
- */
-public interface BenchmarkingService {
 
-    /**
-     *
-     * @param iguanaFile iguana connfiguration as json or yaml file
-     */
-    public void performBenchmark(String iguanaFile);
+@Service
+public class BenchmarkingService {
+
+    public void performBenchmark(String iguanaFile) {
+
+        //
+
+    }
+
+
 }

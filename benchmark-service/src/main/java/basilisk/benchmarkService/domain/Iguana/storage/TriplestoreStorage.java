@@ -1,13 +1,13 @@
 package basilisk.benchmarkService.domain.Iguana.storage;
 
 
-import org.springframework.beans.factory.annotation.Value;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.Entity;
 
 
-/**
- * @author Fakhr Shaheen
- */
-
+@Entity
+@NoArgsConstructor
 public class TriplestoreStorage extends Storage{
 
     private String endpoint;

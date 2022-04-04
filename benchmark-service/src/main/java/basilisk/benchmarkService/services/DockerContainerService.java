@@ -31,7 +31,7 @@ public class DockerContainerService {
         this.containerRepository = containerRepository;
     }
 
-    public DockerContainer addContainder(String owner, String name, String tag) {
+    public DockerContainer addContainer(String owner, String name, String tag) {
         String imageName = getImageName(owner, name, tag);
 
         Optional<DockerContainer> containerOpt = this.containerRepository.findByImageName(imageName);

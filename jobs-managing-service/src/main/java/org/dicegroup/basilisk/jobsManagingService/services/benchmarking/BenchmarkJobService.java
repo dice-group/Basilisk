@@ -5,12 +5,11 @@ import org.dicegroup.basilisk.jobsManagingService.events.GitCommitAddedEvent;
 import org.dicegroup.basilisk.jobsManagingService.events.benchmarking.BenchmarkJobAbortCommand;
 import org.dicegroup.basilisk.jobsManagingService.events.benchmarking.DockerBenchmarkJobCreatedEvent;
 import org.dicegroup.basilisk.jobsManagingService.events.benchmarking.GitBenchmarkJobCreatedEvent;
-import basilisk.jobsManagingService.model.benchmarking.*;
+import org.dicegroup.basilisk.jobsManagingService.model.benchmarking.*;
 import org.dicegroup.basilisk.jobsManagingService.repositories.benchmarking.BenchmarkJobRepository;
 import org.dicegroup.basilisk.jobsManagingService.repositories.benchmarking.DockerBenchmarkJobRepository;
 import org.dicegroup.basilisk.jobsManagingService.repositories.benchmarking.GitBenchmarkJobRepository;
 import org.dicegroup.basilisk.jobsManagingService.web.messaging.benchmarking.BenchmarkMessageSender;
-import org.dicegroup.basilisk.jobsManagingService.model.benchmarking.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;

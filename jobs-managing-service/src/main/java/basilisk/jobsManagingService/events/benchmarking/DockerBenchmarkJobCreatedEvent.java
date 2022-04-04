@@ -14,4 +14,5 @@ public class DockerBenchmarkJobCreatedEvent implements Serializable {
 
     private DockerBenchmarkJob benchmarkJob;
     private LocalDate createdDate;
+
 }

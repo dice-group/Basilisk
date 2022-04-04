@@ -10,7 +10,7 @@ spring:
     init:
       platform: h2
   datasource:
-    url: 'jdbc:h2:file:./data/myDB'
+    url: 'jdbc:h2:file:./hooks-checking-service/data/myDB'
     username: basilisk
     password: password
     driver-class-name: org.h2.Driver
@@ -18,7 +18,7 @@ spring:
     show-sql: true
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
 
 core:
   timing:

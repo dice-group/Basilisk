@@ -8,7 +8,6 @@ import basilisk.jobsManagingService.model.repo.GitRepoType;
 import basilisk.jobsManagingService.services.benchmarking.TripleStoreService;
 import basilisk.jobsManagingService.services.repo.GitRepoService;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.google.common.base.Preconditions;
 import com.sun.istack.NotNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -86,8 +85,7 @@ public class GitRepoController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<String> deleteRepo(@PathVariable Long id) {
-        Preconditions.checkNotNull(id);
+    public ResponseEntity<String> deleteRepo(@PathVariable @NotNull Long id) {
         Optional<GitRepo> repo = this.repoService.getRepo(id);
         if (repo.isPresent()) {
             this.repoService.deleteRepo(repo.get());

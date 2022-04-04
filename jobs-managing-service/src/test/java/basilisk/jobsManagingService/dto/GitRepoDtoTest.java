@@ -2,7 +2,7 @@ package basilisk.jobsManagingService.dto;
 
 import basilisk.jobsManagingService.dto.repo.GitRepoDto;
 import basilisk.jobsManagingService.model.repo.GitRepo;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 

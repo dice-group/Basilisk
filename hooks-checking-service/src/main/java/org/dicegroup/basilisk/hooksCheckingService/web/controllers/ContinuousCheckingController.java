@@ -1,55 +1,50 @@
 package org.dicegroup.basilisk.hooksCheckingService.web.controllers;
 
 import org.dicegroup.basilisk.hooksCheckingService.services.continuesCheckingServices.ContinuousCheckingService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-/**
- * @author Fakhr Shaheen
- */
 
 @RestController
 @RequestMapping("continuousChecking/")
 public class ContinuousCheckingController {
 
-    private ContinuousCheckingService continuesCheckingService;
+    private final ContinuousCheckingService continuesCheckingService;
 
     public ContinuousCheckingController(ContinuousCheckingService continuesCheckingService) {
         this.continuesCheckingService = continuesCheckingService;
     }
 
     @PostMapping(path = "/start")
-    @ResponseBody
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> start() throws InterruptedException {
-        if(continuesCheckingService.isRunning())
-            return new ResponseEntity<>("the service is already running.",HttpStatus.OK);
-        else {
-            continuesCheckingService.start();
-            return new ResponseEntity<>("the service has started.",HttpStatus.OK);
+    public String start() throws InterruptedException {
+        if (this.continuesCheckingService.isRunning()) {
+            return "the service is already running.";
+        } else {
+            this.continuesCheckingService.start();
+            return "the service has started.";
         }
     }
 
     @PostMapping(path = "/stop")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public ResponseEntity<String>  stop() {
-        if (!continuesCheckingService.isRunning())
-            return new ResponseEntity<>("The service is not running.",HttpStatus.OK);
+    public String stop() {
+        if (!this.continuesCheckingService.isRunning())
+            return "The service is not running.";
         else {
-            continuesCheckingService.stop();
-            return new ResponseEntity<>("The service is stopped.",HttpStatus.OK);
+            this.continuesCheckingService.stop();
+            return "The service is stopped.";
         }
 
     }
-        @GetMapping("/status")
-        @ResponseStatus(HttpStatus.OK)
-        public ResponseEntity<String> getStatus() {
-        if(continuesCheckingService.isRunning())
-            return new ResponseEntity<>("The service is running.",HttpStatus.OK);
-        else
-            return new ResponseEntity<>("The service is not running.",HttpStatus.OK);
+
+    @GetMapping("/status")
+    public String getStatus() {
+        if (this.continuesCheckingService.isRunning()) {
+            return "The service is running.";
+        } else {
+            return "The service is not running.";
+        }
     }
 
 

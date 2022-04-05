@@ -16,6 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
 
 import java.util.List;
 
@@ -50,10 +51,13 @@ class BenchmarkJobServiceImplTest {
     @Mock
     private GitBenchmarkJobRepository gitBenchmarkJobRepository;
 
+    @Mock
+    private ModelMapper mapper;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        benchmarkJobService = new BenchmarkJobService(repoService, benchmarkJobRepository, tripleStoreService, messageSender, dockerBenchmarkJobRepository, gitBenchmarkJobRepository, benchmarkService, dcService);
+        benchmarkJobService = new BenchmarkJobService(repoService, benchmarkJobRepository, tripleStoreService, messageSender, dockerBenchmarkJobRepository, gitBenchmarkJobRepository, benchmarkService, dcService, mapper);
     }
 
     @Test
@@ -64,7 +68,7 @@ class BenchmarkJobServiceImplTest {
 
         GitCommitEvent gitCommitAddedEvent = GitCommitEvent.builder()
                 .url("https://test.com")
-                .commit_sha1("8bde8f3ca718ebad91893a958a2a308ff0e8286s")
+                .commitSha1("8bde8f3ca718ebad91893a958a2a308ff0e8286s")
                 .repoId(1L)
                 .build();
 

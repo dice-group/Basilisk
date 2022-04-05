@@ -1,14 +1,14 @@
 package org.dicegroup.basilisk.jobsManagingService.web.controllers.repo;
 
-import org.dicegroup.basilisk.jobsManagingService.dto.Views;
-import org.dicegroup.basilisk.jobsManagingService.dto.repo.DockerRepoDto;
-import org.dicegroup.basilisk.jobsManagingService.dto.repo.GitRepoDto;
-import org.dicegroup.basilisk.jobsManagingService.dto.repo.RepoDto;
+import com.fasterxml.jackson.annotation.JsonView;
+import org.dicegroup.basilisk.dto.Views;
+import org.dicegroup.basilisk.dto.repo.DockerRepoDto;
+import org.dicegroup.basilisk.dto.repo.GitRepoDto;
+import org.dicegroup.basilisk.dto.repo.RepoDto;
 import org.dicegroup.basilisk.jobsManagingService.model.repo.DockerRepo;
 import org.dicegroup.basilisk.jobsManagingService.model.repo.GitRepo;
 import org.dicegroup.basilisk.jobsManagingService.model.repo.Repo;
 import org.dicegroup.basilisk.jobsManagingService.repositories.repo.RepoRepository;
-import com.fasterxml.jackson.annotation.JsonView;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

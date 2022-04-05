@@ -1,6 +1,6 @@
 package org.dicegroup.basilisk.jobsManagingService.dto;
 
-import org.dicegroup.basilisk.jobsManagingService.dto.repo.GitRepoDto;
+import org.dicegroup.basilisk.dto.repo.GitRepoDto;
 import org.dicegroup.basilisk.jobsManagingService.model.repo.GitRepo;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;

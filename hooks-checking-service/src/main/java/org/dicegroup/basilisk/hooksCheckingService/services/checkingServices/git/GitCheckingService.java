@@ -83,7 +83,7 @@ public abstract class GitCheckingService implements CheckingService {
 
     private GitCommitEvent createGitCommitAddedEvent(GitRepo gitRepo, GitHook gitHook) {
         return GitCommitEvent.builder()
-                .commit_sha1(gitHook.getCommitSha1())
+                .commitSha1(gitHook.getCommitSha1())
                 .repoId(gitRepo.getId())
                 .url(gitHook.getCommitUrl())
                 .build();

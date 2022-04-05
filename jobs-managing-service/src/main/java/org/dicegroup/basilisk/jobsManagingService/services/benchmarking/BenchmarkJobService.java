@@ -1,10 +1,13 @@
 package org.dicegroup.basilisk.jobsManagingService.services.benchmarking;
 
+import org.dicegroup.basilisk.dto.benchmark.BenchmarkDto;
+import org.dicegroup.basilisk.dto.repo.DockerRepoDto;
+import org.dicegroup.basilisk.dto.repo.GitRepoDto;
+import org.dicegroup.basilisk.events.benchmark.BenchmarkJobAbortCommand;
+import org.dicegroup.basilisk.events.benchmark.DockerBenchmarkJobCreateEvent;
+import org.dicegroup.basilisk.events.benchmark.GitBenchmarkJobCreateEvent;
 import org.dicegroup.basilisk.events.hooks.hook.DockerTagEvent;
 import org.dicegroup.basilisk.events.hooks.hook.GitCommitEvent;
-import org.dicegroup.basilisk.jobsManagingService.events.benchmarking.BenchmarkJobAbortCommand;
-import org.dicegroup.basilisk.jobsManagingService.events.benchmarking.DockerBenchmarkJobCreatedEvent;
-import org.dicegroup.basilisk.jobsManagingService.events.benchmarking.GitBenchmarkJobCreatedEvent;
 import org.dicegroup.basilisk.jobsManagingService.model.benchmarking.*;
 import org.dicegroup.basilisk.jobsManagingService.model.repo.DockerRepo;
 import org.dicegroup.basilisk.jobsManagingService.repositories.benchmarking.BenchmarkJobRepository;
@@ -12,6 +15,7 @@ import org.dicegroup.basilisk.jobsManagingService.repositories.benchmarking.Dock
 import org.dicegroup.basilisk.jobsManagingService.repositories.benchmarking.GitBenchmarkJobRepository;
 import org.dicegroup.basilisk.jobsManagingService.services.repo.DockerRepoService;
 import org.dicegroup.basilisk.jobsManagingService.web.messaging.benchmarking.BenchmarkMessageSender;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -33,7 +37,9 @@ public class BenchmarkJobService {
     private final TripleStoreService tripleStoreService;
     private final BenchmarkMessageSender messageSender;
 
-    public BenchmarkJobService(DockerRepoService repoService, BenchmarkJobRepository benchmarkJobRepository, TripleStoreService tripleStoreService, BenchmarkMessageSender messageSender, DockerBenchmarkJobRepository dockerBenchmarkJobRepository, GitBenchmarkJobRepository gitBenchmarkJobRepository, BenchmarkService benchmarkService, DataSetService dataSetService) {
+    private final ModelMapper mapper;
+
+    public BenchmarkJobService(DockerRepoService repoService, BenchmarkJobRepository benchmarkJobRepository, TripleStoreService tripleStoreService, BenchmarkMessageSender messageSender, DockerBenchmarkJobRepository dockerBenchmarkJobRepository, GitBenchmarkJobRepository gitBenchmarkJobRepository, BenchmarkService benchmarkService, DataSetService dataSetService, ModelMapper mapper) {
         this.repoService = repoService;
         this.benchmarkJobRepository = benchmarkJobRepository;
         this.tripleStoreService = tripleStoreService;
@@ -42,6 +48,7 @@ public class BenchmarkJobService {
         this.gitBenchmarkJobRepository = gitBenchmarkJobRepository;
         this.benchmarkService = benchmarkService;
         this.dataSetService = dataSetService;
+        this.mapper = mapper;
     }
 
     public List<BenchmarkJob> getAllBenchmarkJobs() {
@@ -62,19 +69,24 @@ public class BenchmarkJobService {
         jobs.forEach(job -> {
             this.gitBenchmarkJobRepository.save(job);
             // send created job to message queue
-            GitBenchmarkJobCreatedEvent dockerBenchmarkJobCreatedEvent = GitBenchmarkJobCreatedEvent.builder()
-                    .benchmarkJob(job)
+            GitBenchmarkJobCreateEvent gitBenchmarkJobCreatedEvent = GitBenchmarkJobCreateEvent.builder()
+                    .repo(this.mapper.map(job.getRepo(), GitRepoDto.class))
+                    .url(job.getUrl())
+                    .commitSha1(job.getCommitSha1())
                     .build();
-            this.messageSender.send(dockerBenchmarkJobCreatedEvent);
+            this.messageSender.send(gitBenchmarkJobCreatedEvent);
         });
     }
 
     public void generateBenchmarkJobs(DockerTagEvent event) {
         for (DockerBenchmarkJob job : generateDockerBenchmarkJobs(event)) {
 
-            DockerBenchmarkJobCreatedEvent jobEvent = DockerBenchmarkJobCreatedEvent.builder()
-                    .benchmarkJob(job)
-                    .createdDate(LocalDate.now())
+            DockerBenchmarkJobCreateEvent jobEvent = DockerBenchmarkJobCreateEvent.builder()
+                    .repo(this.mapper.map(job.getRepo(), DockerRepoDto.class))
+                    .tagName(event.getTagName())
+                    .imageDigest(event.getImageDigest())
+                    .createDate(LocalDate.now())
+                    .benchmark(this.mapper.map(job.getBenchmark(), BenchmarkDto.class))
                     .build();
 
             this.messageSender.send(jobEvent);

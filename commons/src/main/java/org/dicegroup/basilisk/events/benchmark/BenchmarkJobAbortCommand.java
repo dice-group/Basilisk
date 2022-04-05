@@ -1,17 +1,19 @@
-package org.dicegroup.basilisk.jobsManagingService.events.benchmarking;
+package org.dicegroup.basilisk.events.benchmark;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
 
-/**
- * @author Fakhr Shaheen
- */
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class BenchmarkJobAbortCommand implements Serializable {
-    Long jobId;
+
+    private Long benchmarkJobId;
+
 }

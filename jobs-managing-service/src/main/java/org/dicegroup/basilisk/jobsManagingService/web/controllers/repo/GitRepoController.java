@@ -1,14 +1,14 @@
 package org.dicegroup.basilisk.jobsManagingService.web.controllers.repo;
 
-import org.dicegroup.basilisk.jobsManagingService.dto.Views;
-import org.dicegroup.basilisk.jobsManagingService.dto.repo.GitRepoDto;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.sun.istack.NotNull;
+import org.dicegroup.basilisk.dto.Views;
+import org.dicegroup.basilisk.dto.repo.GitRepoDto;
 import org.dicegroup.basilisk.jobsManagingService.model.benchmarking.TripleStore;
 import org.dicegroup.basilisk.jobsManagingService.model.repo.GitRepo;
 import org.dicegroup.basilisk.jobsManagingService.model.repo.GitRepoType;
 import org.dicegroup.basilisk.jobsManagingService.services.benchmarking.TripleStoreService;
 import org.dicegroup.basilisk.jobsManagingService.services.repo.GitRepoService;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.sun.istack.NotNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

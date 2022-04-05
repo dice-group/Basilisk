@@ -14,6 +14,6 @@ public class GitCommitEvent implements Serializable {
 
     private Long repoId;
     private String url;
-    private String commit_sha1;
+    private String commitSha1;
 
 }

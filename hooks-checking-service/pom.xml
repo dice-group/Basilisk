@@ -19,7 +19,7 @@
     <dependencies>
         <dependency>
             <groupId>org.dicegroup</groupId>
-            <artifactId>events</artifactId>
+            <artifactId>commons</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 

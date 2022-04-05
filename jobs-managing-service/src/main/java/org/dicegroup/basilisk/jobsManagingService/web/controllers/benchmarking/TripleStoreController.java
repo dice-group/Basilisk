@@ -1,9 +1,9 @@
 package org.dicegroup.basilisk.jobsManagingService.web.controllers.benchmarking;
 
-import org.dicegroup.basilisk.jobsManagingService.dto.configs.TripleStoreDto;
+import com.sun.istack.NotNull;
+import org.dicegroup.basilisk.dto.benchmark.TripleStoreDto;
 import org.dicegroup.basilisk.jobsManagingService.model.benchmarking.TripleStore;
 import org.dicegroup.basilisk.jobsManagingService.services.benchmarking.TripleStoreService;
-import com.sun.istack.NotNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

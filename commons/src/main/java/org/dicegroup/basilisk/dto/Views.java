@@ -1,4 +1,4 @@
-package org.dicegroup.basilisk.jobsManagingService.dto;
+package org.dicegroup.basilisk.dto;
 
 public class Views {
     public static class Api {

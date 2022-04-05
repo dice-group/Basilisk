@@ -1,12 +1,12 @@
 package org.dicegroup.basilisk.jobsManagingService.web.controllers.benchmarking;
 
 
-import org.dicegroup.basilisk.jobsManagingService.dto.configs.BenchmarkDto;
+import com.sun.istack.NotNull;
+import org.dicegroup.basilisk.dto.benchmark.BenchmarkDto;
 import org.dicegroup.basilisk.jobsManagingService.model.benchmarking.Benchmark;
 import org.dicegroup.basilisk.jobsManagingService.model.benchmarking.DataSet;
 import org.dicegroup.basilisk.jobsManagingService.services.benchmarking.BenchmarkService;
 import org.dicegroup.basilisk.jobsManagingService.services.benchmarking.DataSetService;
-import com.sun.istack.NotNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

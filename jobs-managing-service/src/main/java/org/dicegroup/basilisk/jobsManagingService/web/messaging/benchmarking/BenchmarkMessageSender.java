@@ -1,8 +1,8 @@
 package org.dicegroup.basilisk.jobsManagingService.web.messaging.benchmarking;
 
-import org.dicegroup.basilisk.jobsManagingService.events.benchmarking.BenchmarkJobAbortCommand;
-import org.dicegroup.basilisk.jobsManagingService.events.benchmarking.DockerBenchmarkJobCreatedEvent;
-import org.dicegroup.basilisk.jobsManagingService.events.benchmarking.GitBenchmarkJobCreatedEvent;
+import org.dicegroup.basilisk.events.benchmark.BenchmarkJobAbortCommand;
+import org.dicegroup.basilisk.events.benchmark.DockerBenchmarkJobCreateEvent;
+import org.dicegroup.basilisk.events.benchmark.GitBenchmarkJobCreateEvent;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,11 +22,11 @@ public class BenchmarkMessageSender {
     @Value("${rabbitmq.benchmarks.routingKeys.job}")
     private String benchmarkJobRoutingKey;
 
-    public void send(DockerBenchmarkJobCreatedEvent event) {
+    public void send(DockerBenchmarkJobCreateEvent event) {
         this.rabbitTemplate.convertAndSend(this.benchmarkExchange, this.benchmarkJobRoutingKey, event);
     }
 
-    public void send(GitBenchmarkJobCreatedEvent event) {
+    public void send(GitBenchmarkJobCreateEvent event) {
         this.rabbitTemplate.convertAndSend(this.benchmarkExchange, this.benchmarkJobRoutingKey, event);
     }
 

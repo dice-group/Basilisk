@@ -1,14 +1,14 @@
-package org.dicegroup.basilisk.jobsManagingService.dto.repo;
+package org.dicegroup.basilisk.dto.repo;
 
-import org.dicegroup.basilisk.jobsManagingService.dto.BaseDto;
-import org.dicegroup.basilisk.jobsManagingService.dto.Views;
-import org.dicegroup.basilisk.jobsManagingService.model.benchmarking.TripleStore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.dicegroup.basilisk.dto.BaseDto;
+import org.dicegroup.basilisk.dto.Views;
+import org.dicegroup.basilisk.dto.benchmark.TripleStoreDto;
 
 @Getter
 @Setter
@@ -34,6 +34,6 @@ public abstract class RepoDto extends BaseDto {
 
     @JsonProperty("triple_store")
     @JsonView(Views.Api.class)
-    private TripleStore tripleStore;
+    private TripleStoreDto tripleStore;
 
 }

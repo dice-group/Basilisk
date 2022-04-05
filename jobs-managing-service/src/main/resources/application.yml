@@ -10,7 +10,7 @@ spring:
     init:
       platform: h2
   datasource:
-    url: 'jdbc:h2:file:./data/jobs-managing-service-DB'
+    url: 'jdbc:h2:file:./.data/jobs-managing-service-DB'
     username: basilisk
     password: password
     driver-class-name: org.h2.Driver

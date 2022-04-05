@@ -1,12 +1,14 @@
 package org.dicegroup.basilisk.jobsManagingService.web.messaging.hooks;
 
-import org.dicegroup.basilisk.jobsManagingService.events.DockerTagEvent;
-import org.dicegroup.basilisk.jobsManagingService.events.GitCommitAddedEvent;
+import org.dicegroup.basilisk.events.hooks.hook.DockerTagEvent;
+import org.dicegroup.basilisk.events.hooks.hook.GitCommitEvent;
 import org.dicegroup.basilisk.jobsManagingService.services.benchmarking.BenchmarkJobService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 
+@RabbitListener(queues = "${rabbitmq.hooks.hookEventQueue}")
 public class HooksMessageReceiver {
 
     private final Logger logger = LoggerFactory.getLogger(HooksMessageReceiver.class);
@@ -16,16 +18,16 @@ public class HooksMessageReceiver {
         this.benchmarkJobService = jobsService;
     }
 
-    @RabbitListener(queues = "${rabbitmq.hooks.docker.tagQueue}")
+    @RabbitHandler
     public void receiveDockerTagEvent(DockerTagEvent dockerTagEvent) {
-        this.logger.info("Docker Repo {} got Docker Tag updated Event: {}", dockerTagEvent.getRepo().getRepoName(), dockerTagEvent.getTagName());
+        this.logger.info("Docker Repo got Docker Tag updated Event: {}", dockerTagEvent);
         this.benchmarkJobService.generateBenchmarkJobs(dockerTagEvent);
     }
 
 
-    @RabbitListener(queues = "${rabbitmq.hooks.git.commitQueue}")
-    public void receiveGitCommitEvent(GitCommitAddedEvent gitCommitAddedEvent) {
-        this.logger.info("Git commit added event: {}", gitCommitAddedEvent);
+    @RabbitHandler
+    public void receiveGitCommitEvent(GitCommitEvent event) {
+        this.logger.info("Git commit added event: {}", event);
         //this.benchmarkJobService.generateBenchmarkingJobs(gitCommitAddedEvent);
     }
 }

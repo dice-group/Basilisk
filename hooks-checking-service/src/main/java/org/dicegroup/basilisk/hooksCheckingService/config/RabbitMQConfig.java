@@ -17,25 +17,16 @@ public class RabbitMQConfig {
     String hooksExchange;
 
 
-    @Value("${rabbitmq.hooks.docker.repoQueue}")
-    String dockerRepoQueue;
-    @Value("${rabbitmq.hooks.docker.tagQueue}")
-    String dockerTagQueue;
+    @Value("${rabbitmq.hooks.repoQueue}")
+    String repoQueue;
 
-    @Value("${rabbitmq.hooks.git.repoQueue}")
-    String gitRepoQueue;
-    @Value("${rabbitmq.hooks.git.commitQueue}")
-    String gitCommitQueue;
+    @Value("${rabbitmq.hooks.hookEventQueue}")
+    String hookEventQueue;
 
-    @Value("${rabbitmq.hooks.docker.routingKeys.repo}")
-    private String dockerRepoRoutingKey;
-    @Value("${rabbitmq.hooks.docker.routingKeys.tag}")
-    private String dockerTagRoutingKey;
-    @Value("${rabbitmq.hooks.git.routingKeys.repo}")
-    private String gitRepoRoutingKey;
-
-    @Value("${rabbitmq.hooks.git.routingKeys.commit}")
-    private String gitCommitRoutingKey;
+    @Value("${rabbitmq.hooks.repoRoutingKey}")
+    private String repoRoutingKey;
+    @Value("${rabbitmq.hooks.hookEventRoutingKey}")
+    private String hookEventRoutingKey;
 
 
     @Bean
@@ -45,44 +36,24 @@ public class RabbitMQConfig {
 
 
     @Bean
-    Queue dockerRepoQueue() {
-        return new Queue(this.dockerRepoQueue, false);
+    Queue repoQueue() {
+        return new Queue(this.repoQueue, false);
     }
 
     @Bean
-    Queue dockerTagQueue() {
-        return new Queue(this.dockerTagQueue, false);
-    }
-
-    @Bean
-    Queue gitRepoQueue() {
-        return new Queue(this.gitRepoQueue, false);
-    }
-
-    @Bean
-    Queue gitCommitQueue() {
-        return new Queue(this.gitCommitQueue, false);
+    Queue hookEventQueue() {
+        return new Queue(this.hookEventQueue, false);
     }
 
 
     @Bean
-    Binding dockerRepoBinding(Queue dockerRepoQueue, DirectExchange hooksExchange) {
-        return BindingBuilder.bind(dockerRepoQueue).to(hooksExchange).with(this.dockerRepoRoutingKey);
+    Binding dockerRepoBinding(Queue repoQueue, DirectExchange hooksExchange) {
+        return BindingBuilder.bind(repoQueue).to(hooksExchange).with(this.repoRoutingKey);
     }
 
     @Bean
-    Binding dockerTagBinding(Queue dockerTagQueue, DirectExchange hooksExchange) {
-        return BindingBuilder.bind(dockerTagQueue).to(hooksExchange).with(dockerTagRoutingKey);
-    }
-
-    @Bean
-    Binding gitRepoBinding(Queue gitRepoQueue, DirectExchange hooksExchange) {
-        return BindingBuilder.bind(gitRepoQueue).to(hooksExchange).with(this.gitRepoRoutingKey);
-    }
-
-    @Bean
-    Binding gitCommitBinding(Queue gitCommitQueue, DirectExchange hooksExchange) {
-        return BindingBuilder.bind(gitCommitQueue).to(hooksExchange).with(gitCommitRoutingKey);
+    Binding dockerTagBinding(Queue hookEventQueue, DirectExchange hooksExchange) {
+        return BindingBuilder.bind(hookEventQueue).to(hooksExchange).with(hookEventRoutingKey);
     }
 
 }

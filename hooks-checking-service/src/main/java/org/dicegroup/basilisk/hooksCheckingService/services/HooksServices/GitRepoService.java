@@ -30,13 +30,13 @@ public class GitRepoService {
         logger.info("Added Git repo with id: {}", createdRepo.getId());
     }
 
-    public void deleteRepo(GitRepo repo) {
-        Optional<GitRepo> ownRepo = findRepo(repo.getId());
+    public void deleteRepo(Long repoId) {
+        Optional<GitRepo> ownRepo = findRepo(repoId);
         if (ownRepo.isPresent()) {
             this.gitRepoRepository.delete(ownRepo.get());
-            logger.info("Deleted Git repo with ID {}", repo.getId());
+            logger.info("Deleted Git repo with ID {}", repoId);
         } else {
-            logger.error("Repo was not found! ID: {}", repo.getId());
+            logger.error("Repo was not found! ID: {}", repoId);
         }
     }
 }

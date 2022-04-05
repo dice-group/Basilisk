@@ -1,7 +1,7 @@
 package org.dicegroup.basilisk.jobsManagingService.services.repo;
 
-import org.dicegroup.basilisk.jobsManagingService.events.hooks.DockerRepoEvent;
-import org.dicegroup.basilisk.jobsManagingService.events.hooks.RepoEventType;
+import org.dicegroup.basilisk.events.hooks.repo.DockerRepoAddEvent;
+import org.dicegroup.basilisk.events.hooks.repo.DockerRepoDeleteEvent;
 import org.dicegroup.basilisk.jobsManagingService.model.repo.DockerRepo;
 import org.dicegroup.basilisk.jobsManagingService.repositories.repo.DockerRepoRepository;
 import org.dicegroup.basilisk.jobsManagingService.web.messaging.hooks.HooksMessageSender;
@@ -45,14 +45,14 @@ public class DockerRepoService {
         }
         DockerRepo createdRepo = this.repoRepository.save(repo);
 
-        DockerRepoEvent event = new DockerRepoEvent(RepoEventType.CREATED, createdRepo);
+        DockerRepoAddEvent event = this.mapper.map(repo, DockerRepoAddEvent.class);
         this.messageSender.send(event);
 
         return createdRepo;
     }
 
     public void deleteRepo(DockerRepo repo) {
-        DockerRepoEvent event = new DockerRepoEvent(RepoEventType.DELETED, repo);
+        DockerRepoDeleteEvent event = new DockerRepoDeleteEvent(repo.getId());
         this.messageSender.send(event);
 
         this.repoRepository.delete(repo);

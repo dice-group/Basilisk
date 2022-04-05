@@ -1,5 +1,4 @@
-package org.dicegroup.basilisk.hooksCheckingService.events.git;
-
+package org.dicegroup.basilisk.events.hooks.hook;
 
 import lombok.*;
 
@@ -8,12 +7,13 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GitCommitAddedEvent implements Serializable {
+@Builder
+public class GitCommitEvent implements Serializable {
 
-    private long repoId;
+    private Long repoId;
     private String url;
     private String commit_sha1;
+
 }

@@ -1,22 +1,18 @@
-package org.dicegroup.basilisk.hooksCheckingService.events.docker;
+package org.dicegroup.basilisk.events.hooks.hook;
 
-import org.dicegroup.basilisk.hooksCheckingService.model.docker.DockerRepo;
 import lombok.*;
 
 import java.io.Serializable;
 
-
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class DockerTagEvent implements Serializable {
 
-    private DockerRepo repo;
-
+    private Long repoId;
     private String tagName;
-
     private String imageDigest;
 
 }

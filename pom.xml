@@ -14,6 +14,7 @@
         <module>hooks-checking-service</module>
         <module>jobs-managing-service</module>
         <module>benchmark-service</module>
+        <module>events</module>
     </modules>
 
     <properties>

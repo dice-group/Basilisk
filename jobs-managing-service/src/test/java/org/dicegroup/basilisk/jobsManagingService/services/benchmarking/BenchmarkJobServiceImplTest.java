@@ -1,6 +1,6 @@
 package org.dicegroup.basilisk.jobsManagingService.services.benchmarking;
 
-import org.dicegroup.basilisk.jobsManagingService.events.GitCommitAddedEvent;
+import org.dicegroup.basilisk.events.hooks.hook.GitCommitEvent;
 import org.dicegroup.basilisk.jobsManagingService.model.benchmarking.DataSet;
 import org.dicegroup.basilisk.jobsManagingService.model.benchmarking.GitBenchmarkJob;
 import org.dicegroup.basilisk.jobsManagingService.model.benchmarking.JobStatus;
@@ -8,6 +8,7 @@ import org.dicegroup.basilisk.jobsManagingService.model.benchmarking.TripleStore
 import org.dicegroup.basilisk.jobsManagingService.repositories.benchmarking.BenchmarkJobRepository;
 import org.dicegroup.basilisk.jobsManagingService.repositories.benchmarking.DockerBenchmarkJobRepository;
 import org.dicegroup.basilisk.jobsManagingService.repositories.benchmarking.GitBenchmarkJobRepository;
+import org.dicegroup.basilisk.jobsManagingService.services.repo.DockerRepoService;
 import org.dicegroup.basilisk.jobsManagingService.web.messaging.benchmarking.BenchmarkMessageSender;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,6 +28,9 @@ import static org.mockito.Mockito.verify;
 class BenchmarkJobServiceImplTest {
 
     BenchmarkJobService benchmarkJobService;
+
+    @Mock
+    private DockerRepoService repoService;
 
     @Mock
     private BenchmarkService benchmarkService;
@@ -49,7 +53,7 @@ class BenchmarkJobServiceImplTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        benchmarkJobService = new BenchmarkJobService(benchmarkJobRepository, tripleStoreService, messageSender, dockerBenchmarkJobRepository, gitBenchmarkJobRepository, benchmarkService, dcService);
+        benchmarkJobService = new BenchmarkJobService(repoService, benchmarkJobRepository, tripleStoreService, messageSender, dockerBenchmarkJobRepository, gitBenchmarkJobRepository, benchmarkService, dcService);
     }
 
     @Test
@@ -58,10 +62,10 @@ class BenchmarkJobServiceImplTest {
         //given
 
 
-        GitCommitAddedEvent gitCommitAddedEvent = GitCommitAddedEvent.builder()
+        GitCommitEvent gitCommitAddedEvent = GitCommitEvent.builder()
                 .url("https://test.com")
                 .commit_sha1("8bde8f3ca718ebad91893a958a2a308ff0e8286s")
-                .repoId(1)
+                .repoId(1L)
                 .build();
 
         TripleStore tripleStore = TripleStore.builder()

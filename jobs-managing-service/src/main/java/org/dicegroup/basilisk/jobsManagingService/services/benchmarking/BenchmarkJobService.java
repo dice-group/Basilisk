@@ -1,14 +1,16 @@
 package org.dicegroup.basilisk.jobsManagingService.services.benchmarking;
 
-import org.dicegroup.basilisk.jobsManagingService.events.DockerTagEvent;
-import org.dicegroup.basilisk.jobsManagingService.events.GitCommitAddedEvent;
+import org.dicegroup.basilisk.events.hooks.hook.DockerTagEvent;
+import org.dicegroup.basilisk.events.hooks.hook.GitCommitEvent;
 import org.dicegroup.basilisk.jobsManagingService.events.benchmarking.BenchmarkJobAbortCommand;
 import org.dicegroup.basilisk.jobsManagingService.events.benchmarking.DockerBenchmarkJobCreatedEvent;
 import org.dicegroup.basilisk.jobsManagingService.events.benchmarking.GitBenchmarkJobCreatedEvent;
 import org.dicegroup.basilisk.jobsManagingService.model.benchmarking.*;
+import org.dicegroup.basilisk.jobsManagingService.model.repo.DockerRepo;
 import org.dicegroup.basilisk.jobsManagingService.repositories.benchmarking.BenchmarkJobRepository;
 import org.dicegroup.basilisk.jobsManagingService.repositories.benchmarking.DockerBenchmarkJobRepository;
 import org.dicegroup.basilisk.jobsManagingService.repositories.benchmarking.GitBenchmarkJobRepository;
+import org.dicegroup.basilisk.jobsManagingService.services.repo.DockerRepoService;
 import org.dicegroup.basilisk.jobsManagingService.web.messaging.benchmarking.BenchmarkMessageSender;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,8 @@ import java.util.Optional;
 @Service
 public class BenchmarkJobService {
 
+    private final DockerRepoService repoService;
+
     private final BenchmarkJobRepository benchmarkJobRepository;
     private final DockerBenchmarkJobRepository dockerBenchmarkJobRepository;
     private final GitBenchmarkJobRepository gitBenchmarkJobRepository;
@@ -29,7 +33,8 @@ public class BenchmarkJobService {
     private final TripleStoreService tripleStoreService;
     private final BenchmarkMessageSender messageSender;
 
-    public BenchmarkJobService(BenchmarkJobRepository benchmarkJobRepository, TripleStoreService tripleStoreService, BenchmarkMessageSender messageSender, DockerBenchmarkJobRepository dockerBenchmarkJobRepository, GitBenchmarkJobRepository gitBenchmarkJobRepository, BenchmarkService benchmarkService, DataSetService dataSetService) {
+    public BenchmarkJobService(DockerRepoService repoService, BenchmarkJobRepository benchmarkJobRepository, TripleStoreService tripleStoreService, BenchmarkMessageSender messageSender, DockerBenchmarkJobRepository dockerBenchmarkJobRepository, GitBenchmarkJobRepository gitBenchmarkJobRepository, BenchmarkService benchmarkService, DataSetService dataSetService) {
+        this.repoService = repoService;
         this.benchmarkJobRepository = benchmarkJobRepository;
         this.tripleStoreService = tripleStoreService;
         this.dockerBenchmarkJobRepository = dockerBenchmarkJobRepository;
@@ -51,9 +56,9 @@ public class BenchmarkJobService {
         return (List<GitBenchmarkJob>) this.gitBenchmarkJobRepository.findAll();
     }
 
-    public void generateBenchmarkingJobs(GitCommitAddedEvent gitCommitAddedEvent) {
+    public void generateBenchmarkingJobs(GitCommitEvent event) {
 
-        List<GitBenchmarkJob> jobs = generateGitBenchmarkingJobsConfigs(gitCommitAddedEvent);
+        List<GitBenchmarkJob> jobs = generateGitBenchmarkingJobsConfigs(event);
         jobs.forEach(job -> {
             this.gitBenchmarkJobRepository.save(job);
             // send created job to message queue
@@ -79,9 +84,11 @@ public class BenchmarkJobService {
     private List<DockerBenchmarkJob> generateDockerBenchmarkJobs(DockerTagEvent event) {
         List<DockerBenchmarkJob> jobs = new ArrayList<>();
 
+        DockerRepo repo = this.repoService.getRepo(event.getRepoId()).get();
+
         for (Benchmark benchmark : this.benchmarkService.getAllBenchmarks()) {
             DockerBenchmarkJob job = DockerBenchmarkJob.builder()
-                    .repo(event.getRepo())
+                    .repo(repo)
                     .tagName(event.getTagName())
                     .benchmark(benchmark)
                     .status(JobStatus.CREATED)
@@ -157,7 +164,7 @@ public class BenchmarkJobService {
     }
 
 
-    private List<GitBenchmarkJob> generateGitBenchmarkingJobsConfigs(GitCommitAddedEvent gitCommitAddedEvent) {
+    private List<GitBenchmarkJob> generateGitBenchmarkingJobsConfigs(GitCommitEvent gitCommitAddedEvent) {
         List<GitBenchmarkJob> jobs = new ArrayList<>();
         //get all active query and dataset configs
         List<DataSet> dataSets = this.dataSetService.getAllDataSets();

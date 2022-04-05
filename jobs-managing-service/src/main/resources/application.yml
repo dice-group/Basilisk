@@ -31,18 +31,12 @@ server:
 rabbitmq:
   hooks:
     exchange: hooksExchange
-    git:
-      repoQueue: gitRepoQueue
-      commitQueue: gitCommitQueue
-      routingKeys:
-        repo: gitRepoKey
-        commit: gitCommitKey
-    docker:
-      repoQueue: dockerRepoQueue
-      tagQueue: dockerTagQueue
-      routingKeys:
-        repo: dockerRepoKey
-        tag: dockerTagKey
+
+    repoQueue: repoQueue
+    repoRoutingKey: repoRoutingKey
+
+    hookEventQueue: hookEventQueue
+    hookEventRoutingKey: hookEventRoutingKey
 
   benchmarks:
     exchange: benchmarkExchange

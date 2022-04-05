@@ -19,6 +19,11 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: update
+  rabbitmq:
+    host: localhost
+    port: '5672'
+    username: guest
+    password: guest
 
 core:
   timing:
@@ -30,18 +35,12 @@ server:
 rabbitmq:
   hooks:
     exchange: hooksExchange
-    git:
-      repoQueue: gitRepoQueue
-      commitQueue: gitCommitQueue
-      routingKeys:
-        repo: gitRepoKey
-        commit: gitCommitKey
-    docker:
-      repoQueue: dockerRepoQueue
-      tagQueue: dockerTagQueue
-      routingKeys:
-        repo: dockerRepoKey
-        tag: dockerTagKey
+
+    repoQueue: repoQueue
+    repoRoutingKey: repoRoutingKey
+
+    hookEventQueue: hookEventQueue
+    hookEventRoutingKey: hookEventRoutingKey
 
 proxies:
   docker:

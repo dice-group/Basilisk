@@ -1,41 +1,54 @@
 package org.dicegroup.basilisk.hooksCheckingService.web.messaging;
 
-import org.dicegroup.basilisk.hooksCheckingService.events.RepoEventType;
-import org.dicegroup.basilisk.hooksCheckingService.events.docker.DockerRepoEvent;
-import org.dicegroup.basilisk.hooksCheckingService.events.git.GitRepoEvent;
+import org.dicegroup.basilisk.events.hooks.repo.DockerRepoAddEvent;
+import org.dicegroup.basilisk.events.hooks.repo.DockerRepoDeleteEvent;
+import org.dicegroup.basilisk.events.hooks.repo.GitRepoAddEvent;
+import org.dicegroup.basilisk.events.hooks.repo.GitRepoDeleteEvent;
+import org.dicegroup.basilisk.hooksCheckingService.model.docker.DockerRepo;
+import org.dicegroup.basilisk.hooksCheckingService.model.git.GitRepo;
 import org.dicegroup.basilisk.hooksCheckingService.services.HooksServices.DockerRepoService;
 import org.dicegroup.basilisk.hooksCheckingService.services.HooksServices.GitRepoService;
+import org.modelmapper.ModelMapper;
+import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
 
 @Component
+@RabbitListener(queues = "${rabbitmq.hooks.repoQueue}")
 public class MessageReceiver {
 
-    private final DockerRepoService dockerRepoService;
     private final GitRepoService gitRepoService;
+    private final DockerRepoService dockerRepoService;
+    private final ModelMapper mapper;
 
-    public MessageReceiver(DockerRepoService dockerRepoService, GitRepoService gitRepoService) {
-        this.dockerRepoService = dockerRepoService;
+    public MessageReceiver(GitRepoService gitRepoService, DockerRepoService dockerRepoService, ModelMapper mapper) {
         this.gitRepoService = gitRepoService;
+        this.dockerRepoService = dockerRepoService;
+        this.mapper = mapper;
     }
 
-
-    @RabbitListener(queues = "${rabbitmq.hooks.docker.repoQueue}")
-    public void receiveDockerRepoEvent(DockerRepoEvent event) {
-        if (event.getEventType() == RepoEventType.CREATED) {
-            this.dockerRepoService.addRepo(event.getRepo());
-        } else {
-            this.dockerRepoService.deleteRepo(event.getRepo());
-        }
+    @RabbitHandler
+    public void receiveGitRepoAddEvent(GitRepoAddEvent event) {
+        GitRepo repo = this.mapper.map(event, GitRepo.class);
+        this.gitRepoService.addRepo(repo);
     }
 
-    @RabbitListener(queues = "${rabbitmq.hooks.git.repoQueue}")
-    public void receiveGitRepoEvent(GitRepoEvent event) {
-        if (event.getEventType() == RepoEventType.CREATED) {
-            this.gitRepoService.addRepo(event.getRepo());
-        } else {
-            this.gitRepoService.deleteRepo(event.getRepo());
-        }
+    @RabbitHandler
+    public void receiveGitRepoDeleteEvent(GitRepoDeleteEvent event) {
+        Long id = event.getId();
+        this.gitRepoService.deleteRepo(id);
+    }
+
+    @RabbitHandler
+    public void receiveDockerRepoAddedEvent(DockerRepoAddEvent event) {
+        DockerRepo repo = this.mapper.map(event, DockerRepo.class);
+        this.dockerRepoService.addRepo(repo);
+    }
+
+    @RabbitHandler
+    public void receiveDockerRepoDeleteEvent(DockerRepoDeleteEvent event) {
+        Long id = event.getId();
+        this.dockerRepoService.deleteRepo(id);
     }
 }

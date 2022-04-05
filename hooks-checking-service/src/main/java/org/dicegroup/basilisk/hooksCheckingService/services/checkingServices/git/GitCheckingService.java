@@ -1,7 +1,7 @@
 package org.dicegroup.basilisk.hooksCheckingService.services.checkingServices.git;
 
+import org.dicegroup.basilisk.events.hooks.hook.GitCommitEvent;
 import org.dicegroup.basilisk.hooksCheckingService.core.exception.GithubException;
-import org.dicegroup.basilisk.hooksCheckingService.events.git.GitCommitAddedEvent;
 import org.dicegroup.basilisk.hooksCheckingService.model.git.GitHook;
 import org.dicegroup.basilisk.hooksCheckingService.model.git.GitRepo;
 import org.dicegroup.basilisk.hooksCheckingService.repositories.GitHookRepository;
@@ -81,8 +81,8 @@ public abstract class GitCheckingService implements CheckingService {
                 .build();
     }
 
-    private GitCommitAddedEvent createGitCommitAddedEvent(GitRepo gitRepo, GitHook gitHook) {
-        return GitCommitAddedEvent.builder()
+    private GitCommitEvent createGitCommitAddedEvent(GitRepo gitRepo, GitHook gitHook) {
+        return GitCommitEvent.builder()
                 .commit_sha1(gitHook.getCommitSha1())
                 .repoId(gitRepo.getId())
                 .url(gitHook.getCommitUrl())

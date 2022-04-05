@@ -1,7 +1,7 @@
 package org.dicegroup.basilisk.hooksCheckingService.services.checkingServices.docker;
 
+import org.dicegroup.basilisk.events.hooks.hook.DockerTagEvent;
 import org.dicegroup.basilisk.hooksCheckingService.core.exception.DockerhubException;
-import org.dicegroup.basilisk.hooksCheckingService.events.docker.DockerTagEvent;
 import org.dicegroup.basilisk.hooksCheckingService.model.docker.DockerImage;
 import org.dicegroup.basilisk.hooksCheckingService.model.docker.DockerRepo;
 import org.dicegroup.basilisk.hooksCheckingService.model.docker.DockerTag;
@@ -105,7 +105,7 @@ public class DockerhubCheckingService implements CheckingService {
             this.dockerTagRepository.save(newTag);
             // send docker tag added event
             DockerTagEvent event = DockerTagEvent.builder()
-                    .repo(repo)
+                    .repoId(repo.getId())
                     .imageDigest(dockerImage.getDigest())
                     .tagName(apiTag.getName())
                     .build();
@@ -119,7 +119,7 @@ public class DockerhubCheckingService implements CheckingService {
                 dockerTagRepository.save(savedTag.get());
 
                 DockerTagEvent updatedEvent = DockerTagEvent.builder()
-                        .repo(repo)
+                        .repoId(repo.getId())
                         .tagName(tag.getName())
                         .imageDigest(dockerImage.getDigest())
                         .build();

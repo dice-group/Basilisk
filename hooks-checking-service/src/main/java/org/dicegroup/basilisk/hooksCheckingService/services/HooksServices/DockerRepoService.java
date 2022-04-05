@@ -30,13 +30,14 @@ public class DockerRepoService {
         this.dockerRepoRepository.save(dockerRepo);
     }
 
-    public void deleteRepo(DockerRepo repo) {
-        Optional<DockerRepo> ownRepo = findRepo(repo.getId());
+    public void deleteRepo(Long repoId) {
+
+        Optional<DockerRepo> ownRepo = findRepo(repoId);
         if (ownRepo.isPresent()) {
             this.dockerRepoRepository.delete(ownRepo.get());
-            logger.info("Deleted Docker repo with ID {}", repo.getId());
+            logger.info("Deleted Docker repo with ID {}", repoId);
         } else {
-            logger.error("Repo was not found! ID: {}", repo.getId());
+            logger.error("Repo was not found! ID: {}", repoId);
         }
     }
 }

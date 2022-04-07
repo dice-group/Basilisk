@@ -1,10 +1,10 @@
-package org.dicegroup.basilisk.benchmarkService.domain.benchamrking;
+package org.dicegroup.basilisk.benchmarkService.domain.benchmark;
 
 
-import org.dicegroup.basilisk.benchmarkService.domain.GitJobConfig;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.dicegroup.basilisk.benchmarkService.domain.GitJobConfig;
 
 
 @Setter

@@ -2,6 +2,7 @@ package org.dicegroup.basilisk.jobsManagingService.model.repo;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.dicegroup.basilisk.dto.repo.GitRepoType;
 
 import javax.persistence.Entity;
 

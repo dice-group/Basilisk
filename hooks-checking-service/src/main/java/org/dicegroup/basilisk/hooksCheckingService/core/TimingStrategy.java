@@ -1,9 +1,18 @@
 package org.dicegroup.basilisk.hooksCheckingService.core;
 
-/**
- * @author Fakhr Shaheen
- */
-public interface TimingStrategy {
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
-    public void sleep() throws InterruptedException;
+import java.util.concurrent.TimeUnit;
+
+
+@Component
+public class TimingStrategy {
+
+    @Value("${core.timing.timeout}")
+    private long timeout;
+
+    public void sleep() throws InterruptedException {
+        TimeUnit.SECONDS.sleep(timeout);
+    }
 }

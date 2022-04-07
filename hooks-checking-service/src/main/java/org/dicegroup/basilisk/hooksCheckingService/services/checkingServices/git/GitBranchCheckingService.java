@@ -1,9 +1,9 @@
 package org.dicegroup.basilisk.hooksCheckingService.services.checkingServices.git;
 
 
+import org.dicegroup.basilisk.dto.repo.GitRepoType;
 import org.dicegroup.basilisk.hooksCheckingService.core.exception.GithubException;
 import org.dicegroup.basilisk.hooksCheckingService.model.git.GitRepo;
-import org.dicegroup.basilisk.hooksCheckingService.model.git.GitRepoType;
 import org.dicegroup.basilisk.hooksCheckingService.repositories.GitHookRepository;
 import org.dicegroup.basilisk.hooksCheckingService.repositories.GitRepoRepository;
 import org.dicegroup.basilisk.hooksCheckingService.web.messaging.MessageSender;

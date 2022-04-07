@@ -1,15 +1,12 @@
-package org.dicegroup.basilisk.hooksCheckingService.model.git;
-
+package org.dicegroup.basilisk.benchmarkService.domain.repo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.dicegroup.basilisk.dto.repo.GitRepoType;
-import org.dicegroup.basilisk.hooksCheckingService.model.Repo;
 
 import javax.persistence.Entity;
-
 
 @Entity
 @Getter
@@ -18,7 +15,7 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 public class GitRepo extends Repo {
 
-    private GitRepoType repoType;
+    private GitRepoType gitRepoType;
     private String branchName;
 
 }

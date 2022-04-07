@@ -1,7 +1,7 @@
 package org.dicegroup.basilisk.jobsManagingService.web.controllers;
 
+import org.dicegroup.basilisk.dto.repo.GitRepoType;
 import org.dicegroup.basilisk.jobsManagingService.model.repo.GitRepo;
-import org.dicegroup.basilisk.jobsManagingService.model.repo.GitRepoType;
 import org.dicegroup.basilisk.jobsManagingService.services.repo.GitRepoService;
 import org.dicegroup.basilisk.jobsManagingService.web.controllers.repo.GitRepoController;
 import org.junit.Before;

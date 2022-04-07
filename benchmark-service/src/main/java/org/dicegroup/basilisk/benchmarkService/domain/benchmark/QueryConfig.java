@@ -1,8 +1,8 @@
-package org.dicegroup.basilisk.benchmarkService.domain.benchamrking;
+package org.dicegroup.basilisk.benchmarkService.domain.benchmark;
 
 
-import org.dicegroup.basilisk.benchmarkService.domain.BaseEntity;
 import lombok.Getter;
+import org.dicegroup.basilisk.benchmarkService.domain.BaseEntity;
 
 /**
  * @author Fakhr Shaheen

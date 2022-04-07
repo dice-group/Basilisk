@@ -1,7 +1,7 @@
 package org.dicegroup.basilisk.jobsManagingService.repositories.repo;
 
+import org.dicegroup.basilisk.dto.repo.GitRepoType;
 import org.dicegroup.basilisk.jobsManagingService.model.repo.GitRepo;
-import org.dicegroup.basilisk.jobsManagingService.model.repo.GitRepoType;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

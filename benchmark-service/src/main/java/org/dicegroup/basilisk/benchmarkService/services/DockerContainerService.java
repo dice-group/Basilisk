@@ -1,9 +1,5 @@
 package org.dicegroup.basilisk.benchmarkService.services;
 
-import org.dicegroup.basilisk.benchmarkService.domain.dockerContainer.ContainerStatus;
-import org.dicegroup.basilisk.benchmarkService.domain.dockerContainer.DockerContainer;
-import org.dicegroup.basilisk.benchmarkService.domain.dockerContainer.ImageStatus;
-import org.dicegroup.basilisk.benchmarkService.repositories.DockerContainerRepository;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.command.InspectImageResponse;
@@ -12,6 +8,10 @@ import com.github.dockerjava.api.exception.NotFoundException;
 import com.github.dockerjava.api.model.HostConfig;
 import com.github.dockerjava.api.model.Image;
 import com.github.dockerjava.api.model.PortBinding;
+import org.dicegroup.basilisk.benchmarkService.domain.dockerContainer.ContainerStatus;
+import org.dicegroup.basilisk.benchmarkService.domain.dockerContainer.DockerContainer;
+import org.dicegroup.basilisk.benchmarkService.domain.dockerContainer.ImageStatus;
+import org.dicegroup.basilisk.benchmarkService.repositories.DockerContainerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -31,7 +31,7 @@ public class DockerContainerService {
         this.containerRepository = containerRepository;
     }
 
-    public DockerContainer addContainer(String owner, String name, String tag) {
+    public DockerContainer getDockerContainer(String owner, String name, String tag) {
         String imageName = getImageName(owner, name, tag);
 
         Optional<DockerContainer> containerOpt = this.containerRepository.findByImageName(imageName);
@@ -48,7 +48,7 @@ public class DockerContainerService {
         return this.containerRepository.save(container);
     }
 
-    public String pullImage(DockerContainer container) {
+    public DockerContainer pullImage(DockerContainer container) {
 
         this.logger.info("started pulling..");
         try {
@@ -66,10 +66,10 @@ public class DockerContainerService {
 
         this.logger.info("finished");
 
-        return container.getImageId();
+        return container;
     }
 
-    public String startContainer(DockerContainer container) {
+    public DockerContainer startContainer(DockerContainer container) {
 
         HostConfig config = HostConfig.newHostConfig().withPortBindings(PortBinding.parse("81:80"));
 
@@ -89,10 +89,10 @@ public class DockerContainerService {
         container = this.containerRepository.save(container);
 
 
-        return container.getContainerId();
+        return container;
     }
 
-    public void stopContainer(DockerContainer container) {
+    public DockerContainer stopContainer(DockerContainer container) {
 
         this.client.stopContainerCmd(container.getContainerId()).exec();
 
@@ -103,16 +103,22 @@ public class DockerContainerService {
 
         container.setContainerStatus(ContainerStatus.REMOVED);
         container.setContainerId(null);
-        this.containerRepository.save(container);
-
+        return this.containerRepository.save(container);
     }
 
-    public void deleteImage(DockerContainer container) {
+    public void removeImages() {
+        List<DockerContainer> containers = this.containerRepository.findAllByImageStatusAndContainerStatus(ImageStatus.PULLED, ContainerStatus.REMOVED);
+        for (DockerContainer container : containers) {
+            deleteImage(container);
+        }
+    }
+
+    public DockerContainer deleteImage(DockerContainer container) {
         this.client.removeImageCmd(container.getImageId()).exec();
 
         container.setImageStatus(ImageStatus.REMOVED);
         container.setImageId(null);
-        this.containerRepository.save(container);
+        return this.containerRepository.save(container);
     }
 
     public List<Image> listImages() {
@@ -121,10 +127,6 @@ public class DockerContainerService {
 
     public List<DockerContainer> getAllContainers() {
         return (List<DockerContainer>) this.containerRepository.findAll();
-    }
-
-    public Optional<DockerContainer> getDockerContainer(String owner, String name, String tag) {
-        return this.containerRepository.findByImageName(getImageName(owner, name, tag));
     }
 
     public String findImageIdByName(String owner, String name, String tag) {

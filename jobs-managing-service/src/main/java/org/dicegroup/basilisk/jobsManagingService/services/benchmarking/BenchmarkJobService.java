@@ -1,5 +1,6 @@
 package org.dicegroup.basilisk.jobsManagingService.services.benchmarking;
 
+import lombok.extern.slf4j.Slf4j;
 import org.dicegroup.basilisk.dto.benchmark.BenchmarkDto;
 import org.dicegroup.basilisk.dto.repo.DockerRepoDto;
 import org.dicegroup.basilisk.dto.repo.GitRepoDto;
@@ -18,13 +19,13 @@ import org.dicegroup.basilisk.jobsManagingService.web.messaging.benchmarking.Ben
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 
 @Service
+@Slf4j
 public class BenchmarkJobService {
 
     private final DockerRepoService repoService;
@@ -85,7 +86,6 @@ public class BenchmarkJobService {
                     .repo(this.mapper.map(job.getRepo(), DockerRepoDto.class))
                     .tagName(event.getTagName())
                     .imageDigest(event.getImageDigest())
-                    .createDate(LocalDate.now())
                     .benchmark(this.mapper.map(job.getBenchmark(), BenchmarkDto.class))
                     .build();
 

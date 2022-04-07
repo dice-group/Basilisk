@@ -1,9 +1,9 @@
 package org.dicegroup.basilisk.jobsManagingService.services.repo;
 
+import org.dicegroup.basilisk.dto.repo.GitRepoType;
 import org.dicegroup.basilisk.events.hooks.repo.GitRepoAddEvent;
 import org.dicegroup.basilisk.events.hooks.repo.GitRepoDeleteEvent;
 import org.dicegroup.basilisk.jobsManagingService.model.repo.GitRepo;
-import org.dicegroup.basilisk.jobsManagingService.model.repo.GitRepoType;
 import org.dicegroup.basilisk.jobsManagingService.repositories.repo.GitRepoRepository;
 import org.dicegroup.basilisk.jobsManagingService.web.messaging.hooks.HooksMessageSender;
 import org.modelmapper.ModelMapper;

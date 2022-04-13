@@ -5,9 +5,7 @@ import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.command.InspectImageResponse;
 import com.github.dockerjava.api.command.PullImageResultCallback;
 import com.github.dockerjava.api.exception.NotFoundException;
-import com.github.dockerjava.api.model.HostConfig;
-import com.github.dockerjava.api.model.Image;
-import com.github.dockerjava.api.model.PortBinding;
+import com.github.dockerjava.api.model.*;
 import org.dicegroup.basilisk.benchmarkService.domain.dockerContainer.ContainerStatus;
 import org.dicegroup.basilisk.benchmarkService.domain.dockerContainer.DockerContainer;
 import org.dicegroup.basilisk.benchmarkService.domain.dockerContainer.ImageStatus;
@@ -71,11 +69,21 @@ public class DockerContainerService {
 
     public DockerContainer startContainer(DockerContainer container) {
 
-        HostConfig config = HostConfig.newHostConfig().withPortBindings(PortBinding.parse("81:80"));
+        Volume dataset = new Volume("/datasets");
+        Bind bind = new Bind("./example_benchmark", dataset);
+
+        PortBinding portBinding = new PortBinding(Ports.Binding.bindPort(81), new ExposedPort(80));
+
+        HostConfig config = HostConfig.newHostConfig()
+                .withPortBindings(portBinding)
+                .withBinds(bind);
 
         CreateContainerResponse response = this.client.createContainerCmd(container.getImageName())
                 .withHostConfig(config)
+                .withVolumes(dataset)
                 .exec();
+
+        this.logger.info("port bindings: {}", config.getPortBindings().toString());
 
         container.setContainerStatus(ContainerStatus.CREATED);
         container.setContainerId(response.getId());

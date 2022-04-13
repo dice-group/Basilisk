@@ -1,7 +1,7 @@
 package org.dicegroup.basilisk.benchmarkService.domain.dockerContainer;
 
-import org.dicegroup.basilisk.benchmarkService.domain.BaseEntity;
 import lombok.*;
+import org.dicegroup.basilisk.benchmarkService.domain.BaseEntity;
 
 import javax.persistence.Entity;
 
@@ -15,6 +15,7 @@ public class DockerContainer extends BaseEntity {
 
     private String imageId;
     private String imageName;
+    private String imageDigest;
     private ImageStatus imageStatus;
 
     private String containerId;

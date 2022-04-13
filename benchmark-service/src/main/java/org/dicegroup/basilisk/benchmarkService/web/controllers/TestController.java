@@ -17,9 +17,10 @@ public class TestController {
 
     private final DockerContainerService containerService;
 
-    private final String owner = "dicegroup";
-    private final String name = "tentris_server";
+    private final String owner = "dicegroup"; // "docker"
+    private final String name = "tentris_server"; // "getting-started"
     private final String tag = "latest";
+    private final String startArgs = "-f /datasets/swdf.nt";
 
     public TestController(DockerContainerService containerService) {
         this.containerService = containerService;

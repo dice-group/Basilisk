@@ -13,7 +13,7 @@ import javax.persistence.ManyToOne;
 public class Benchmark extends BaseEntity {
 
     private String name;
-    private String queryFileUrl;
+    private String queryFilePath;
     @ManyToOne
     private DataSet dataSet;
 

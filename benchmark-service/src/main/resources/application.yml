@@ -28,6 +28,10 @@ spring:
 server:
   port: '8082'
 
+docker:
+  dockerHost: 'unix:///var/run/docker.sock'
+  hostPort: 81
+
 iguana:
   resultStorage:
     endpoint: 'localhost'

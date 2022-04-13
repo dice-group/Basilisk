@@ -1,7 +1,13 @@
 package org.dicegroup.basilisk.benchmarkService.web.controllers;
 
 import com.github.dockerjava.api.model.Image;
+import org.dicegroup.basilisk.benchmarkService.domain.TripleStore;
+import org.dicegroup.basilisk.benchmarkService.domain.benchmark.Benchmark;
+import org.dicegroup.basilisk.benchmarkService.domain.benchmark.DataSet;
+import org.dicegroup.basilisk.benchmarkService.domain.benchmark.DockerBenchmarkJob;
 import org.dicegroup.basilisk.benchmarkService.domain.dockerContainer.DockerContainer;
+import org.dicegroup.basilisk.benchmarkService.domain.repo.DockerRepo;
+import org.dicegroup.basilisk.benchmarkService.services.BenchmarkJobService;
 import org.dicegroup.basilisk.benchmarkService.services.DockerContainerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +23,46 @@ public class TestController {
 
     private final DockerContainerService containerService;
 
+    private final BenchmarkJobService benchmarkJobService;
+
     private final String owner = "dicegroup"; // "docker"
     private final String name = "tentris_server"; // "getting-started"
     private final String tag = "latest";
-    private final String startArgs = "-f /datasets/swdf.nt";
 
-    public TestController(DockerContainerService containerService) {
+    private final DockerBenchmarkJob benchmarkJob;
+
+    public TestController(DockerContainerService containerService, BenchmarkJobService benchmarkJobService) {
         this.containerService = containerService;
+        this.benchmarkJobService = benchmarkJobService;
+
+        TripleStore ts = new TripleStore();
+        ts.setExposedPort(9080);
+        ts.setEntryPoint("-f /datasets/swdf.nt --logstdout");
+        ts.setDataSetPath("/datasets");
+
+        DockerRepo repo = new DockerRepo();
+        repo.setRepoName("tentris_server");
+        repo.setRepoOwner("dicegroup");
+        repo.setTripleStore(ts);
+
+        DataSet ds = new DataSet();
+        ds.setFilePath("/home/fabian/dev/bachelor/Basilisk/example_benchmark");
+
+        Benchmark bm = new Benchmark();
+        bm.setQueryFilePath("/home/fabian/dev/bachelor/Basilisk/example_benchmark");
+        bm.setDataSet(ds);
+
+        this.benchmarkJob = DockerBenchmarkJob.builder()
+                .repo(repo)
+                .tagName("latest")
+                .benchmark(bm)
+                .build();
+
+    }
+
+    @GetMapping("/handle")
+    public DockerContainer handleBenchmarkJob() {
+        return this.benchmarkJobService.handleNewDockerBenchmarkJob(this.benchmarkJob);
     }
 
     @GetMapping("/add")
@@ -66,15 +105,15 @@ public class TestController {
     public String stopContainer() {
         DockerContainer container = this.containerService.getDockerContainer(this.owner, this.name, this.tag);
 
-        this.containerService.stopContainer(container);
-        return "stopped";
+        container = this.containerService.stopContainer(container);
+        return "stopped: " + container;
     }
 
     @GetMapping("/delete")
     public String deleteImage() {
         DockerContainer container = this.containerService.getDockerContainer(this.owner, this.name, this.tag);
 
-        this.containerService.deleteImage(container);
-        return "deleted";
+        container = this.containerService.deleteImage(container);
+        return "deleted: " + container;
     }
 }

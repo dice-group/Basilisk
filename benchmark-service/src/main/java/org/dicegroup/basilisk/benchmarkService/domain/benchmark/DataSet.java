@@ -18,6 +18,6 @@ import javax.persistence.Entity;
 public class DataSet extends BaseEntity {
 
     String name;
-    String url;
+    String filePath;
 
 }

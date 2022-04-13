@@ -21,4 +21,12 @@ public class DockerContainer extends BaseEntity {
     private String containerId;
     private ContainerStatus containerStatus;
 
+    private Integer exposedPort;
+    private Integer hostPort;
+
+    private String dataSetHostPath;
+    private String dataSetPath;
+
+    private String entryPoint;
+
 }

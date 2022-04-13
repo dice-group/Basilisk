@@ -69,21 +69,21 @@ public class DockerContainerService {
 
     public DockerContainer startContainer(DockerContainer container) {
 
-        Volume dataset = new Volume("/datasets");
-        Bind bind = new Bind("./example_benchmark", dataset);
+        Volume dataSet = new Volume(container.getDataSetPath());
+        Bind dataSetBind = new Bind(container.getDataSetHostPath(), dataSet);
 
-        PortBinding portBinding = new PortBinding(Ports.Binding.bindPort(81), new ExposedPort(80));
+        PortBinding portBinding = new PortBinding(Ports.Binding.bindPort(container.getHostPort()), new ExposedPort(container.getExposedPort()));
 
         HostConfig config = HostConfig.newHostConfig()
                 .withPortBindings(portBinding)
-                .withBinds(bind);
+                .withBinds(dataSetBind);
 
         CreateContainerResponse response = this.client.createContainerCmd(container.getImageName())
                 .withHostConfig(config)
-                .withVolumes(dataset)
+                .withVolumes(dataSet)
+                .withCmd(container.getEntryPoint().split("\s"))
+                .withExposedPorts(new ExposedPort(container.getExposedPort()))
                 .exec();
-
-        this.logger.info("port bindings: {}", config.getPortBindings().toString());
 
         container.setContainerStatus(ContainerStatus.CREATED);
         container.setContainerId(response.getId());

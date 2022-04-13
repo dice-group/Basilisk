@@ -8,12 +8,13 @@ import lombok.Setter;
 import javax.persistence.Entity;
 
 
-@Getter
+
 @Entity
+@Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TripleStore extends BaseEntity{
+public class TripleStore extends BaseEntity {
 
     private String name;
     private String endpoint;
@@ -21,5 +22,11 @@ public class TripleStore extends BaseEntity{
     private boolean requiresAuthentication;
     private String username;
     private String password;
+
+    private int exposedPort;
+
+    private String dataSetPath;
+
+    private String entryPoint;
 
 }

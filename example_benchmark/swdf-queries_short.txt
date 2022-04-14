@@ -1,0 +1,3 @@
+SELECT  ?property ?value WHERE   { <http://www.ifi.unizh.ch/cl/kalju>               ?property  ?value   }
+SELECT  ?property ?value WHERE   { <http://www.ordnancesurvey.co.uk/research>               ?property  ?value   }
+SELECT  ?property ?value WHERE   { <http://www.eswc2007.org/pdf/eswc07-albertsen.pdf>               ?property  ?value   }

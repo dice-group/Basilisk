@@ -9,12 +9,14 @@ import org.dicegroup.basilisk.benchmarkService.domain.dockerContainer.DockerCont
 import org.dicegroup.basilisk.benchmarkService.domain.repo.DockerRepo;
 import org.dicegroup.basilisk.benchmarkService.services.BenchmarkJobService;
 import org.dicegroup.basilisk.benchmarkService.services.DockerContainerService;
+import org.dicegroup.basilisk.benchmarkService.services.IguanaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -25,20 +27,24 @@ public class TestController {
 
     private final BenchmarkJobService benchmarkJobService;
 
+    private final IguanaService iguanaService;
+
     private final String owner = "dicegroup"; // "docker"
     private final String name = "tentris_server"; // "getting-started"
     private final String tag = "latest";
 
     private final DockerBenchmarkJob benchmarkJob;
 
-    public TestController(DockerContainerService containerService, BenchmarkJobService benchmarkJobService) {
+    public TestController(DockerContainerService containerService, BenchmarkJobService benchmarkJobService, IguanaService iguanaService) {
         this.containerService = containerService;
         this.benchmarkJobService = benchmarkJobService;
+        this.iguanaService = iguanaService;
 
         TripleStore ts = new TripleStore();
         ts.setExposedPort(9080);
         ts.setEntryPoint("-f /datasets/swdf.nt --logstdout");
         ts.setDataSetPath("/datasets");
+        ts.setEndpoint("/sparql");
 
         DockerRepo repo = new DockerRepo();
         repo.setRepoName("tentris_server");
@@ -63,6 +69,11 @@ public class TestController {
     @GetMapping("/handle")
     public DockerContainer handleBenchmarkJob() {
         return this.benchmarkJobService.handleNewDockerBenchmarkJob(this.benchmarkJob);
+    }
+
+    @GetMapping("/iguana")
+    public String startIguana() throws IOException {
+        return this.iguanaService.startBenchmark();
     }
 
     @GetMapping("/add")

@@ -1,0 +1,24 @@
+datasets:
+  - name: "swdf"
+
+connections:
+  - name: "Tentris"
+    endpoint: "http://localhost:81/sparql"
+    version: "latest"
+
+tasks:
+  - className: "Stresstest"
+    configuration:
+      timeLimit: 60000
+      queryHandler:
+        className: "InstancesQueryHandler"
+
+      workers:
+        - threads: 1
+          className: "SPARQLWorker"
+          queriesFile: "/home/fabian/dev/bachelor/Basilisk/example_benchmark/swdf-queries_short.txt"
+
+storages:
+  - className: "NTFileStorage"
+    configuration:
+      fileName: "example_benchmark/first-benchmark-results.nt"

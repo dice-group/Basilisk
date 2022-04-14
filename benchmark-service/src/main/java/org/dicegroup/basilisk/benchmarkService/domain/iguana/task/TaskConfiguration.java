@@ -10,7 +10,7 @@ import java.util.List;
 @Setter
 public class TaskConfiguration {
 
-    private Long timeLimit;
+    private Integer timeLimit;
 
     private QueryHandler queryHandler;
 

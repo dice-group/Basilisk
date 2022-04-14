@@ -35,6 +35,7 @@ docker:
   hostPort: 81
 
 iguana:
+  configFileDirectory: '.data/iguana-configs'
   resultStorage:
     endpoint: 'localhost'
     updateEndpoint: 'localhost/update'

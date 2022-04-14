@@ -1,5 +1,7 @@
 package org.dicegroup.basilisk.benchmarkService.services;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.aksw.iguana.cc.controller.MainController;
 import org.dicegroup.basilisk.benchmarkService.domain.iguana.Connection;
 import org.dicegroup.basilisk.benchmarkService.domain.iguana.DataSet;
@@ -10,23 +12,42 @@ import org.dicegroup.basilisk.benchmarkService.domain.iguana.task.QueryHandler;
 import org.dicegroup.basilisk.benchmarkService.domain.iguana.task.Task;
 import org.dicegroup.basilisk.benchmarkService.domain.iguana.task.TaskConfiguration;
 import org.dicegroup.basilisk.benchmarkService.domain.iguana.task.Worker;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 @Service
+@Slf4j
 public class IguanaService {
+
+    private final ObjectMapper mapper;
+
+    @Value("${iguana.configFileDirectory}")
+    private String configFileDirectory;
+
+    public IguanaService(ObjectMapper mapper) {
+        this.mapper = mapper;
+    }
 
     public String startBenchmark() throws IOException {
         MainController controller = new MainController();
 
         IguanaConfiguration config = getExampleConfiguration();
 
+        File configFileDir = new File(this.configFileDirectory);
 
-        // temporäre files?
-        controller.start("/home/fabian/dev/bachelor/Basilisk/example_benchmark/iguana-config.yml", true);
+        assert configFileDir.mkdirs();
+        File tempFile = File.createTempFile("iguana-config-", ".json", configFileDir);
+        tempFile.deleteOnExit();
 
+        this.mapper.writeValue(tempFile, config);
+
+        controller.start(tempFile.getAbsolutePath(), true);
+
+        assert tempFile.delete();
         return "started?";
     }
 
@@ -52,8 +73,8 @@ public class IguanaService {
 
     private TaskConfiguration getExampleTaskConfig() {
         TaskConfiguration taskConfig = new TaskConfiguration();
-        taskConfig.setTimeLimit(6000L);
-        taskConfig.setQueryHandler(new QueryHandler("InstanceQueryHandler"));
+        taskConfig.setTimeLimit(6000);
+        taskConfig.setQueryHandler(new QueryHandler("InstancesQueryHandler"));
         taskConfig.setWorkers(List.of(getExampleWorker()));
         return taskConfig;
     }

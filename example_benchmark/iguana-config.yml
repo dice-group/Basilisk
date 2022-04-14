@@ -9,7 +9,7 @@ connections:
 tasks:
   - className: "Stresstest"
     configuration:
-      timeLimit: 60000
+      timeLimit: 6000
       queryHandler:
         className: "InstancesQueryHandler"
 

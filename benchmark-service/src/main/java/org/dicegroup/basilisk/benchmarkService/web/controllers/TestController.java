@@ -6,6 +6,7 @@ import org.dicegroup.basilisk.benchmarkService.domain.benchmark.Benchmark;
 import org.dicegroup.basilisk.benchmarkService.domain.benchmark.DataSet;
 import org.dicegroup.basilisk.benchmarkService.domain.benchmark.DockerBenchmarkJob;
 import org.dicegroup.basilisk.benchmarkService.domain.dockerContainer.DockerContainer;
+import org.dicegroup.basilisk.benchmarkService.domain.iguana.IguanaConfiguration;
 import org.dicegroup.basilisk.benchmarkService.domain.repo.DockerRepo;
 import org.dicegroup.basilisk.benchmarkService.services.BenchmarkJobService;
 import org.dicegroup.basilisk.benchmarkService.services.DockerContainerService;
@@ -74,6 +75,11 @@ public class TestController {
     @GetMapping("/iguana")
     public String startIguana() throws IOException {
         return this.iguanaService.startBenchmark();
+    }
+
+    @GetMapping("/iguana-config")
+    public IguanaConfiguration getIguanaConfig() {
+        return this.iguanaService.getExampleConfiguration();
     }
 
     @GetMapping("/add")

@@ -7,7 +7,6 @@ import org.dicegroup.basilisk.benchmarkService.domain.benchmark.DockerBenchmarkJ
 import org.dicegroup.basilisk.benchmarkService.domain.benchmark.JobStatus;
 import org.dicegroup.basilisk.benchmarkService.domain.repo.DockerRepo;
 import org.dicegroup.basilisk.benchmarkService.services.BenchmarkJobService;
-import org.dicegroup.basilisk.benchmarkService.services.BenchmarkingOrganizerService;
 import org.dicegroup.basilisk.events.benchmark.BenchmarkJobAbortCommand;
 import org.dicegroup.basilisk.events.benchmark.DockerBenchmarkJobCreateEvent;
 import org.dicegroup.basilisk.events.benchmark.GitBenchmarkJobCreateEvent;
@@ -22,13 +21,11 @@ import org.springframework.stereotype.Component;
 @RabbitListener(queues = "${rabbitmq.benchmarks.jobQueue}")
 public class MessageReceiver {
 
-    private final BenchmarkingOrganizerService benchmarkingOrganizerService;
     private final ModelMapper mapper;
 
     private final BenchmarkJobService jobService;
 
-    public MessageReceiver(BenchmarkingOrganizerService benchmarkingOrganizerService, ModelMapper mapper, BenchmarkJobService jobService) {
-        this.benchmarkingOrganizerService = benchmarkingOrganizerService;
+    public MessageReceiver(ModelMapper mapper, BenchmarkJobService jobService) {
         this.mapper = mapper;
         this.jobService = jobService;
     }
@@ -57,6 +54,6 @@ public class MessageReceiver {
 
     @RabbitHandler
     public void receive(BenchmarkJobAbortCommand command) {
-        this.benchmarkingOrganizerService.abortBenchmark(command.getBenchmarkJobId());
+//        .abortBenchmark(command.getBenchmarkJobId());
     }
 }

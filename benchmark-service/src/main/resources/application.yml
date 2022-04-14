@@ -24,6 +24,8 @@ spring:
     port: '5672'
     username: guest
     password: guest
+  jackson:
+    default-property-inclusion: non_null
 
 server:
   port: '8082'

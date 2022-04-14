@@ -4,7 +4,6 @@ import org.dicegroup.basilisk.benchmarkService.events.BenchmarkJobAbortedEvent;
 import org.dicegroup.basilisk.benchmarkService.events.BenchmarkJobFailedEvent;
 import org.dicegroup.basilisk.benchmarkService.events.BenchmarkJobFinishedEvent;
 import org.dicegroup.basilisk.benchmarkService.events.BenchmarkJobStartedEvent;
-import org.dicegroup.basilisk.benchmarkService.exception.MessageSendingExecption;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,35 +23,19 @@ public class MessageSender {
     private String benchmarkResultRoutingKey;
 
 
-    public void send(BenchmarkJobStartedEvent benchmarkJobStartedEvent) throws MessageSendingExecption {
-        try {
-            rabbitTemplate.convertAndSend(exchange, benchmarkResultRoutingKey, benchmarkJobStartedEvent);
-        } catch (Exception e) {
-            throw new MessageSendingExecption();
-        }
+    public void send(BenchmarkJobStartedEvent benchmarkJobStartedEvent) {
+        rabbitTemplate.convertAndSend(exchange, benchmarkResultRoutingKey, benchmarkJobStartedEvent);
     }
 
-    public void send(BenchmarkJobAbortedEvent benchmarkJobAbortedEvent) throws MessageSendingExecption {
-        try {
-            rabbitTemplate.convertAndSend(exchange, benchmarkResultRoutingKey, benchmarkJobAbortedEvent);
-        } catch (Exception e) {
-            throw new MessageSendingExecption();
-        }
+    public void send(BenchmarkJobAbortedEvent benchmarkJobAbortedEvent) {
+        rabbitTemplate.convertAndSend(exchange, benchmarkResultRoutingKey, benchmarkJobAbortedEvent);
     }
 
-    public void send(BenchmarkJobFinishedEvent benchmarkJobFinishedEvent) throws MessageSendingExecption {
-        try {
-            rabbitTemplate.convertAndSend(exchange, benchmarkResultRoutingKey, benchmarkJobFinishedEvent);
-        } catch (Exception e) {
-            throw new MessageSendingExecption();
-        }
+    public void send(BenchmarkJobFinishedEvent benchmarkJobFinishedEvent) {
+        rabbitTemplate.convertAndSend(exchange, benchmarkResultRoutingKey, benchmarkJobFinishedEvent);
     }
 
-    public void send(BenchmarkJobFailedEvent benchmarkJobFailedEvent) throws MessageSendingExecption {
-        try {
-            rabbitTemplate.convertAndSend(exchange, benchmarkResultRoutingKey, benchmarkJobFailedEvent);
-        } catch (Exception e) {
-            throw new MessageSendingExecption();
-        }
+    public void send(BenchmarkJobFailedEvent benchmarkJobFailedEvent) {
+        rabbitTemplate.convertAndSend(exchange, benchmarkResultRoutingKey, benchmarkJobFailedEvent);
     }
 }

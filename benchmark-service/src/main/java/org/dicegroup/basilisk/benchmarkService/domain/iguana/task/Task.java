@@ -1,11 +1,13 @@
 package org.dicegroup.basilisk.benchmarkService.domain.iguana.task;
 
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Task {
 
     private String className;

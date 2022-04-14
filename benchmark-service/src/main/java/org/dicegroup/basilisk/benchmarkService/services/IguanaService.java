@@ -3,6 +3,8 @@ package org.dicegroup.basilisk.benchmarkService.services;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.aksw.iguana.cc.controller.MainController;
+import org.dicegroup.basilisk.benchmarkService.domain.benchmark.Benchmark;
+import org.dicegroup.basilisk.benchmarkService.domain.benchmark.BenchmarkJob;
 import org.dicegroup.basilisk.benchmarkService.domain.iguana.Connection;
 import org.dicegroup.basilisk.benchmarkService.domain.iguana.DataSet;
 import org.dicegroup.basilisk.benchmarkService.domain.iguana.IguanaConfiguration;
@@ -12,6 +14,7 @@ import org.dicegroup.basilisk.benchmarkService.domain.iguana.task.QueryHandler;
 import org.dicegroup.basilisk.benchmarkService.domain.iguana.task.Task;
 import org.dicegroup.basilisk.benchmarkService.domain.iguana.task.TaskConfiguration;
 import org.dicegroup.basilisk.benchmarkService.domain.iguana.task.Worker;
+import org.dicegroup.basilisk.benchmarkService.domain.repo.Repo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -27,73 +30,90 @@ public class IguanaService {
 
     @Value("${iguana.configFileDirectory}")
     private String configFileDirectory;
+    @Value("${iguana.resultsFile}")
+    private String resultsFile;
+
+    @Value("${docker.hostPort}")
+    private int hostPort;
 
     public IguanaService(ObjectMapper mapper) {
         this.mapper = mapper;
     }
 
-    public String startBenchmark() throws IOException {
+    public void startBenchmark(BenchmarkJob job) throws IOException {
+        IguanaConfiguration config = this.createConfiguration(job);
+
+        File tempFile = createConfigFile(config);
+
         MainController controller = new MainController();
-
-        IguanaConfiguration config = getExampleConfiguration();
-
-        File configFileDir = new File(this.configFileDirectory);
-
-        assert configFileDir.mkdirs();
-        File tempFile = File.createTempFile("iguana-config-", ".json", configFileDir);
-        tempFile.deleteOnExit();
-
-        this.mapper.writeValue(tempFile, config);
-
         controller.start(tempFile.getAbsolutePath(), true);
 
         assert tempFile.delete();
-        return "started?";
     }
 
-    public IguanaConfiguration getExampleConfiguration() {
+    public IguanaConfiguration createConfiguration(BenchmarkJob job) {
         IguanaConfiguration config = new IguanaConfiguration();
 
-        config.setDataSets(List.of(new DataSet("swdf")));
+        config.setDataSets(List.of(new DataSet(job.getBenchmark().getDataSet().getName())));
 
-        config.setConnections(List.of(getExampleConnection()));
+        config.setConnections(List.of(createConnection(job.getRepo())));
 
-        Task task = new Task();
-        task.setClassName("Stresstest");
-        task.setConfiguration(getExampleTaskConfig());
-        config.setTasks(List.of(task));
+        config.setTasks(List.of(createTask(job)));
 
-        NTFileStorage storage = new NTFileStorage();
-        storage.setConfiguration(new FileStorageConfiguration("example_benchmark/benchmark-results.nt"));
-
-        config.setStorages(List.of(storage));
+        // TODO temp file for results!
+        config.setStorages(List.of(createNTFileStorage()));
 
         return config;
     }
 
-    private TaskConfiguration getExampleTaskConfig() {
-        TaskConfiguration taskConfig = new TaskConfiguration();
-        taskConfig.setTimeLimit(6000);
-        taskConfig.setQueryHandler(new QueryHandler("InstancesQueryHandler"));
-        taskConfig.setWorkers(List.of(getExampleWorker()));
-        return taskConfig;
+    private File createConfigFile(IguanaConfiguration config) throws IOException {
+        File configFileDir = new File(this.configFileDirectory);
+        assert configFileDir.mkdirs();
+
+        File tempFile = File.createTempFile("iguana-config-", ".json", configFileDir);
+        tempFile.deleteOnExit();
+
+        this.mapper.writeValue(tempFile, config);
+        return tempFile;
     }
 
-    private Connection getExampleConnection() {
-        Connection con = new Connection();
-        con.setName("Tentris");
-        con.setEndpoint("http://localhost:81/sparql");
-        con.setVersion("latest");
-        return con;
+    private Connection createConnection(Repo repo) {
+        String endpoint = "http://localhost:"
+                + hostPort
+                + repo.getTripleStore().getEndpoint();
+
+        return Connection.builder()
+                .name(repo.getRepoName())
+                .endpoint(endpoint)
+                .build();
     }
 
-    private Worker getExampleWorker() {
-        Worker worker = new Worker();
-        worker.setClassName("SPARQLWorker");
-        worker.setThreads(1);
-        worker.setQueriesFile("/home/fabian/dev/bachelor/Basilisk/example_benchmark/swdf-queries_short.txt");
-        return worker;
+    private Task createTask(BenchmarkJob job) {
+        return Task.builder()
+                .className("Stresstest")
+                .configuration(createTaskConfig(job.getBenchmark()))
+                .build();
     }
 
+    private TaskConfiguration createTaskConfig(Benchmark bm) {
+        return TaskConfiguration.builder()
+                .timeLimit(bm.getTaskTimeLimit())
+                .queryHandler(new QueryHandler("InstancesQueryHandler"))
+                .workers(List.of(createWorker(bm)))
+                .build();
+    }
+
+    private Worker createWorker(Benchmark bm) {
+        return Worker.builder()
+                .className("SPARQLWorker")
+                .threads(bm.getWorkerThreadCount())
+                .queriesFile(bm.getQueryFilePath())
+                .timeOut(bm.getWorkerTimeOut())
+                .build();
+    }
+
+    private NTFileStorage createNTFileStorage() {
+        return new NTFileStorage(new FileStorageConfiguration(this.resultsFile));
+    }
 
 }

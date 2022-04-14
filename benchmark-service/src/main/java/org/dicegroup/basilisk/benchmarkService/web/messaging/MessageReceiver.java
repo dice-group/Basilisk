@@ -15,6 +15,8 @@ import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+
 
 @Component
 @Slf4j
@@ -36,7 +38,7 @@ public class MessageReceiver {
     }
 
     @RabbitHandler
-    public void receive(DockerBenchmarkJobCreateEvent event) {
+    public void receive(DockerBenchmarkJobCreateEvent event) throws IOException {
         log.info("Recieved DockerBenchmarkJob: {}", event);
 
         DockerRepo repo = this.mapper.map(event.getRepo(), DockerRepo.class);

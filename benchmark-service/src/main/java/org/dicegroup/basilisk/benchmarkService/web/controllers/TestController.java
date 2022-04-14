@@ -43,6 +43,8 @@ public class TestController {
 
         TripleStore ts = new TripleStore();
         ts.setExposedPort(9080);
+
+        // TODO insert format string?
         ts.setEntryPoint("-f /datasets/swdf.nt --logstdout");
         ts.setDataSetPath("/datasets");
         ts.setEndpoint("/sparql");
@@ -53,11 +55,14 @@ public class TestController {
         repo.setTripleStore(ts);
 
         DataSet ds = new DataSet();
-        ds.setFilePath("/home/fabian/dev/bachelor/Basilisk/example_benchmark");
+        ds.setName("swdf");
+        ds.setFilePath("/home/fabian/dev/bachelor/Basilisk/example_benchmark/swdf.nt");
 
         Benchmark bm = new Benchmark();
-        bm.setQueryFilePath("/home/fabian/dev/bachelor/Basilisk/example_benchmark");
+        bm.setQueryFilePath("/home/fabian/dev/bachelor/Basilisk/example_benchmark/swdf-queries_short.txt");
         bm.setDataSet(ds);
+        bm.setTaskTimeLimit(6000);
+        bm.setWorkerThreadCount(1);
 
         this.benchmarkJob = DockerBenchmarkJob.builder()
                 .repo(repo)
@@ -68,18 +73,20 @@ public class TestController {
     }
 
     @GetMapping("/handle")
-    public DockerContainer handleBenchmarkJob() {
+    public DockerContainer handleBenchmarkJob() throws IOException {
         return this.benchmarkJobService.handleNewDockerBenchmarkJob(this.benchmarkJob);
     }
 
     @GetMapping("/iguana")
-    public String startIguana() throws IOException {
-        return this.iguanaService.startBenchmark();
+    public String startBenchmark() throws IOException {
+        this.iguanaService.startBenchmark(this.benchmarkJob);
+
+        return "started";
     }
 
     @GetMapping("/iguana-config")
     public IguanaConfiguration getIguanaConfig() {
-        return this.iguanaService.getExampleConfiguration();
+        return this.iguanaService.createConfiguration(this.benchmarkJob);
     }
 
     @GetMapping("/add")

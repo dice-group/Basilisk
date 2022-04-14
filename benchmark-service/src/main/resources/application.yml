@@ -36,6 +36,7 @@ docker:
 
 iguana:
   configFileDirectory: '.data/iguana-configs'
+  resultsFile: '.data/iguana-results.nt'
   resultStorage:
     endpoint: 'localhost'
     updateEndpoint: 'localhost/update'

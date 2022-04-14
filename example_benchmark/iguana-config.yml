@@ -21,4 +21,4 @@ tasks:
 storages:
   - className: "NTFileStorage"
     configuration:
-      fileName: "example_benchmark/first-benchmark-results.nt"
+      fileName: ".data/iguana-results.nt"

@@ -44,8 +44,7 @@ public class TestController {
         TripleStore ts = new TripleStore();
         ts.setExposedPort(9080);
 
-        // TODO insert format string?
-        ts.setEntryPoint("-f /datasets/swdf.nt --logstdout");
+        ts.setEntryPoint("-f ${dataSetPath}/${dataSetName} --logstdout");
         ts.setDataSetPath("/datasets");
         ts.setEndpoint("/sparql");
 

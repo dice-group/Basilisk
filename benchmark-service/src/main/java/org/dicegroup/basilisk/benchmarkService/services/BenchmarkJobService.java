@@ -2,6 +2,7 @@ package org.dicegroup.basilisk.benchmarkService.services;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.text.StrSubstitutor;
 import org.dicegroup.basilisk.benchmarkService.domain.TripleStore;
 import org.dicegroup.basilisk.benchmarkService.domain.benchmark.DataSet;
 import org.dicegroup.basilisk.benchmarkService.domain.benchmark.DockerBenchmarkJob;
@@ -9,17 +10,24 @@ import org.dicegroup.basilisk.benchmarkService.domain.dockerContainer.DockerCont
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 @Service
 @Slf4j
 public class BenchmarkJobService {
 
+    private final DockerContainerService containerService;
+    private final IguanaService iguanaService;
     @Value("${docker.hostPort}")
     private int hostPort;
 
-    private final DockerContainerService containerService;
-    private final IguanaService iguanaService;
+    @Value("${iguana.placeholders.dataSetName}")
+    private String dataSetNamePlaceholder;
+
+    @Value("${iguana.placeholders.dataSetPath}")
+    private String dataSetPathPlaceholder;
 
     public BenchmarkJobService(DockerContainerService containerService, IguanaService iguanaService) {
         this.containerService = containerService;
@@ -53,12 +61,23 @@ public class BenchmarkJobService {
         container.setExposedPort(tripleStore.getExposedPort());
         container.setHostPort(this.hostPort);
 
-        // TODO file in start command; Format String?
-        container.setDataSetHostPath(dataSet.getFilePath());
+        container.setDataSetHostPath(getDatasetHostPath(dataSet));
         container.setDataSetPath(tripleStore.getDataSetPath());
 
-        container.setEntryPoint(tripleStore.getEntryPoint());
+        container.setEntryPoint(getEntrypoint(tripleStore, dataSet));
 
         log.info("Container Entity created: {}", container);
     }
+
+    private String getDatasetHostPath(DataSet dataSet) {
+        return new File(dataSet.getFilePath()).getParent();
+    }
+
+    private String getEntrypoint(TripleStore tripleStore, DataSet dataSet) {
+        String dataSetName = new File(dataSet.getFilePath()).getName();
+        Map<String, String> valueMap = Map.of(this.dataSetPathPlaceholder, tripleStore.getDataSetPath(), this.dataSetNamePlaceholder, dataSetName);
+
+        return new StrSubstitutor(valueMap).replace(tripleStore.getEntryPoint());
+    }
+
 }

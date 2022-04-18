@@ -60,8 +60,9 @@ public class TestController {
         Benchmark bm = new Benchmark();
         bm.setQueryFilePath("/home/fabian/dev/bachelor/Basilisk/example_benchmark/swdf-queries_short.txt");
         bm.setDataSet(ds);
-        bm.setTaskTimeLimit(6000);
+        bm.setTaskTimeLimit(2000);
         bm.setWorkerThreadCount(1);
+        bm.setWorkerTimeOut(1000);
 
         this.benchmarkJob = DockerBenchmarkJob.builder()
                 .repo(repo)
@@ -72,12 +73,12 @@ public class TestController {
     }
 
     @GetMapping("/handle")
-    public DockerContainer handleBenchmarkJob() throws IOException {
+    public DockerContainer handleBenchmarkJob() throws IOException, InterruptedException {
         return this.benchmarkJobService.handleNewDockerBenchmarkJob(this.benchmarkJob);
     }
 
     @GetMapping("/iguana")
-    public String startBenchmark() throws IOException {
+    public String startBenchmark() throws IOException, InterruptedException {
         this.iguanaService.startBenchmark(this.benchmarkJob);
 
         return "started";

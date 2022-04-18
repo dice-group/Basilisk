@@ -38,7 +38,7 @@ public class MessageReceiver {
     }
 
     @RabbitHandler
-    public void receive(DockerBenchmarkJobCreateEvent event) throws IOException {
+    public void receive(DockerBenchmarkJobCreateEvent event) throws IOException, InterruptedException {
         log.info("Recieved DockerBenchmarkJob: {}", event);
 
         DockerRepo repo = this.mapper.map(event.getRepo(), DockerRepo.class);

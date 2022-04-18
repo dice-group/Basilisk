@@ -34,17 +34,13 @@ public class BenchmarkJobService {
         this.iguanaService = iguanaService;
     }
 
-    public DockerContainer handleNewDockerBenchmarkJob(DockerBenchmarkJob job) throws IOException {
+    public DockerContainer handleNewDockerBenchmarkJob(DockerBenchmarkJob job) throws IOException, InterruptedException {
 
         TripleStore tripleStore = job.getRepo().getTripleStore();
 
         DataSet dataSet = job.getBenchmark().getDataSet();
 
-        String owner = job.getRepo().getRepoOwner();
-        String repoName = job.getRepo().getRepoName();
-        String tagName = job.getTagName();
-
-        DockerContainer container = this.containerService.getDockerContainer(owner, repoName, tagName);
+        DockerContainer container = this.containerService.getDockerContainer(job.getRepo().getRepoOwner(), job.getRepo().getRepoName(), job.getTagName());
         setContainerArguments(tripleStore, dataSet, container);
 
         container = this.containerService.pullImage(container);
@@ -53,6 +49,11 @@ public class BenchmarkJobService {
         log.info("Container started: {}", container);
 
         this.iguanaService.startBenchmark(job);
+
+        container = this.containerService.stopContainer(container);
+        log.info("Container stoppend and removed");
+
+        // TODO write result to Fuseki
 
         return container;
     }

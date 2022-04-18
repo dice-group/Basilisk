@@ -35,16 +35,17 @@ docker:
   hostPort: 81
 
 iguana:
-  configFileDirectory: '.data/iguana-configs'
-  resultsFile: '.data/iguana-results.nt'
+  iguanaPath: '/home/fabian/dev/bachelor/iguana/'
+  configFileDirectory: '/home/fabian/dev/bachelor/Basilisk/.data/iguana-configs'
   placeholders:
     dataSetPath: 'dataSetPath'
     dataSetName: 'dataSetName'
   resultStorage:
-    endpoint: 'localhost'
-    updateEndpoint: 'localhost/update'
-    user: 'guest'
-    password: 'guest'
+    className: 'NTFileStorage' # 'TriplestoreStorage'
+    configuration:
+      #      endpoint: 'http://localhost:3030/results/sparql'
+      #      updateEndpoint: 'http://localhost:3030/results/update'
+      fileName: '/home/fabian/dev/bachelor/Basilisk/.data/iguana-results.nt'
 
 rabbitmq:
   benchmarks:

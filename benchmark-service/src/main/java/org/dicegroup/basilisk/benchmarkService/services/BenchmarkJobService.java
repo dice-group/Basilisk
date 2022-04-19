@@ -3,10 +3,10 @@ package org.dicegroup.basilisk.benchmarkService.services;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.text.StrSubstitutor;
-import org.dicegroup.basilisk.benchmarkService.domain.TripleStore;
-import org.dicegroup.basilisk.benchmarkService.domain.benchmark.DataSet;
-import org.dicegroup.basilisk.benchmarkService.domain.benchmark.DockerBenchmarkJob;
-import org.dicegroup.basilisk.benchmarkService.domain.dockerContainer.DockerContainer;
+import org.dicegroup.basilisk.benchmarkService.model.TripleStore;
+import org.dicegroup.basilisk.benchmarkService.model.benchmark.DataSet;
+import org.dicegroup.basilisk.benchmarkService.model.benchmark.DockerBenchmarkJob;
+import org.dicegroup.basilisk.benchmarkService.model.dockerContainer.DockerContainer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -47,6 +47,10 @@ public class BenchmarkJobService {
         log.info("Container Image pulled: {}", container);
         container = this.containerService.startContainer(container);
         log.info("Container started: {}", container);
+
+        log.info("sleeping 5 seconds..");
+        Thread.sleep(5000);
+        log.info("starting benchmark");
 
         this.iguanaService.startBenchmark(job);
 

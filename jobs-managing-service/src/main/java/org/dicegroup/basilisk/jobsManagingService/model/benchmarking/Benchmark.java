@@ -1,10 +1,10 @@
 package org.dicegroup.basilisk.jobsManagingService.model.benchmarking;
 
-import org.dicegroup.basilisk.jobsManagingService.model.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.dicegroup.basilisk.jobsManagingService.model.BaseEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -19,9 +19,13 @@ import javax.persistence.Table;
 public class Benchmark extends BaseEntity {
 
     private String name;
-    private String queryFileUrl;
+    private String queryFilePath;
 
     @ManyToOne
     private DataSet dataSet;
+
+    private Integer taskTimeLimit;
+    private Integer workerThreadCount;
+    private Integer workerTimeOut;
 
 }

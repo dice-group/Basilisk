@@ -39,4 +39,16 @@ public class TripleStoreDto extends BaseDto {
     @JsonView(Views.Api.class)
     private String password;
 
+    @JsonProperty("exposed_port")
+    @JsonView(Views.Api.class)
+    private int exposedPort;
+
+    @JsonProperty("dataset_path")
+    @JsonView(Views.Api.class)
+    private String dataSetPath;
+
+    @JsonProperty("entry_point")
+    @JsonView(Views.Api.class)
+    private String entryPoint;
+
 }

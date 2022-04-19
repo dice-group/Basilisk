@@ -1,10 +1,10 @@
 package org.dicegroup.basilisk.jobsManagingService.model.benchmarking;
 
-import org.dicegroup.basilisk.jobsManagingService.model.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.dicegroup.basilisk.jobsManagingService.model.BaseEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -18,6 +18,6 @@ import javax.persistence.Table;
 public class DataSet extends BaseEntity {
 
     String name;
-    String url;
+    String filePath;
 
 }

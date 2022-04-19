@@ -19,12 +19,22 @@ public class BenchmarkDto extends BaseDto {
     @JsonView(Views.Api.class)
     private String name;
 
-    @JsonProperty("query_file_url")
+    @JsonProperty("query_file_path")
     @JsonView(Views.Api.class)
-    private String queryFileUrl;
+    private String queryFilePath;
 
     @JsonProperty("dataset")
     @JsonView(Views.Api.class)
     private DataSetDto dataSet;
+
+    @JsonProperty("task_time_limit")
+    @JsonView(Views.Api.class)
+    private Integer taskTimeLimit;
+    @JsonProperty("worker_thread_count")
+    @JsonView(Views.Api.class)
+    private Integer workerThreadCount;
+    @JsonProperty("worker_timeout")
+    @JsonView(Views.Api.class)
+    private Integer workerTimeOut;
 
 }

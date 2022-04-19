@@ -2,10 +2,10 @@ package org.dicegroup.basilisk.benchmarkService.web.messaging;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.dicegroup.basilisk.benchmarkService.domain.benchmark.Benchmark;
-import org.dicegroup.basilisk.benchmarkService.domain.benchmark.DockerBenchmarkJob;
-import org.dicegroup.basilisk.benchmarkService.domain.benchmark.JobStatus;
-import org.dicegroup.basilisk.benchmarkService.domain.repo.DockerRepo;
+import org.dicegroup.basilisk.benchmarkService.model.benchmark.Benchmark;
+import org.dicegroup.basilisk.benchmarkService.model.benchmark.DockerBenchmarkJob;
+import org.dicegroup.basilisk.benchmarkService.model.benchmark.JobStatus;
+import org.dicegroup.basilisk.benchmarkService.model.repo.DockerRepo;
 import org.dicegroup.basilisk.benchmarkService.services.BenchmarkJobService;
 import org.dicegroup.basilisk.events.benchmark.BenchmarkJobAbortCommand;
 import org.dicegroup.basilisk.events.benchmark.DockerBenchmarkJobCreateEvent;

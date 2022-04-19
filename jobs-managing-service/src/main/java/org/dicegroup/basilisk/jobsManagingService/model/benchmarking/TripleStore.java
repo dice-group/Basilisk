@@ -1,11 +1,11 @@
 package org.dicegroup.basilisk.jobsManagingService.model.benchmarking;
 
-import org.dicegroup.basilisk.jobsManagingService.model.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.dicegroup.basilisk.jobsManagingService.model.BaseEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -25,4 +25,8 @@ public class TripleStore extends BaseEntity {
     private boolean requiresAuthentication;
     private String username;
     private String password;
+
+    private int exposedPort;
+    private String dataSetPath;
+    private String entryPoint;
 }

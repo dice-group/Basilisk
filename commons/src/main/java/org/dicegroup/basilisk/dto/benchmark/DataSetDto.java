@@ -19,8 +19,8 @@ public class DataSetDto extends BaseDto {
     @JsonView(Views.Api.class)
     private String name;
 
-    @JsonProperty("url")
+    @JsonProperty("file_path")
     @JsonView(Views.Api.class)
-    private String url;
+    private String filePath;
 
 }

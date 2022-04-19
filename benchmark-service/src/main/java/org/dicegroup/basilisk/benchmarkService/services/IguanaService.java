@@ -2,17 +2,17 @@ package org.dicegroup.basilisk.benchmarkService.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.dicegroup.basilisk.benchmarkService.domain.benchmark.Benchmark;
-import org.dicegroup.basilisk.benchmarkService.domain.benchmark.BenchmarkJob;
-import org.dicegroup.basilisk.benchmarkService.domain.iguana.Connection;
-import org.dicegroup.basilisk.benchmarkService.domain.iguana.DataSet;
-import org.dicegroup.basilisk.benchmarkService.domain.iguana.IguanaConfiguration;
-import org.dicegroup.basilisk.benchmarkService.domain.iguana.storage.*;
-import org.dicegroup.basilisk.benchmarkService.domain.iguana.task.QueryHandler;
-import org.dicegroup.basilisk.benchmarkService.domain.iguana.task.Task;
-import org.dicegroup.basilisk.benchmarkService.domain.iguana.task.TaskConfiguration;
-import org.dicegroup.basilisk.benchmarkService.domain.iguana.task.Worker;
-import org.dicegroup.basilisk.benchmarkService.domain.repo.Repo;
+import org.dicegroup.basilisk.benchmarkService.model.benchmark.Benchmark;
+import org.dicegroup.basilisk.benchmarkService.model.benchmark.BenchmarkJob;
+import org.dicegroup.basilisk.benchmarkService.model.iguana.Connection;
+import org.dicegroup.basilisk.benchmarkService.model.iguana.DataSet;
+import org.dicegroup.basilisk.benchmarkService.model.iguana.IguanaConfiguration;
+import org.dicegroup.basilisk.benchmarkService.model.iguana.storage.*;
+import org.dicegroup.basilisk.benchmarkService.model.iguana.task.QueryHandler;
+import org.dicegroup.basilisk.benchmarkService.model.iguana.task.Task;
+import org.dicegroup.basilisk.benchmarkService.model.iguana.task.TaskConfiguration;
+import org.dicegroup.basilisk.benchmarkService.model.iguana.task.Worker;
+import org.dicegroup.basilisk.benchmarkService.model.repo.Repo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

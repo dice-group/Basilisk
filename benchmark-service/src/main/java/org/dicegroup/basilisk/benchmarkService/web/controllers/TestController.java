@@ -1,13 +1,13 @@
 package org.dicegroup.basilisk.benchmarkService.web.controllers;
 
 import com.github.dockerjava.api.model.Image;
-import org.dicegroup.basilisk.benchmarkService.domain.TripleStore;
-import org.dicegroup.basilisk.benchmarkService.domain.benchmark.Benchmark;
-import org.dicegroup.basilisk.benchmarkService.domain.benchmark.DataSet;
-import org.dicegroup.basilisk.benchmarkService.domain.benchmark.DockerBenchmarkJob;
-import org.dicegroup.basilisk.benchmarkService.domain.dockerContainer.DockerContainer;
-import org.dicegroup.basilisk.benchmarkService.domain.iguana.IguanaConfiguration;
-import org.dicegroup.basilisk.benchmarkService.domain.repo.DockerRepo;
+import org.dicegroup.basilisk.benchmarkService.model.TripleStore;
+import org.dicegroup.basilisk.benchmarkService.model.benchmark.Benchmark;
+import org.dicegroup.basilisk.benchmarkService.model.benchmark.DataSet;
+import org.dicegroup.basilisk.benchmarkService.model.benchmark.DockerBenchmarkJob;
+import org.dicegroup.basilisk.benchmarkService.model.dockerContainer.DockerContainer;
+import org.dicegroup.basilisk.benchmarkService.model.iguana.IguanaConfiguration;
+import org.dicegroup.basilisk.benchmarkService.model.repo.DockerRepo;
 import org.dicegroup.basilisk.benchmarkService.services.BenchmarkJobService;
 import org.dicegroup.basilisk.benchmarkService.services.DockerContainerService;
 import org.dicegroup.basilisk.benchmarkService.services.IguanaService;

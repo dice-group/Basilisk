@@ -1,8 +1,8 @@
 package org.dicegroup.basilisk.benchmarkService.repositories;
 
-import org.dicegroup.basilisk.benchmarkService.domain.dockerContainer.ContainerStatus;
-import org.dicegroup.basilisk.benchmarkService.domain.dockerContainer.DockerContainer;
-import org.dicegroup.basilisk.benchmarkService.domain.dockerContainer.ImageStatus;
+import org.dicegroup.basilisk.benchmarkService.model.dockerContainer.ContainerStatus;
+import org.dicegroup.basilisk.benchmarkService.model.dockerContainer.DockerContainer;
+import org.dicegroup.basilisk.benchmarkService.model.dockerContainer.ImageStatus;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

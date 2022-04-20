@@ -7,6 +7,7 @@ import org.dicegroup.basilisk.benchmarkService.model.TripleStore;
 import org.dicegroup.basilisk.benchmarkService.model.benchmark.DataSet;
 import org.dicegroup.basilisk.benchmarkService.model.benchmark.DockerBenchmarkJob;
 import org.dicegroup.basilisk.benchmarkService.model.dockerContainer.DockerContainer;
+import org.springframework.amqp.rabbit.listener.RabbitListenerEndpointRegistry;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,9 @@ public class BenchmarkJobService {
 
     private final DockerContainerService containerService;
     private final IguanaService iguanaService;
+
+    private final RabbitListenerEndpointRegistry rabbitRegistry;
+
     @Value("${docker.hostPort}")
     private int hostPort;
 
@@ -29,9 +33,29 @@ public class BenchmarkJobService {
     @Value("${iguana.placeholders.dataSetPath}")
     private String dataSetPathPlaceholder;
 
-    public BenchmarkJobService(DockerContainerService containerService, IguanaService iguanaService) {
+    private boolean isRunning;
+
+    public BenchmarkJobService(DockerContainerService containerService, IguanaService iguanaService, RabbitListenerEndpointRegistry rabbitRegistry) {
         this.containerService = containerService;
         this.iguanaService = iguanaService;
+        this.rabbitRegistry = rabbitRegistry;
+
+        start();
+    }
+
+    public boolean isRunning() {
+        log.info("rabbit registry status: {}", this.rabbitRegistry.isRunning());
+        return this.isRunning;
+    }
+
+    public void start() {
+        this.isRunning = true;
+        this.rabbitRegistry.start();
+    }
+
+    public void stop() {
+        this.isRunning = false;
+        this.rabbitRegistry.stop();
     }
 
     public DockerContainer handleNewDockerBenchmarkJob(DockerBenchmarkJob job) throws IOException, InterruptedException {

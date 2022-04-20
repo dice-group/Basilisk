@@ -1,10 +1,10 @@
 package org.dicegroup.basilisk.hooksCheckingService.services.continuesCheckingServices;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.dicegroup.basilisk.hooksCheckingService.core.TimingStrategy;
 import org.dicegroup.basilisk.hooksCheckingService.services.checkingServices.docker.DockerhubCheckingService;
 import org.dicegroup.basilisk.hooksCheckingService.services.checkingServices.git.GitCheckingService;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,7 @@ public class ContinuousCheckingService {
     @Setter
     @Getter
     TimingStrategy timingStrategy;
-    boolean is_running;
+    boolean isRunning;
 
     public ContinuousCheckingService(GitCheckingService gitBranchCheckingService
             , GitCheckingService gitReleaseCheckingService
@@ -36,8 +36,8 @@ public class ContinuousCheckingService {
 
     @Async
     public void start() throws InterruptedException {
-        this.is_running = true;
-        while (this.is_running) {
+        this.isRunning = true;
+        while (this.isRunning) {
             this.gitBranchCheckingService.performChecking();
             this.gitReleaseCheckingService.performChecking();
             this.gitPullRequestCheckingService.performChecking();
@@ -48,10 +48,10 @@ public class ContinuousCheckingService {
     }
 
     public synchronized void stop() {
-        this.is_running = false;
+        this.isRunning = false;
     }
 
     public synchronized boolean isRunning() {
-        return this.is_running;
+        return this.isRunning;
     }
 }

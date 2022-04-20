@@ -41,10 +41,10 @@ iguana:
     dataSetPath: 'dataSetPath'
     dataSetName: 'dataSetName'
   resultStorage:
-    className: 'NTFileStorage' # 'TriplestoreStorage'
+    className: 'TriplestoreStorage' # 'NTFileStorage' #
     configuration:
-      #      endpoint: 'http://localhost:3030/results/sparql'
-      #      updateEndpoint: 'http://localhost:3030/results/update'
+      endpoint: 'http://localhost:3030/results/sparql'
+      updateEndpoint: 'http://localhost:3030/results/update'
       fileName: '/home/fabian/dev/bachelor/Basilisk/.data/iguana-results.nt'
 
 rabbitmq:

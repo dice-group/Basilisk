@@ -8,7 +8,7 @@ services:
 
   fuseki:
     image: fuseki
-    command: "--tdb2 --loc databases/DB2 /results"
+    command: "--tdb2 --update --loc databases/results /results"
     ports:
       - "3030:3030"
     volumes:

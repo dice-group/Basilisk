@@ -38,6 +38,9 @@ public class TestController {
     @Value("${test.queryFilePath}")
     private String queryFilePath;
 
+    @Value("${test.datasetPath}")
+    private String datasetPath;
+
     private DockerBenchmarkJob benchmarkJob;
 
     public TestController(DockerContainerService containerService, BenchmarkJobService benchmarkJobService, IguanaService iguanaService) {
@@ -62,7 +65,7 @@ public class TestController {
 
         DataSet ds = new DataSet();
         ds.setName("swdf");
-        ds.setFilePath("/home/fabian/dev/bachelor/Basilisk/example_benchmark/swdf.nt");
+        ds.setFilePath(this.datasetPath);
 
         Benchmark bm = new Benchmark();
         bm.setQueryFilePath(this.queryFilePath);

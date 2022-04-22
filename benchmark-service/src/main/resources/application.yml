@@ -61,4 +61,5 @@ rabbitmq:
       result: resultKey
 
 test:
+  datasetPath: '/benchmarks/swdf.nt'
   queryFilePath: '/benchmarks/swdf-queries_short.txt'

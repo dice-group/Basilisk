@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>benchmark-service</artifactId>
+    <version>0.1</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -56,4 +57,26 @@
             <artifactId>jackson-databind</artifactId>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring.boot.maven.plugin.version}</version>
+                <configuration>
+                    <mainClass>org.dicegroup.basilisk.benchmarkService.BenchmarkServiceApplication</mainClass>
+                    <!--                        <executable>true</executable>-->
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>

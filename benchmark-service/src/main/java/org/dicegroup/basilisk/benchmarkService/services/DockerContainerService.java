@@ -6,21 +6,20 @@ import com.github.dockerjava.api.command.InspectImageResponse;
 import com.github.dockerjava.api.command.PullImageResultCallback;
 import com.github.dockerjava.api.exception.NotFoundException;
 import com.github.dockerjava.api.model.*;
+import lombok.extern.slf4j.Slf4j;
 import org.dicegroup.basilisk.benchmarkService.model.dockerContainer.ContainerStatus;
 import org.dicegroup.basilisk.benchmarkService.model.dockerContainer.DockerContainer;
 import org.dicegroup.basilisk.benchmarkService.model.dockerContainer.ImageStatus;
 import org.dicegroup.basilisk.benchmarkService.repositories.DockerContainerRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class DockerContainerService {
 
-    private final Logger logger = LoggerFactory.getLogger(DockerContainerService.class);
     private final DockerClient client;
     private final DockerContainerRepository containerRepository;
 
@@ -48,7 +47,7 @@ public class DockerContainerService {
 
     public DockerContainer pullImage(DockerContainer container) {
 
-        this.logger.info("started pulling..");
+        log.info("started pulling..");
         try {
             this.client.pullImageCmd(container.getImageName())
                     .exec(new PullImageResultCallback())
@@ -62,7 +61,7 @@ public class DockerContainerService {
             e.printStackTrace();
         }
 
-        this.logger.info("finished");
+        log.info("finished");
 
         return container;
     }
@@ -89,11 +88,12 @@ public class DockerContainerService {
         container.setContainerId(response.getId());
         container = this.containerRepository.save(container);
 
-        this.logger.info("created container: {}", response);
+        log.info("created container: {}", response);
 
         this.client.startContainerCmd(container.getContainerId()).exec();
 
         container.setContainerStatus(ContainerStatus.RUNNING);
+        container.setContainerName(getContainerName(container.getContainerId()));
         container = this.containerRepository.save(container);
 
 
@@ -112,13 +112,6 @@ public class DockerContainerService {
         container.setContainerStatus(ContainerStatus.REMOVED);
         container.setContainerId(null);
         return this.containerRepository.save(container);
-    }
-
-    public void removeImages() {
-        List<DockerContainer> containers = this.containerRepository.findAllByImageStatusAndContainerStatus(ImageStatus.PULLED, ContainerStatus.REMOVED);
-        for (DockerContainer container : containers) {
-            deleteImage(container);
-        }
     }
 
     public DockerContainer deleteImage(DockerContainer container) {
@@ -144,11 +137,11 @@ public class DockerContainerService {
     public String findImageIdByName(String imageName) {
         try {
             InspectImageResponse response = this.client.inspectImageCmd(imageName).exec();
-            logger.info("response: {}", response);
+            log.info("response: {}", response);
 
             return response.getId();
         } catch (NotFoundException e) {
-            logger.info("not found");
+            log.info("not found");
         }
         return null;
     }
@@ -156,4 +149,9 @@ public class DockerContainerService {
     private String getImageName(String owner, String name, String tag) {
         return owner + "/" + name + ":" + tag;
     }
+
+    public String getContainerName(String containerId) {
+        return this.client.inspectContainerCmd(containerId).exec().getName();
+    }
+
 }

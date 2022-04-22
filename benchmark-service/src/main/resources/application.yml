@@ -22,7 +22,7 @@ spring:
     hibernate:
       ddl-auto: update
   rabbitmq:
-    host: localhost
+    host: rabbitmq
     port: '5672'
     username: guest
     password: guest
@@ -35,18 +35,20 @@ server:
 docker:
   dockerHost: 'unix:///var/run/docker.sock'
   hostPort: 81
+  hostGateway: 'host.docker.internal'
 
 iguana:
-  iguanaPath: '/home/fabian/dev/bachelor/iguana/'
-  configFileDirectory: '/home/fabian/dev/bachelor/Basilisk/.data/iguana-configs'
+  shell: '/bin/sh'
+  iguanaPath: '/iguana/'
+  configFileDirectory: '/iguana-configs'
   placeholders:
     dataSetPath: 'dataSetPath'
     dataSetName: 'dataSetName'
   resultStorage:
     className: 'TriplestoreStorage' # 'NTFileStorage' #
     configuration:
-      endpoint: 'http://localhost:3030/results/sparql'
-      updateEndpoint: 'http://localhost:3030/results/update'
+      endpoint: 'http://fuseki:3030/results/sparql'
+      updateEndpoint: 'http://fuseki:3030/results/update'
       fileName: '/home/fabian/dev/bachelor/Basilisk/.data/iguana-results.nt'
 
 rabbitmq:
@@ -57,3 +59,6 @@ rabbitmq:
     routingKeys:
       job: jobKey
       result: resultKey
+
+test:
+  queryFilePath: '/benchmarks/swdf-queries_short.txt'

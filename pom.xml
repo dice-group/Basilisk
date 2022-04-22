@@ -22,8 +22,8 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
 
-        <spring.boot.maven.plugin.version>2.6.5</spring.boot.maven.plugin.version>
-        <spring.boot.dependencies.version>2.6.5</spring.boot.dependencies.version>
+        <spring.boot.maven.plugin.version>2.6.6</spring.boot.maven.plugin.version>
+        <spring.boot.dependencies.version>2.6.6</spring.boot.dependencies.version>
     </properties>
 
     <dependencyManagement>
@@ -95,20 +95,5 @@
         </dependency>
 
     </dependencies>
-
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                    <version>${spring.boot.maven.plugin.version}</version>
-                    <configuration>
-                        <executable>true</executable>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
 
 </project>

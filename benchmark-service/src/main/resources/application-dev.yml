@@ -1,0 +1,20 @@
+docker:
+  hostGateway: 'localhost'
+
+spring:
+  rabbitmq:
+    host: localhost
+
+iguana:
+  shell: '/bin/bash'
+  iguanaPath: '/home/fabian/dev/bachelor/iguana/'
+  configFileDirectory: '/home/fabian/dev/bachelor/Basilisk/.data/iguana-configs'
+  resultStorage:
+    className: 'TriplestoreStorage' # 'NTFileStorage' #
+    configuration:
+      endpoint: 'http://localhost:3030/results/sparql'
+      updateEndpoint: 'http://localhost:3030/results/update'
+      fileName: '/home/fabian/dev/bachelor/Basilisk/.data/iguana-results.nt'
+
+test:
+  queryFilePath: '/home/fabian/dev/bachelor/Basilisk/example_benchmark/swdf-queries_short.txt'

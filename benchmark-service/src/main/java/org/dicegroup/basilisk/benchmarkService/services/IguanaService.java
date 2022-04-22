@@ -44,6 +44,12 @@ public class IguanaService {
     @Value("${iguana.resultStorage.configuration.fileName:#{null}}")
     private String resultsFile;
 
+    @Value("${iguana.shell}")
+    private String shell;
+
+    @Value("${docker.hostGateway}")
+    private String hostGateway;
+
 
     public IguanaService(ObjectMapper mapper) {
         this.mapper = mapper;
@@ -54,7 +60,7 @@ public class IguanaService {
 
         File tempFile = createConfigFile(config);
 
-        ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", this.iguanaPath + "start-iguana.sh " + tempFile.getAbsolutePath());
+        ProcessBuilder pb = new ProcessBuilder(this.shell, "-c", "java -jar " + this.iguanaPath + "iguana-3.3.0.jar " + tempFile.getAbsolutePath());
         pb.inheritIO();
         pb.directory(new File(this.iguanaPath));
 
@@ -92,7 +98,7 @@ public class IguanaService {
     }
 
     private Connection createConnection(Repo repo) {
-        String endpoint = "http://127.0.0.1:" + this.hostPort + repo.getTripleStore().getEndpoint();
+        String endpoint = "http://" + this.hostGateway + ":" + this.hostPort + repo.getTripleStore().getEndpoint();
 
         return Connection.builder().name(repo.getRepoName()).endpoint(endpoint).build();
     }

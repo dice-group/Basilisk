@@ -11,6 +11,7 @@ import org.dicegroup.basilisk.benchmarkService.model.repo.DockerRepo;
 import org.dicegroup.basilisk.benchmarkService.services.BenchmarkJobService;
 import org.dicegroup.basilisk.benchmarkService.services.DockerContainerService;
 import org.dicegroup.basilisk.benchmarkService.services.IguanaService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,13 +35,19 @@ public class TestController {
     private final String name = "tentris_server"; // "getting-started"
     private final String tag = "latest";
 
-    private final DockerBenchmarkJob benchmarkJob;
+    @Value("${test.queryFilePath}")
+    private String queryFilePath;
+
+    private DockerBenchmarkJob benchmarkJob;
 
     public TestController(DockerContainerService containerService, BenchmarkJobService benchmarkJobService, IguanaService iguanaService) {
         this.containerService = containerService;
         this.benchmarkJobService = benchmarkJobService;
         this.iguanaService = iguanaService;
 
+    }
+
+    private void createBenchmarkJob() {
         TripleStore ts = new TripleStore();
         ts.setExposedPort(9080);
 
@@ -58,9 +65,9 @@ public class TestController {
         ds.setFilePath("/home/fabian/dev/bachelor/Basilisk/example_benchmark/swdf.nt");
 
         Benchmark bm = new Benchmark();
-        bm.setQueryFilePath("/home/fabian/dev/bachelor/Basilisk/example_benchmark/swdf-queries_short.txt");
+        bm.setQueryFilePath(this.queryFilePath);
         bm.setDataSet(ds);
-        bm.setTaskTimeLimit(2000);
+        bm.setTaskTimeLimit(5000);
         bm.setWorkerThreadCount(1);
         bm.setWorkerTimeOut(1000);
 
@@ -69,16 +76,17 @@ public class TestController {
                 .tagName("latest")
                 .benchmark(bm)
                 .build();
-
     }
 
     @GetMapping("/handle")
     public DockerContainer handleBenchmarkJob() throws IOException, InterruptedException {
+        createBenchmarkJob();
         return this.benchmarkJobService.handleNewDockerBenchmarkJob(this.benchmarkJob);
     }
 
     @GetMapping("/iguana")
     public String startBenchmark() throws IOException, InterruptedException {
+        createBenchmarkJob();
         this.iguanaService.startBenchmark(this.benchmarkJob);
 
         return "started";
@@ -86,6 +94,7 @@ public class TestController {
 
     @GetMapping("/iguana-config")
     public IguanaConfiguration getIguanaConfig() {
+        createBenchmarkJob();
         return this.iguanaService.createConfiguration(this.benchmarkJob);
     }
 
@@ -100,7 +109,7 @@ public class TestController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<Image>> listContainers() {
+    public ResponseEntity<List<Image>> listImages() {
         List<Image> images = this.containerService.listImages();
         return new ResponseEntity<>(images, HttpStatus.OK);
     }

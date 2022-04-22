@@ -54,11 +54,6 @@ public class IguanaService {
 
         File tempFile = createConfigFile(config);
 
-        // TODO test external Iguana
-//        MainController iguanaController = new MainController();
-//        iguanaController.start(tempFile.getAbsolutePath(), true);
-
-//        ProcessBuilder pb = new ProcessBuilder("java", "-jar", this.iguanaPath + "iguana-3.3.0.jar", tempFile.getAbsolutePath());
         ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", this.iguanaPath + "start-iguana.sh " + tempFile.getAbsolutePath());
         pb.inheritIO();
         pb.directory(new File(this.iguanaPath));

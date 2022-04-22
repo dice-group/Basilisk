@@ -8,7 +8,7 @@
     <artifactId>basilisk</artifactId>
     <name>Basilisk</name>
     <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1</version>
 
     <modules>
         <module>hooks-checking-service</module>

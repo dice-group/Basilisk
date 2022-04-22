@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: benchmark-service
   h2:
     console:
       enabled: true

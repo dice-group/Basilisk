@@ -2,7 +2,7 @@ package org.dicegroup.basilisk.benchmarkService.services;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.text.StrSubstitutor;
+import org.apache.commons.text.StringSubstitutor;
 import org.dicegroup.basilisk.benchmarkService.model.TripleStore;
 import org.dicegroup.basilisk.benchmarkService.model.benchmark.DataSet;
 import org.dicegroup.basilisk.benchmarkService.model.benchmark.DockerBenchmarkJob;
@@ -106,7 +106,7 @@ public class BenchmarkJobService {
         String dataSetName = new File(dataSet.getFilePath()).getName();
         Map<String, String> valueMap = Map.of(this.dataSetPathPlaceholder, tripleStore.getDataSetPath(), this.dataSetNamePlaceholder, dataSetName);
 
-        return new StrSubstitutor(valueMap).replace(tripleStore.getEntryPoint());
+        return new StringSubstitutor(valueMap).replace(tripleStore.getEntryPoint());
     }
 
 }

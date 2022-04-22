@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: jobs-managing-service
   h2:
     console:
       enabled: true

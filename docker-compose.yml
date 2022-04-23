@@ -45,8 +45,6 @@ services:
       - ./.data/:/.data/
     networks:
       - basilisk
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
 
   rabbitmq:
     image: rabbitmq:management

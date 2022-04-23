@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.dicegroup.basilisk.benchmarkService.model.benchmark.Benchmark;
 import org.dicegroup.basilisk.benchmarkService.model.benchmark.BenchmarkJob;
+import org.dicegroup.basilisk.benchmarkService.model.dockerContainer.DockerContainer;
 import org.dicegroup.basilisk.benchmarkService.model.iguana.Connection;
 import org.dicegroup.basilisk.benchmarkService.model.iguana.DataSet;
 import org.dicegroup.basilisk.benchmarkService.model.iguana.IguanaConfiguration;
@@ -25,15 +26,13 @@ import java.util.List;
 public class IguanaService {
 
     private final ObjectMapper mapper;
+    private final DockerContainerService containerService;
 
     @Value("${iguana.iguanaPath}")
     private String iguanaPath;
 
     @Value("${iguana.configFileDirectory}")
     private String configFileDirectory;
-
-    @Value("${docker.hostPort}")
-    private int hostPort;
 
     @Value("${iguana.resultStorage.className}")
     private String resultStorageClassName;
@@ -46,21 +45,20 @@ public class IguanaService {
 
     @Value("${iguana.shell}")
     private String shell;
+    @Value("${docker.hostPort}")
+    private int hostPort;
 
-    @Value("${docker.hostGateway}")
-    private String hostGateway;
-
-
-    public IguanaService(ObjectMapper mapper) {
+    public IguanaService(ObjectMapper mapper, DockerContainerService containerService) {
         this.mapper = mapper;
+        this.containerService = containerService;
     }
 
-    public void startBenchmark(BenchmarkJob job) throws IOException, InterruptedException {
-        IguanaConfiguration config = this.createConfiguration(job);
+    public void startBenchmark(DockerContainer container, BenchmarkJob job) throws IOException, InterruptedException {
+        IguanaConfiguration config = this.createConfiguration(container, job);
 
         File tempFile = createConfigFile(config);
 
-        ProcessBuilder pb = new ProcessBuilder(this.shell, "-c", "java -jar " + this.iguanaPath + "iguana-3.3.0.jar " + tempFile.getAbsolutePath());
+        ProcessBuilder pb = new ProcessBuilder(this.shell, "-c", "java -jar " + this.iguanaPath + tempFile.getAbsolutePath());
         pb.inheritIO();
         pb.directory(new File(this.iguanaPath));
 
@@ -71,16 +69,12 @@ public class IguanaService {
         assert tempFile.delete();
     }
 
-    public IguanaConfiguration createConfiguration(BenchmarkJob job) {
+    public IguanaConfiguration createConfiguration(DockerContainer container, BenchmarkJob job) {
         IguanaConfiguration config = new IguanaConfiguration();
 
         config.setDataSets(List.of(new DataSet(job.getBenchmark().getDataSet().getName())));
-
-        config.setConnections(List.of(createConnection(job.getRepo())));
-
+        config.setConnections(List.of(createConnection(container, job.getRepo())));
         config.setTasks(List.of(createTask(job)));
-
-        // TODO temp file for results
         config.setStorages(List.of(createStorage()));
 
         return config;
@@ -97,22 +91,45 @@ public class IguanaService {
         return tempFile;
     }
 
-    private Connection createConnection(Repo repo) {
-        String endpoint = "http://" + this.hostGateway + ":" + this.hostPort + repo.getTripleStore().getEndpoint();
+    private Connection createConnection(DockerContainer container, Repo repo) {
+        String endpoint = "http://";
 
-        return Connection.builder().name(repo.getRepoName()).endpoint(endpoint).build();
+        if (this.containerService.isLocalhost()) {
+            endpoint += "localhost:" + this.hostPort;
+        } else {
+            endpoint += container.getContainerName() + ":" + container.getExposedPort();
+        }
+
+        endpoint += repo.getTripleStore().getEndpoint();
+
+        return Connection.builder()
+                .name(repo.getRepoName())
+                .endpoint(endpoint)
+                .build();
     }
 
     private Task createTask(BenchmarkJob job) {
-        return Task.builder().className("Stresstest").configuration(createTaskConfig(job.getBenchmark())).build();
+        return Task.builder()
+                .className("Stresstest")
+                .configuration(createTaskConfig(job.getBenchmark()))
+                .build();
     }
 
     private TaskConfiguration createTaskConfig(Benchmark bm) {
-        return TaskConfiguration.builder().timeLimit(bm.getTaskTimeLimit()).queryHandler(new QueryHandler("InstancesQueryHandler")).workers(List.of(createWorker(bm))).build();
+        return TaskConfiguration.builder()
+                .timeLimit(bm.getTaskTimeLimit())
+                .queryHandler(new QueryHandler("InstancesQueryHandler"))
+                .workers(List.of(createWorker(bm)))
+                .build();
     }
 
     private Worker createWorker(Benchmark bm) {
-        return Worker.builder().className("SPARQLWorker").threads(bm.getWorkerThreadCount()).queriesFile(bm.getQueryFilePath()).timeOut(bm.getWorkerTimeOut()).build();
+        return Worker.builder()
+                .className("SPARQLWorker")
+                .threads(bm.getWorkerThreadCount())
+                .queriesFile(bm.getQueryFilePath())
+                .timeOut(bm.getWorkerTimeOut())
+                .build();
     }
 
     private Storage createStorage() {

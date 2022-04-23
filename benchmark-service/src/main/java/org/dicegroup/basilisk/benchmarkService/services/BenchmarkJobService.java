@@ -76,7 +76,7 @@ public class BenchmarkJobService {
         Thread.sleep(5000);
         log.info("starting benchmark");
 
-        this.iguanaService.startBenchmark(job);
+        this.iguanaService.startBenchmark(container, job);
 
         container = this.containerService.stopContainer(container);
         log.info("Container stoppend and removed");
@@ -94,8 +94,6 @@ public class BenchmarkJobService {
         container.setDataSetPath(tripleStore.getDataSetPath());
 
         container.setEntryPoint(getEntrypoint(tripleStore, dataSet));
-
-        log.info("Container Entity created: {}", container);
     }
 
     private String getDatasetHostPath(DataSet dataSet) {

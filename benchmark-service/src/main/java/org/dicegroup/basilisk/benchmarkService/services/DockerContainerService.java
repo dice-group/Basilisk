@@ -11,9 +11,9 @@ import org.dicegroup.basilisk.benchmarkService.model.dockerContainer.ContainerSt
 import org.dicegroup.basilisk.benchmarkService.model.dockerContainer.DockerContainer;
 import org.dicegroup.basilisk.benchmarkService.model.dockerContainer.ImageStatus;
 import org.dicegroup.basilisk.benchmarkService.repositories.DockerContainerRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,6 +22,15 @@ public class DockerContainerService {
 
     private final DockerClient client;
     private final DockerContainerRepository containerRepository;
+
+    @Value("${docker.containerName}")
+    private String containerName;
+
+    @Value("${docker.networkName}")
+    private String networkName;
+
+    @Value("${docker.localhost:#{false}}")
+    private boolean isLocalhost;
 
     public DockerContainerService(DockerClient client, DockerContainerRepository containerRepository) {
         this.client = client;
@@ -38,7 +47,7 @@ public class DockerContainerService {
         }
 
         DockerContainer container = DockerContainer.builder()
-                .imageName(getImageName(owner, name, tag))
+                .imageName(imageName)
                 .imageStatus(ImageStatus.NOT_PULLED)
                 .containerStatus(ContainerStatus.NOT_CREATED)
                 .build();
@@ -75,11 +84,14 @@ public class DockerContainerService {
 
         HostConfig config = HostConfig.newHostConfig()
                 .withPortBindings(portBinding)
+                .withNetworkMode(getNetworkId())
                 .withBinds(dataSetBind);
 
         CreateContainerResponse response = this.client.createContainerCmd(container.getImageName())
                 .withHostConfig(config)
                 .withVolumes(dataSet)
+                .withName(this.containerName)
+                .withAliases(this.containerName)
                 .withCmd(container.getEntryPoint().split("\s"))
                 .withExposedPorts(new ExposedPort(container.getExposedPort()))
                 .exec();
@@ -94,6 +106,7 @@ public class DockerContainerService {
 
         container.setContainerStatus(ContainerStatus.RUNNING);
         container.setContainerName(getContainerName(container.getContainerId()));
+
         container = this.containerRepository.save(container);
 
 
@@ -122,18 +135,6 @@ public class DockerContainerService {
         return this.containerRepository.save(container);
     }
 
-    public List<Image> listImages() {
-        return this.client.listImagesCmd().exec();
-    }
-
-    public List<DockerContainer> getAllContainers() {
-        return (List<DockerContainer>) this.containerRepository.findAll();
-    }
-
-    public String findImageIdByName(String owner, String name, String tag) {
-        return findImageIdByName(getImageName(owner, name, tag));
-    }
-
     public String findImageIdByName(String imageName) {
         try {
             InspectImageResponse response = this.client.inspectImageCmd(imageName).exec();
@@ -151,7 +152,20 @@ public class DockerContainerService {
     }
 
     public String getContainerName(String containerId) {
-        return this.client.inspectContainerCmd(containerId).exec().getName();
+        return this.client.inspectContainerCmd(containerId).exec().getName().substring(1);
+    }
+
+    public String getNetworkId() {
+        for (Network network : this.client.listNetworksCmd().exec()) {
+            if (network.getName().equals(this.networkName)) {
+                return network.getId();
+            }
+        }
+        return null;
+    }
+
+    public boolean isLocalhost() {
+        return isLocalhost;
     }
 
 }

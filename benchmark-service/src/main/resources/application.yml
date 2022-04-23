@@ -35,11 +35,12 @@ server:
 docker:
   dockerHost: 'unix:///var/run/docker.sock'
   hostPort: 81
-  hostGateway: 'host.docker.internal'
+  networkName: 'basilisk_basilisk'
+  containerName: 'triplestore'
 
 iguana:
   shell: '/bin/sh'
-  iguanaPath: '/iguana/'
+  iguanaPath: '/iguana/iguana-3.3.0.jar'
   configFileDirectory: '/iguana-configs'
   placeholders:
     dataSetPath: 'dataSetPath'
@@ -61,5 +62,5 @@ rabbitmq:
       result: resultKey
 
 test:
-  datasetPath: '/benchmarks/swdf.nt'
+  datasetPath: '/data/Basilisk/example_benchmark/swdf.nt'
   queryFilePath: '/benchmarks/swdf-queries_short.txt'

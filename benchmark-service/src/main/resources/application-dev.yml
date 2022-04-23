@@ -1,5 +1,5 @@
 docker:
-  hostGateway: 'localhost'
+  localhost: true
 
 spring:
   rabbitmq:
@@ -7,7 +7,7 @@ spring:
 
 iguana:
   shell: '/bin/bash'
-  iguanaPath: '/home/fabian/dev/bachelor/iguana/'
+  iguanaPath: '/home/fabian/dev/bachelor/iguana/iguana-3.3.0.jar'
   configFileDirectory: '/home/fabian/dev/bachelor/Basilisk/.data/iguana-configs'
   resultStorage:
     className: 'TriplestoreStorage' # 'NTFileStorage' #

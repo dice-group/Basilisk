@@ -22,10 +22,11 @@ public class RabbitMqConfig {
 
     @Value("${rabbitmq.benchmarks.jobQueue}")
     String benchmarkJobQueue;
-    @Value("${rabbitmq.benchmarks.resultQueue}")
-    String benchmarkResultQueue;
     @Value("${rabbitmq.benchmarks.routingKeys.job}")
     private String benchmarkJobQueueRoutingKey;
+
+    @Value("${rabbitmq.benchmarks.resultQueue}")
+    String benchmarkResultQueue;
     @Value("${rabbitmq.benchmarks.routingKeys.result}")
     private String benchmarkResultQueueRoutingKey;
 
@@ -37,23 +38,23 @@ public class RabbitMqConfig {
 
     @Bean
     Queue benchmarkJobQueue() {
-        return new Queue(benchmarkJobQueue, false);
+        return new Queue(this.benchmarkJobQueue, false);
     }
 
     @Bean
     Queue benchmarkResultQueue() {
-        return new Queue(benchmarkResultQueue, false);
+        return new Queue(this.benchmarkResultQueue, false);
     }
 
 
     @Bean
     Binding benchmarkJobBinding(Queue benchmarkJobQueue, DirectExchange benchmarkExchange) {
-        return BindingBuilder.bind(benchmarkJobQueue).to(benchmarkExchange).with(benchmarkJobQueueRoutingKey);
+        return BindingBuilder.bind(benchmarkJobQueue).to(benchmarkExchange).with(this.benchmarkJobQueueRoutingKey);
     }
 
     @Bean
     Binding benchmarkResultBinding(Queue benchmarkResultQueue, DirectExchange benchmarkExchange) {
-        return BindingBuilder.bind(benchmarkResultQueue).to(benchmarkExchange).with(benchmarkResultQueueRoutingKey);
+        return BindingBuilder.bind(benchmarkResultQueue).to(benchmarkExchange).with(this.benchmarkResultQueueRoutingKey);
     }
 
     @Bean

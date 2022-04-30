@@ -32,11 +32,7 @@ public class BenchmarkService {
             }
         }
 
-        Benchmark savedBenchmark = this.repo.save(benchmark);
-
-        // TODO Download queryfile
-
-        return savedBenchmark;
+        return this.repo.save(benchmark);
     }
 
     public Optional<Benchmark> getBenchmark(Long id) {
@@ -48,8 +44,6 @@ public class BenchmarkService {
     }
 
     public void deleteBenchmark(Benchmark benchmark) {
-        // TODO Delete queryfile
-
         this.repo.delete(benchmark);
     }
 }

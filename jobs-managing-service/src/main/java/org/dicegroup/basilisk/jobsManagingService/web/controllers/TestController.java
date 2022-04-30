@@ -2,6 +2,7 @@ package org.dicegroup.basilisk.jobsManagingService.web.controllers;
 
 import org.dicegroup.basilisk.dto.benchmark.BenchmarkDto;
 import org.dicegroup.basilisk.dto.repo.DockerRepoDto;
+import org.dicegroup.basilisk.events.benchmark.BenchmarkJobAbortCommand;
 import org.dicegroup.basilisk.events.benchmark.DockerBenchmarkJobCreateEvent;
 import org.dicegroup.basilisk.jobsManagingService.model.benchmarking.Benchmark;
 import org.dicegroup.basilisk.jobsManagingService.model.repo.DockerRepo;
@@ -46,6 +47,14 @@ public class TestController {
         this.messageSender.send(event);
 
         return event;
+    }
+
+    @GetMapping("/abort")
+    public String sendAbortCommand() {
+        BenchmarkJobAbortCommand command = new BenchmarkJobAbortCommand(1L);
+        this.messageSender.send(command);
+
+        return "Abort command sent";
     }
 
 }

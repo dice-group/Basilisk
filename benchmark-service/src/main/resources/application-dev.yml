@@ -10,7 +10,7 @@ iguana:
   iguanaPath: '/home/fabian/dev/bachelor/iguana/iguana-3.3.0.jar'
   configFileDirectory: '/home/fabian/dev/bachelor/Basilisk/.data/iguana-configs'
   resultStorage:
-    className: 'TriplestoreStorage' # 'NTFileStorage'  #
+    className: 'NTFileStorage'  #'TriplestoreStorage' #
     configuration:
       endpoint: 'http://localhost:3030/results/sparql'
       updateEndpoint: 'http://localhost:3030/results/update'

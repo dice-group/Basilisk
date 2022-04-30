@@ -34,7 +34,7 @@ public class MessageReceiver {
 
     @RabbitHandler
     public void receive(GitBenchmarkJobCreateEvent event) {
-        //benchmarkingOrganizerService.startBenchmark(event);
+        // Todo: pull repo, build image from Dockerfile
     }
 
     @RabbitHandler

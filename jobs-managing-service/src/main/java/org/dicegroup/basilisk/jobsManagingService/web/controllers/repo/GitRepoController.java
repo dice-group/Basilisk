@@ -22,6 +22,8 @@ import java.util.stream.Collectors;
 @RequestMapping("repos/git")
 public class GitRepoController {
 
+    private final String gitDeactivatedNotice = "Currently Basilisk is not able to benchmark Triplestores from GitHub repositories.";
+
     private final GitRepoService repoService;
     private final TripleStoreService tsService;
     private final ModelMapper modelMapper;
@@ -60,28 +62,41 @@ public class GitRepoController {
         return new ResponseEntity<>(repos, HttpStatus.OK);
     }
 
-    @PostMapping(path = "/release", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<GitRepoDto> addReleaseRepo(@RequestBody @NotNull GitRepoDto gitRepoDto) {
-        GitRepo repo = getRepoEntity(gitRepoDto);
-
-        GitRepo createdRepo = this.repoService.addRepo(repo, GitRepoType.RELEASE);
-        return new ResponseEntity<>(convertToDto(createdRepo), HttpStatus.CREATED);
+    //    @PostMapping(path = "/release", consumes = "application/json", produces = "application/json")
+//    public ResponseEntity<GitRepoDto> addReleaseRepo(@RequestBody @NotNull GitRepoDto gitRepoDto) {
+//        GitRepo repo = getRepoEntity(gitRepoDto);
+//
+//        GitRepo createdRepo = this.repoService.addRepo(repo, GitRepoType.RELEASE);
+//        return new ResponseEntity<>(convertToDto(createdRepo), HttpStatus.CREATED);
+//    }
+    @PostMapping(path = "/release")
+    public String releaseDeactivateNotice() {
+        return this.gitDeactivatedNotice;
     }
 
-    @PostMapping(path = "/branch", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<GitRepoDto> addBranchRepo(@RequestBody @NotNull GitRepoDto gitRepoDto) {
-        GitRepo repo = getRepoEntity(gitRepoDto);
 
-        GitRepo createdRepo = this.repoService.addRepo(repo, GitRepoType.BRANCH);
-        return new ResponseEntity<>(convertToDto(createdRepo), HttpStatus.CREATED);
+    //    @PostMapping(path = "/branch", consumes = "application/json", produces = "application/json")
+//    public ResponseEntity<GitRepoDto> addBranchRepo(@RequestBody @NotNull GitRepoDto gitRepoDto) {
+//        GitRepo repo = getRepoEntity(gitRepoDto);
+//
+//        GitRepo createdRepo = this.repoService.addRepo(repo, GitRepoType.BRANCH);
+//        return new ResponseEntity<>(convertToDto(createdRepo), HttpStatus.CREATED);
+//    }
+    @PostMapping(path = "/branch")
+    public String branchDeactivateNotice() {
+        return this.gitDeactivatedNotice;
     }
 
-    @PostMapping(path = "/pullRequest", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<GitRepoDto> addPullRequestRepo(@RequestBody @NotNull GitRepoDto gitRepoDto) {
-        GitRepo repo = getRepoEntity(gitRepoDto);
-
-        GitRepo createdRepo = this.repoService.addRepo(repo, GitRepoType.PULL_REQUEST);
-        return new ResponseEntity<>(convertToDto(createdRepo), HttpStatus.CREATED);
+    //    @PostMapping(path = "/pullRequest", consumes = "application/json", produces = "application/json")
+//    public ResponseEntity<GitRepoDto> addPullRequestRepo(@RequestBody @NotNull GitRepoDto gitRepoDto) {
+//        GitRepo repo = getRepoEntity(gitRepoDto);
+//
+//        GitRepo createdRepo = this.repoService.addRepo(repo, GitRepoType.PULL_REQUEST);
+//        return new ResponseEntity<>(convertToDto(createdRepo), HttpStatus.CREATED);
+//    }
+    @PostMapping(path = "/pullRequest")
+    public String pullRequestDeactivateNotice() {
+        return this.gitDeactivatedNotice;
     }
 
     @DeleteMapping(path = "/{id}")

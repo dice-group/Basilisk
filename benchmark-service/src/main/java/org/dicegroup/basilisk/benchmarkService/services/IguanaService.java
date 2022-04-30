@@ -58,9 +58,8 @@ public class IguanaService {
 
         File tempFile = createConfigFile(config);
 
-        ProcessBuilder pb = new ProcessBuilder(this.shell, "-c", "java -jar " + this.iguanaPath + tempFile.getAbsolutePath());
+        ProcessBuilder pb = new ProcessBuilder(this.shell, "-c", "java -jar " + this.iguanaPath + " " + tempFile.getAbsolutePath());
         pb.inheritIO();
-        pb.directory(new File(this.iguanaPath));
 
         Process p = pb.start();
         int status = p.waitFor();

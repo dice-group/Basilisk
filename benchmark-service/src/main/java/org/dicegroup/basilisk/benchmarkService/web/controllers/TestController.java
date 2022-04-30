@@ -60,9 +60,9 @@ public class TestController {
         Benchmark bm = new Benchmark();
         bm.setQueryFilePath(this.queryFilePath);
         bm.setDataSet(ds);
-        bm.setTaskTimeLimit(5000);
+        bm.setTaskTimeLimit(10000);
         bm.setWorkerThreadCount(1);
-        bm.setWorkerTimeOut(1000);
+        bm.setWorkerTimeOut(3000);
 
         this.benchmarkJob = DockerBenchmarkJob.builder()
                 .repo(repo)

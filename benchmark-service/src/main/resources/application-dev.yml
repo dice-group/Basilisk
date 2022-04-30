@@ -6,15 +6,15 @@ spring:
     host: localhost
 
 iguana:
-  shell: '/bin/bash'
+  shell: '/usr/bin/bash'
   iguanaPath: '/home/fabian/dev/bachelor/iguana/iguana-3.3.0.jar'
   configFileDirectory: '/home/fabian/dev/bachelor/Basilisk/.data/iguana-configs'
   resultStorage:
-    className: 'TriplestoreStorage' # 'NTFileStorage' #
+    className: 'TriplestoreStorage' # 'NTFileStorage'  #
     configuration:
       endpoint: 'http://localhost:3030/results/sparql'
       updateEndpoint: 'http://localhost:3030/results/update'
-      fileName: '/home/fabian/dev/bachelor/Basilisk/.data/iguana-results.nt'
+      fileName: '/home/fabian/dev/bachelor/Basilisk/.data/iguana-results2.nt'
 
 test:
   datasetPath: '/home/fabian/dev/bachelor/Basilisk/example_benchmark/swdf.nt'

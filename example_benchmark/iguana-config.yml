@@ -16,7 +16,7 @@ tasks:
       workers:
         - threads: 1
           className: "SPARQLWorker"
-          queriesFile: "/home/fabian/dev/bachelor/Basilisk/example_benchmark/swdf-queries_short.txt"
+          queriesFile: "/home/fabian/dev/bachelor/Basilisk/example_benchmark/swdf-queries.txt"
 
 storages:
   - className: "NTFileStorage"

@@ -35,15 +35,13 @@ public class BenchmarkJobService {
     private final GitBenchmarkJobRepository gitBenchmarkJobRepository;
     private final BenchmarkService benchmarkService;
     private final DataSetService dataSetService;
-    private final TripleStoreService tripleStoreService;
     private final BenchmarkMessageSender messageSender;
 
     private final ModelMapper mapper;
 
-    public BenchmarkJobService(DockerRepoService repoService, BenchmarkJobRepository benchmarkJobRepository, TripleStoreService tripleStoreService, BenchmarkMessageSender messageSender, DockerBenchmarkJobRepository dockerBenchmarkJobRepository, GitBenchmarkJobRepository gitBenchmarkJobRepository, BenchmarkService benchmarkService, DataSetService dataSetService, ModelMapper mapper) {
+    public BenchmarkJobService(DockerRepoService repoService, BenchmarkJobRepository benchmarkJobRepository, BenchmarkMessageSender messageSender, DockerBenchmarkJobRepository dockerBenchmarkJobRepository, GitBenchmarkJobRepository gitBenchmarkJobRepository, BenchmarkService benchmarkService, DataSetService dataSetService, ModelMapper mapper) {
         this.repoService = repoService;
         this.benchmarkJobRepository = benchmarkJobRepository;
-        this.tripleStoreService = tripleStoreService;
         this.dockerBenchmarkJobRepository = dockerBenchmarkJobRepository;
         this.messageSender = messageSender;
         this.gitBenchmarkJobRepository = gitBenchmarkJobRepository;

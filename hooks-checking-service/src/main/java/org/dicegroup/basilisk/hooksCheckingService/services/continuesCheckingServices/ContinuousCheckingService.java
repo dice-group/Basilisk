@@ -19,7 +19,7 @@ public class ContinuousCheckingService {
     @Setter
     @Getter
     TimingStrategy timingStrategy;
-    boolean isRunning;
+    private boolean isRunning;
 
     public ContinuousCheckingService(GitCheckingService gitBranchCheckingService
             , GitCheckingService gitReleaseCheckingService

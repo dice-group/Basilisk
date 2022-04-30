@@ -6,8 +6,8 @@ import org.dicegroup.basilisk.benchmarkService.model.benchmark.DataSet;
 import org.dicegroup.basilisk.benchmarkService.model.benchmark.DockerBenchmarkJob;
 import org.dicegroup.basilisk.benchmarkService.model.dockerContainer.DockerContainer;
 import org.dicegroup.basilisk.benchmarkService.model.repo.DockerRepo;
-import org.dicegroup.basilisk.benchmarkService.services.BenchmarkJobService;
 import org.dicegroup.basilisk.benchmarkService.services.DockerContainerService;
+import org.dicegroup.basilisk.benchmarkService.services.jobExecution.DockerJobExecutionService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +21,7 @@ public class TestController {
 
     private final DockerContainerService containerService;
 
-    private final BenchmarkJobService benchmarkJobService;
+    private final DockerJobExecutionService dockerJobExecutionService;
 
     private final String owner = "dicegroup"; // "docker"
     private final String name = "tentris_server"; // "getting-started"
@@ -35,9 +35,9 @@ public class TestController {
 
     private DockerBenchmarkJob benchmarkJob;
 
-    public TestController(DockerContainerService containerService, BenchmarkJobService benchmarkJobService) {
+    public TestController(DockerContainerService containerService, DockerJobExecutionService dockerJobExecutionService) {
         this.containerService = containerService;
-        this.benchmarkJobService = benchmarkJobService;
+        this.dockerJobExecutionService = dockerJobExecutionService;
     }
 
     private void createBenchmarkJob() {
@@ -72,9 +72,10 @@ public class TestController {
     }
 
     @GetMapping("/handle")
-    public DockerContainer handleBenchmarkJob() throws IOException, InterruptedException {
+    public String handleBenchmarkJob() throws IOException, InterruptedException {
         createBenchmarkJob();
-        return this.benchmarkJobService.handleNewDockerBenchmarkJob(this.benchmarkJob);
+        this.dockerJobExecutionService.executeBenchmarkJob(this.benchmarkJob);
+        return "Benchmarked finished";
     }
 
     @GetMapping("/start")

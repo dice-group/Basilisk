@@ -38,6 +38,9 @@ docker:
   networkName: 'basilisk_basilisk'
   containerName: 'triplestore'
 
+benchmark:
+  startInterval: 10
+
 iguana:
   shell: '/bin/sh'
   iguanaPath: '/iguana/iguana-3.3.0.jar'

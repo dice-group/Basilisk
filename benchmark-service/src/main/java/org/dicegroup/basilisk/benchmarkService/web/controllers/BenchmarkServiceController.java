@@ -1,37 +1,39 @@
 package org.dicegroup.basilisk.benchmarkService.web.controllers;
 
-import org.dicegroup.basilisk.benchmarkService.services.BenchmarkJobService;
+import org.dicegroup.basilisk.benchmarkService.services.jobExecution.JobExecutionService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("benchmarkService/")
 public class BenchmarkServiceController {
 
-    private final BenchmarkJobService benchmarkJobService;
+    private final JobExecutionService jobExecutionService;
 
-    public BenchmarkServiceController(BenchmarkJobService benchmarkJobService) {
-        this.benchmarkJobService = benchmarkJobService;
+    public BenchmarkServiceController(JobExecutionService jobExecutionService) {
+        this.jobExecutionService = jobExecutionService;
     }
 
     @PostMapping(path = "/start")
-    public String start() {
-        if (this.benchmarkJobService.isRunning()) {
+    public String start() throws InterruptedException, IOException {
+        if (this.jobExecutionService.isRunning()) {
             return "the benchmark service is already running.";
         } else {
-            this.benchmarkJobService.start();
+            this.jobExecutionService.start();
             return "the benchmark service has started.";
         }
     }
 
     @PostMapping(path = "/stop")
     public String stop() {
-        if (!this.benchmarkJobService.isRunning())
+        if (!this.jobExecutionService.isRunning())
             return "The service is not running.";
         else {
-            this.benchmarkJobService.stop();
+            this.jobExecutionService.stop();
             return "The service is stopped.";
         }
 
@@ -39,7 +41,7 @@ public class BenchmarkServiceController {
 
     @GetMapping("/status")
     public String getStatus() {
-        if (this.benchmarkJobService.isRunning()) {
+        if (this.jobExecutionService.isRunning()) {
             return "The service is running.";
         } else {
             return "The service is not running.";

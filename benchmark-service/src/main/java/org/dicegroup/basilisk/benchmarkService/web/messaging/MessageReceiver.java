@@ -15,8 +15,6 @@ import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-
 
 @Component
 @Slf4j
@@ -25,11 +23,11 @@ public class MessageReceiver {
 
     private final ModelMapper mapper;
 
-    private final BenchmarkJobService jobService;
+    private final BenchmarkJobService benchmarkJobService;
 
-    public MessageReceiver(ModelMapper mapper, BenchmarkJobService jobService) {
+    public MessageReceiver(ModelMapper mapper, BenchmarkJobService benchmarkJobService) {
         this.mapper = mapper;
-        this.jobService = jobService;
+        this.benchmarkJobService = benchmarkJobService;
     }
 
     @RabbitHandler
@@ -38,7 +36,7 @@ public class MessageReceiver {
     }
 
     @RabbitHandler
-    public void receive(DockerBenchmarkJobCreateEvent event) throws IOException, InterruptedException {
+    public void receive(DockerBenchmarkJobCreateEvent event) {
         log.info("Recieved DockerBenchmarkJob: {}", event);
 
         DockerRepo repo = this.mapper.map(event.getRepo(), DockerRepo.class);
@@ -51,11 +49,12 @@ public class MessageReceiver {
                 .status(JobStatus.CREATED)
                 .build();
 
-        this.jobService.handleNewDockerBenchmarkJob(job);
+        this.benchmarkJobService.addDockerBenchmarkJob(job);
     }
 
     @RabbitHandler
     public void receive(BenchmarkJobAbortCommand command) {
-//        .abortBenchmark(command.getBenchmarkJobId());
+        log.info("recieved abort command for job: {}", command.getBenchmarkJobId());
+        this.benchmarkJobService.abortJob(command.getBenchmarkJobId());
     }
 }

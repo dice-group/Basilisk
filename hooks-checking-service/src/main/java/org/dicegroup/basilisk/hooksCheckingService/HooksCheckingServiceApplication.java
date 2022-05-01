@@ -10,8 +10,6 @@ public class HooksCheckingServiceApplication {
 
     public static void main(String[] args)  {
         SpringApplication.run(HooksCheckingServiceApplication.class, args);
-
-
     }
 
 }

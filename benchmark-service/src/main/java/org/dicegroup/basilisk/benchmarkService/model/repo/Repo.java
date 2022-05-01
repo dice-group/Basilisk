@@ -8,9 +8,7 @@ import lombok.Setter;
 import org.dicegroup.basilisk.benchmarkService.model.BaseEntity;
 import org.dicegroup.basilisk.benchmarkService.model.TripleStore;
 
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -18,14 +16,16 @@ import javax.persistence.ManyToOne;
 @AllArgsConstructor
 @Entity
 @Inheritance
-public abstract class Repo extends BaseEntity {
+public abstract class Repo {
 
+    @Id
+    private Long id;
     private String repoName;
     private String repoOwner;
     private boolean isPrivate;
     private String oAuthToken;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private TripleStore tripleStore;
 
 }

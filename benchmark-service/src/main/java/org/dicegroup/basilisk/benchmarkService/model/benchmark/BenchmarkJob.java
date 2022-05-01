@@ -9,8 +9,7 @@ import org.dicegroup.basilisk.benchmarkService.model.BaseEntity;
 import org.dicegroup.basilisk.benchmarkService.model.repo.Repo;
 import org.dicegroup.basilisk.dto.benchmark.JobStatus;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 
 @NoArgsConstructor
@@ -18,14 +17,17 @@ import javax.persistence.ManyToOne;
 @Setter
 @Entity
 @SuperBuilder
-public abstract class BenchmarkJob extends BaseEntity {
+public abstract class BenchmarkJob {
 
-    @ManyToOne
+    @Id
+    private Long id;
+
+    @ManyToOne(cascade = CascadeType.ALL)
     private Benchmark benchmark;
 
     private JobStatus status;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Repo repo;
 
 }

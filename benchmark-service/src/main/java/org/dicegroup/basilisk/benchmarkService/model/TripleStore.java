@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
-
+import javax.persistence.Id;
 
 
 @Entity
@@ -14,8 +14,10 @@ import javax.persistence.Entity;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TripleStore extends BaseEntity {
+public class TripleStore {
 
+    @Id
+    private Long id;
     private String name;
     private String endpoint;
     private String updateEndpoint;

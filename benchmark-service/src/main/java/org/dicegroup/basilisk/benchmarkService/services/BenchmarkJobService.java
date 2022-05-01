@@ -10,6 +10,7 @@ import org.dicegroup.basilisk.dto.benchmark.JobStatus;
 import org.dicegroup.basilisk.benchmarkService.repositories.BenchmarkJobRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -41,6 +42,10 @@ public class BenchmarkJobService {
 
             this.messageSender.send(new BenchmarkJobAbortedEvent(jobId));
         }
+    }
+
+    public List<BenchmarkJob> getJobList() {
+        return (List<BenchmarkJob>) this.jobRepo.findAll();
     }
 
 }

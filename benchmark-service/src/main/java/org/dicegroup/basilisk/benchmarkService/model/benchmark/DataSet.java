@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.dicegroup.basilisk.benchmarkService.model.BaseEntity;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 
 
 @Getter
@@ -15,9 +16,11 @@ import javax.persistence.Entity;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class DataSet extends BaseEntity {
+public class DataSet {
 
-    String name;
-    String filePath;
+    @Id
+    private Long Id;
+    private String name;
+    private String filePath;
 
 }

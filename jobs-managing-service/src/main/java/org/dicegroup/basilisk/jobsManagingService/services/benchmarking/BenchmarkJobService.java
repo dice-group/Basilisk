@@ -2,6 +2,7 @@ package org.dicegroup.basilisk.jobsManagingService.services.benchmarking;
 
 import lombok.extern.slf4j.Slf4j;
 import org.dicegroup.basilisk.dto.benchmark.BenchmarkDto;
+import org.dicegroup.basilisk.dto.benchmark.DockerBenchmarkJobDto;
 import org.dicegroup.basilisk.dto.benchmark.JobStatus;
 import org.dicegroup.basilisk.dto.repo.DockerRepoDto;
 import org.dicegroup.basilisk.dto.repo.GitRepoDto;
@@ -51,6 +52,10 @@ public class BenchmarkJobService {
         this.mapper = mapper;
     }
 
+    public Optional<BenchmarkJob> getBenchmarkJob(Long id) {
+        return this.benchmarkJobRepository.findById(id);
+    }
+
     public List<BenchmarkJob> getAllBenchmarkJobs() {
         return (List<BenchmarkJob>) this.benchmarkJobRepository.findAll();
     }
@@ -61,6 +66,31 @@ public class BenchmarkJobService {
 
     public List<GitBenchmarkJob> getAllGitBenchmarkJobs() {
         return (List<GitBenchmarkJob>) this.gitBenchmarkJobRepository.findAll();
+    }
+
+    public String createManualBenchmarkJob(Long repoId, String tagName, Long benchmarkId) {
+        Optional<DockerRepo> repoOpt = this.repoService.getRepo(repoId);
+        if (repoOpt.isEmpty()) {
+            log.info("Repo with id {} not found", repoId);
+            return null;
+        }
+
+        Optional<Benchmark> benchmarkOpt = this.benchmarkService.getBenchmark(benchmarkId);
+        if (benchmarkOpt.isEmpty()) {
+            log.info("Benchmark with id {} not found", benchmarkId);
+            return null;
+        }
+
+        DockerBenchmarkJob job = DockerBenchmarkJob.builder()
+                .repo(repoOpt.get())
+                .benchmark(benchmarkOpt.get())
+                .tagName(tagName)
+                .status(JobStatus.CREATED)
+                .build();
+
+        sendBenchmarkJob(this.dockerBenchmarkJobRepository.save(job));
+
+        return "created manual benchmark job";
     }
 
     public void generateBenchmarkingJobs(GitCommitEvent event) {
@@ -79,38 +109,33 @@ public class BenchmarkJobService {
     }
 
     public void generateBenchmarkJobs(DockerTagEvent event) {
-        for (DockerBenchmarkJob job : generateDockerBenchmarkJobs(event)) {
 
-            DockerBenchmarkJobCreateEvent jobEvent = DockerBenchmarkJobCreateEvent.builder()
-                    .jobId(job.getId())
-                    .repo(this.mapper.map(job.getRepo(), DockerRepoDto.class))
-                    .tagName(event.getTagName())
-                    .imageDigest(event.getImageDigest())
-                    .benchmark(this.mapper.map(job.getBenchmark(), BenchmarkDto.class))
-                    .build();
-
-            this.messageSender.send(jobEvent);
+        Optional<DockerRepo> repoOpt = this.repoService.getRepo(event.getRepoId());
+        if (repoOpt.isEmpty()) {
+            return;
         }
-    }
-
-    private List<DockerBenchmarkJob> generateDockerBenchmarkJobs(DockerTagEvent event) {
-        List<DockerBenchmarkJob> jobs = new ArrayList<>();
-
-        DockerRepo repo = this.repoService.getRepo(event.getRepoId()).get();
 
         for (Benchmark benchmark : this.benchmarkService.getAllBenchmarks()) {
             DockerBenchmarkJob job = DockerBenchmarkJob.builder()
-                    .repo(repo)
+                    .repo(repoOpt.get())
                     .tagName(event.getTagName())
                     .benchmark(benchmark)
                     .status(JobStatus.CREATED)
                     .build();
 
-            jobs.add(job);
-            this.dockerBenchmarkJobRepository.save(job);
+            job = this.dockerBenchmarkJobRepository.save(job);
+            sendBenchmarkJob(job);
         }
+    }
 
-        return jobs;
+    private void sendBenchmarkJob(DockerBenchmarkJob job) {
+        DockerBenchmarkJobCreateEvent event = DockerBenchmarkJobCreateEvent.builder()
+                .jobId(job.getId())
+                .repo(this.mapper.map(job.getRepo(), DockerRepoDto.class))
+                .tagName(job.getTagName())
+                .benchmark(this.mapper.map(job.getBenchmark(), BenchmarkDto.class))
+                .build();
+        this.messageSender.send(event);
     }
 
     public void setJobStatusAsStarted(long jobId) {
@@ -170,5 +195,9 @@ public class BenchmarkJobService {
         return jobs;
     }
 
+
+    public void deleteBenchmarkJob(BenchmarkJob job) {
+        this.benchmarkJobRepository.delete(job);
+    }
 
 }

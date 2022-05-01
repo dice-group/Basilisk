@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.dicegroup.basilisk.benchmarkService.model.repo.DockerRepo;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
@@ -18,7 +19,7 @@ import javax.persistence.ManyToOne;
 @SuperBuilder
 public class DockerBenchmarkJob extends BenchmarkJob {
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private DockerRepo repo;
     private String tagName;
     private String imageDigest;

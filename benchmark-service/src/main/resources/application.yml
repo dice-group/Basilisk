@@ -63,7 +63,3 @@ rabbitmq:
     routingKeys:
       job: jobKey
       result: resultKey
-
-test:
-  datasetPath: '/data/Basilisk/example_benchmark/swdf.nt'
-  queryFilePath: '/benchmarks/swdf-queries_short.txt'

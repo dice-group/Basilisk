@@ -13,6 +13,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class DockerBenchmarkJobCreateEvent implements Serializable {
 
+    private Long jobId;
+
     private DockerRepoDto repo;
     private String tagName;
     private String imageDigest;

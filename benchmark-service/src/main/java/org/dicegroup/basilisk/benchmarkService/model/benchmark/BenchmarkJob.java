@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.dicegroup.basilisk.benchmarkService.model.BaseEntity;
 import org.dicegroup.basilisk.benchmarkService.model.repo.Repo;
+import org.dicegroup.basilisk.dto.benchmark.JobStatus;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;

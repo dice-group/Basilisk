@@ -1,15 +1,13 @@
-package org.dicegroup.basilisk.benchmarkService.events;
+package org.dicegroup.basilisk.events.benchmark;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- * @author Fakhr Shaheen
- */
+
 @Getter
 @Setter
 @AllArgsConstructor
-public class BenchmarkJobFinishedEvent {
+public class BenchmarkJobStartedEvent {
     Long jobId;
 }

@@ -2,6 +2,7 @@ package org.dicegroup.basilisk.jobsManagingService.services.benchmarking;
 
 import lombok.extern.slf4j.Slf4j;
 import org.dicegroup.basilisk.dto.benchmark.BenchmarkDto;
+import org.dicegroup.basilisk.dto.benchmark.JobStatus;
 import org.dicegroup.basilisk.dto.repo.DockerRepoDto;
 import org.dicegroup.basilisk.dto.repo.GitRepoDto;
 import org.dicegroup.basilisk.events.benchmark.BenchmarkJobAbortCommand;
@@ -81,6 +82,7 @@ public class BenchmarkJobService {
         for (DockerBenchmarkJob job : generateDockerBenchmarkJobs(event)) {
 
             DockerBenchmarkJobCreateEvent jobEvent = DockerBenchmarkJobCreateEvent.builder()
+                    .jobId(job.getId())
                     .repo(this.mapper.map(job.getRepo(), DockerRepoDto.class))
                     .tagName(event.getTagName())
                     .imageDigest(event.getImageDigest())
@@ -112,64 +114,42 @@ public class BenchmarkJobService {
     }
 
     public void setJobStatusAsStarted(long jobId) {
-        Optional<BenchmarkJob> job = this.benchmarkJobRepository.findById(jobId);
-        if (job.isPresent()) {
-            BenchmarkJob benchmarkJob = job.get();
-            benchmarkJob.setStatus(JobStatus.STARTED);
-            this.benchmarkJobRepository.save(benchmarkJob);
-
-        } else {
-            //ToDo log
-        }
-
+        setJobStatus(jobId, JobStatus.STARTED);
     }
 
     public void setJobStatusAsFinished(long jobId) {
-        Optional<BenchmarkJob> job = benchmarkJobRepository.findById(jobId);
-        if (job.isPresent()) {
-            BenchmarkJob benchmarkJob = job.get();
-            benchmarkJob.setStatus(JobStatus.FINISHED);
-            this.benchmarkJobRepository.save(benchmarkJob);
-
-        } else {
-            //ToDo log
-        }
+        setJobStatus(jobId, JobStatus.FINISHED);
     }
 
     public void setJobStatusAsAborted(long jobId) {
-        Optional<BenchmarkJob> job = this.benchmarkJobRepository.findById(jobId);
-        if (job.isPresent()) {
-            BenchmarkJob benchmarkJob = job.get();
-            benchmarkJob.setStatus(JobStatus.ABORTED);
-            this.benchmarkJobRepository.save(benchmarkJob);
-
-        } else {
-            //ToDo log
-        }
+        setJobStatus(jobId, JobStatus.ABORTED);
     }
 
     public void setJobStatusAsFailed(long jobId) {
-        Optional<BenchmarkJob> job = this.benchmarkJobRepository.findById(jobId);
-        if (job.isPresent()) {
-            BenchmarkJob benchmarkJob = job.get();
-            benchmarkJob.setStatus(JobStatus.FAILED);
-            this.benchmarkJobRepository.save(benchmarkJob);
-
-        } else {
-            //ToDo log
-        }
+        setJobStatus(jobId, JobStatus.FAILED);
     }
 
-    public void abortJob(long jobId) {
+    private void setJobStatus(long jobId, JobStatus status) {
+        Optional<BenchmarkJob> jobOpt = this.benchmarkJobRepository.findById(jobId);
+        if (jobOpt.isEmpty()) {
+            return;
+        }
+        BenchmarkJob job = jobOpt.get();
+        job.setStatus(status);
+        this.benchmarkJobRepository.save(job);
+    }
+
+    public String abortJob(long jobId) {
         Optional<BenchmarkJob> job = this.benchmarkJobRepository.findById(jobId);
         if (job.isPresent()) {
             BenchmarkJob benchmarkJob = job.get();
             benchmarkJob.setStatus(JobStatus.ABORTING);
             this.benchmarkJobRepository.save(benchmarkJob);
-            BenchmarkJobAbortCommand benchmarkJobAbortCommand = new BenchmarkJobAbortCommand(jobId);
-            this.messageSender.send(benchmarkJobAbortCommand);
+            this.messageSender.send(new BenchmarkJobAbortCommand(jobId));
+            return "Job aborting..";
         } else {
-            //ToDo log
+            log.info("Job with id {} not found!", jobId);
+            return "Job with id " + jobId + " not found!";
         }
     }
 
@@ -179,12 +159,6 @@ public class BenchmarkJobService {
         //get all active query and dataset configs
         List<DataSet> dataSets = this.dataSetService.getAllDataSets();
 
-        // check the corresponding triple store
-        //Optional<TripleStore> tripleStore= tripleStoreService.getTripleStoreByGitRepoId(gitCommitAddedEvent.getRepoId());
-        //if(tripleStore.isEmpty())
-        //{
-        //ToDo
-        //}
         dataSets.forEach(dataset -> {
             GitBenchmarkJob benchmarkJob = GitBenchmarkJob.builder()
                     //.tripleStore(tripleStore.get()) // TODO!

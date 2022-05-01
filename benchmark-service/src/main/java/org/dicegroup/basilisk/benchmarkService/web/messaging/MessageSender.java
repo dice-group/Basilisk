@@ -1,9 +1,9 @@
 package org.dicegroup.basilisk.benchmarkService.web.messaging;
 
-import org.dicegroup.basilisk.benchmarkService.events.BenchmarkJobAbortedEvent;
-import org.dicegroup.basilisk.benchmarkService.events.BenchmarkJobFailedEvent;
-import org.dicegroup.basilisk.benchmarkService.events.BenchmarkJobFinishedEvent;
-import org.dicegroup.basilisk.benchmarkService.events.BenchmarkJobStartedEvent;
+import org.dicegroup.basilisk.events.benchmark.BenchmarkJobAbortedEvent;
+import org.dicegroup.basilisk.events.benchmark.BenchmarkJobFailedEvent;
+import org.dicegroup.basilisk.events.benchmark.BenchmarkJobFinishedEvent;
+import org.dicegroup.basilisk.events.benchmark.BenchmarkJobStartedEvent;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

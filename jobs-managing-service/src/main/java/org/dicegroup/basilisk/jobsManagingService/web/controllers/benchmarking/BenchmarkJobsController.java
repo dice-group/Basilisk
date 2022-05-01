@@ -1,11 +1,10 @@
 package org.dicegroup.basilisk.jobsManagingService.web.controllers.benchmarking;
 
+import com.sun.istack.NotNull;
 import org.dicegroup.basilisk.jobsManagingService.model.benchmarking.BenchmarkJob;
 import org.dicegroup.basilisk.jobsManagingService.model.benchmarking.DockerBenchmarkJob;
 import org.dicegroup.basilisk.jobsManagingService.model.benchmarking.GitBenchmarkJob;
 import org.dicegroup.basilisk.jobsManagingService.services.benchmarking.BenchmarkJobService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,25 +21,23 @@ public class BenchmarkJobsController {
     }
 
     @GetMapping
-    public ResponseEntity<List<BenchmarkJob>> getAllJobs() {
-        return new ResponseEntity<>(this.benchmarkJobService.getAllBenchmarkJobs(), HttpStatus.OK);
+    public List<BenchmarkJob> getAllJobs() {
+        return this.benchmarkJobService.getAllBenchmarkJobs();
     }
 
     @GetMapping("/docker")
-    public ResponseEntity<List<DockerBenchmarkJob>> getAllDockerJobs() {
-        return new ResponseEntity<>(this.benchmarkJobService.getAllDockerBenchmarkJobs(), HttpStatus.OK);
+    public List<DockerBenchmarkJob> getAllDockerJobs() {
+        return this.benchmarkJobService.getAllDockerBenchmarkJobs();
     }
 
     @GetMapping("/git")
-    public ResponseEntity<List<GitBenchmarkJob>> getAllGitJobs() {
-        return new ResponseEntity<>(this.benchmarkJobService.getAllGitBenchmarkJobs(), HttpStatus.OK);
+    public List<GitBenchmarkJob> getAllGitJobs() {
+        return this.benchmarkJobService.getAllGitBenchmarkJobs();
     }
 
-    @PostMapping(consumes = "application/json", produces = "application/json")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<HttpStatus> abortBenchmarkJob(@RequestBody long jobId) {
-        this.benchmarkJobService.abortJob(jobId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @PostMapping(path = "/{id}")
+    public String abortBenchmarkJob(@PathVariable @NotNull Long id) {
+        return this.benchmarkJobService.abortJob(id);
     }
 
 }

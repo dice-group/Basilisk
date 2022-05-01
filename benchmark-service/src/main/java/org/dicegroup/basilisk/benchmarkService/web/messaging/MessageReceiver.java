@@ -4,7 +4,7 @@ package org.dicegroup.basilisk.benchmarkService.web.messaging;
 import lombok.extern.slf4j.Slf4j;
 import org.dicegroup.basilisk.benchmarkService.model.benchmark.Benchmark;
 import org.dicegroup.basilisk.benchmarkService.model.benchmark.DockerBenchmarkJob;
-import org.dicegroup.basilisk.benchmarkService.model.benchmark.JobStatus;
+import org.dicegroup.basilisk.dto.benchmark.JobStatus;
 import org.dicegroup.basilisk.benchmarkService.model.repo.DockerRepo;
 import org.dicegroup.basilisk.benchmarkService.services.BenchmarkJobService;
 import org.dicegroup.basilisk.events.benchmark.BenchmarkJobAbortCommand;
@@ -42,6 +42,7 @@ public class MessageReceiver {
         DockerRepo repo = this.mapper.map(event.getRepo(), DockerRepo.class);
 
         DockerBenchmarkJob job = DockerBenchmarkJob.builder()
+                .id(event.getJobId())
                 .repo(repo)
                 .tagName(event.getTagName())
                 .imageDigest(event.getImageDigest())

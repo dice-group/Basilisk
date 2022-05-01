@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.dicegroup.basilisk.dto.benchmark.JobStatus;
 import org.dicegroup.basilisk.jobsManagingService.model.BaseEntity;
 import org.dicegroup.basilisk.jobsManagingService.model.repo.Repo;
 

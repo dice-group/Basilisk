@@ -2,9 +2,11 @@ package org.dicegroup.basilisk.benchmarkService.services;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.dicegroup.basilisk.events.benchmark.BenchmarkJobAbortedEvent;
 import org.dicegroup.basilisk.benchmarkService.model.benchmark.BenchmarkJob;
 import org.dicegroup.basilisk.benchmarkService.model.benchmark.DockerBenchmarkJob;
-import org.dicegroup.basilisk.benchmarkService.model.benchmark.JobStatus;
+import org.dicegroup.basilisk.benchmarkService.web.messaging.MessageSender;
+import org.dicegroup.basilisk.dto.benchmark.JobStatus;
 import org.dicegroup.basilisk.benchmarkService.repositories.BenchmarkJobRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +17,11 @@ import java.util.Optional;
 public class BenchmarkJobService {
 
     private final BenchmarkJobRepository jobRepo;
+    private final MessageSender messageSender;
 
-    public BenchmarkJobService(BenchmarkJobRepository jobRepo) {
+    public BenchmarkJobService(BenchmarkJobRepository jobRepo, MessageSender messageSender) {
         this.jobRepo = jobRepo;
+        this.messageSender = messageSender;
     }
 
     public void addDockerBenchmarkJob(DockerBenchmarkJob job) {
@@ -34,6 +38,8 @@ public class BenchmarkJobService {
             job.setStatus(JobStatus.ABORTED);
 
             this.jobRepo.save(job);
+
+            this.messageSender.send(new BenchmarkJobAbortedEvent(jobId));
         }
     }
 

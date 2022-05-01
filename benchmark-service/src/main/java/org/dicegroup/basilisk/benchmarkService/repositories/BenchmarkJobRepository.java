@@ -1,7 +1,7 @@
 package org.dicegroup.basilisk.benchmarkService.repositories;
 
 import org.dicegroup.basilisk.benchmarkService.model.benchmark.BenchmarkJob;
-import org.dicegroup.basilisk.benchmarkService.model.benchmark.JobStatus;
+import org.dicegroup.basilisk.dto.benchmark.JobStatus;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

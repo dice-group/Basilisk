@@ -121,6 +121,7 @@ public class BenchmarkJobService {
                     .tagName(event.getTagName())
                     .benchmark(benchmark)
                     .status(JobStatus.CREATED)
+                    .imageDigest(event.getImageDigest())
                     .build();
 
             job = this.dockerBenchmarkJobRepository.save(job);

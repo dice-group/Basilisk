@@ -1,11 +1,11 @@
 package org.dicegroup.basilisk.jobsManagingService.model.repo;
 
-import org.dicegroup.basilisk.jobsManagingService.model.BaseEntity;
-import org.dicegroup.basilisk.jobsManagingService.model.benchmarking.TripleStore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.dicegroup.basilisk.jobsManagingService.model.BaseEntity;
+import org.dicegroup.basilisk.jobsManagingService.model.benchmarking.TripleStore;
 
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;

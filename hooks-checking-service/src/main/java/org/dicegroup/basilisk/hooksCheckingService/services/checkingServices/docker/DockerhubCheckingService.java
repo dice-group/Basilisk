@@ -1,5 +1,6 @@
 package org.dicegroup.basilisk.hooksCheckingService.services.checkingServices.docker;
 
+import lombok.extern.slf4j.Slf4j;
 import org.dicegroup.basilisk.events.hooks.hook.DockerTagEvent;
 import org.dicegroup.basilisk.hooksCheckingService.core.exception.DockerhubException;
 import org.dicegroup.basilisk.hooksCheckingService.model.docker.DockerImage;
@@ -17,9 +18,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
 import java.util.Optional;
 
 
+@Slf4j
 public class DockerhubCheckingService implements CheckingService {
 
     private static final Logger logger = LoggerFactory.getLogger(DockerhubCheckingService.class);
@@ -41,24 +44,18 @@ public class DockerhubCheckingService implements CheckingService {
 
     @Override
     public void performChecking() {
-        //get the dockerhub repos
-        Iterable<DockerRepo> dockerRepos = this.dockerRepoRepository.findAll();
-        //go through them
-        for (DockerRepo dockerRepo : dockerRepos) {
-            //do the logic for checking
+        for (DockerRepo dockerRepo : this.dockerRepoRepository.findAll()) {
             try {
                 checkRepo(dockerRepo);
             } catch (DockerhubException e) {
-                //ToDo log
-                System.out.println("not valid  thing");
+                log.error("DockerhubException while checking");
             }
         }
     }
 
 
     private void checkRepo(DockerRepo dockerRepo) throws DockerhubException {
-
-        var retrievedTags = this.dockerHubRestProxy.getTags(dockerRepo.getRepoOwner(), dockerRepo.getRepoName());
+        List<DockerApiTag> retrievedTags = this.dockerHubRestProxy.getTags(dockerRepo.getRepoOwner(), dockerRepo.getRepoName());
         for (DockerApiTag apiTag : retrievedTags) {
             DockerImage dockerImage = getDockerImage(apiTag, dockerRepo);
             processDockerTag(dockerRepo, apiTag, dockerImage);
@@ -66,35 +63,27 @@ public class DockerhubCheckingService implements CheckingService {
     }
 
 
-    private DockerImage getDockerImage(DockerApiTag apiTag, DockerRepo dockerRepo) throws DockerhubException {
-        DockerImage dockerImage;
-        Optional<DockerImage> savedDockerImage = this.dockerImageRepository.findByDigest(apiTag.getImages().get(0).getDigest());
+    private DockerImage getDockerImage(DockerApiTag apiTag, DockerRepo dockerRepo) {
+        String digest = apiTag.getImages().get(0).getDigest();
+        Optional<DockerImage> imageOpt = this.dockerImageRepository.findByDockerRepoAndDigest(dockerRepo, digest);
 
-        if (savedDockerImage.isEmpty()) {
-            logger.info("Docker Image {} of repo {} not found in database! Adding Image..", apiTag.getName(), dockerRepo.getRepoName());
-
-            if (apiTag.getImages().get(0) == null || apiTag.getImages().get(0).getDigest() == null) {
-                throw new DockerhubException();
-            }
-
-            DockerApiImage apiImage = apiTag.getImages().get(0);
-            dockerImage = DockerImage.builder()
-                    .digest(apiImage.getDigest())
-                    .dockerRepo(dockerRepo)
-                    .build();
-
-            dockerImage = this.dockerImageRepository.save(dockerImage);
-        } else {
-            dockerImage = savedDockerImage.get();
+        if (imageOpt.isPresent()) {
+            return imageOpt.get();
         }
-        return dockerImage;
 
+        logger.info("Docker Image {} of repo {} not found in database! Adding Image..", apiTag.getName(), dockerRepo.getRepoName());
+        DockerImage dockerImage = DockerImage.builder()
+                .digest(digest)
+                .dockerRepo(dockerRepo)
+                .build();
+
+        return this.dockerImageRepository.save(dockerImage);
     }
 
     private void processDockerTag(DockerRepo repo, DockerApiTag apiTag, DockerImage dockerImage) {
-        Optional<DockerTag> savedTag = this.dockerTagRepository.findDockerTagByDockerRepoAndName(repo, apiTag.getName());
+        Optional<DockerTag> tagOpt = this.dockerTagRepository.findDockerTagByDockerRepoAndName(repo, apiTag.getName());
 
-        if (savedTag.isEmpty()) {
+        if (tagOpt.isEmpty()) {
             //Add the tag to the database
             DockerTag newTag = DockerTag.builder()
                     .name(apiTag.getName())
@@ -109,14 +98,15 @@ public class DockerhubCheckingService implements CheckingService {
                     .imageDigest(dockerImage.getDigest())
                     .tagName(apiTag.getName())
                     .build();
+            log.info("sending DockerTagEvent {}", event);
             this.messageSender.send(event);
 
         } else {
-            DockerTag tag = savedTag.get();
+            DockerTag tag = tagOpt.get();
 
-            if (!tag.getDockerImage().equals(dockerImage)) {
+            if (!tag.getDockerImage().getId().equals(dockerImage.getId())) {
                 tag.setDockerImage(dockerImage);
-                dockerTagRepository.save(savedTag.get());
+                tag = this.dockerTagRepository.save(tag);
 
                 DockerTagEvent updatedEvent = DockerTagEvent.builder()
                         .repoId(repo.getId())
@@ -124,7 +114,8 @@ public class DockerhubCheckingService implements CheckingService {
                         .imageDigest(dockerImage.getDigest())
                         .build();
 
-                messageSender.send(updatedEvent);
+                log.info("sending DockerTagEvent update {}", updatedEvent);
+                this.messageSender.send(updatedEvent);
 
             }
         }

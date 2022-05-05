@@ -1,6 +1,7 @@
 package org.dicegroup.basilisk.hooksCheckingService.web.proxies.docker;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,14 +13,9 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Fakhr Shaheen
- */
-
-
+@Slf4j
 public class DockerHubRestProxy {
 
-    private final Logger logger = LoggerFactory.getLogger(DockerHubRestProxy.class);
     private final RestTemplate restTemplate;
     @Value("${proxies.docker.registryUrl}")
     private String dockerRegistryUrl;
@@ -34,7 +30,7 @@ public class DockerHubRestProxy {
         ResponseEntity<DockerTagApiCall> responseEntity = this.restTemplate.getForEntity(resourceUrl, DockerTagApiCall.class);
         HttpHeaders headers = responseEntity.getHeaders();
 
-        this.logger.info("Docker remaining rate: {}", headers.getFirst("X-RateLimit-Remaining"));
+        log.info("Docker remaining rate: {}", headers.getFirst("X-RateLimit-Remaining"));
 
         DockerTagApiCall response = responseEntity.getBody();
 
@@ -43,7 +39,7 @@ public class DockerHubRestProxy {
         while (true) {
             assert response != null;
             if (response.getNext() == null) break;
-            response = restTemplate.getForObject(response.getNext(), DockerTagApiCall.class);
+            response = this.restTemplate.getForObject(response.getNext(), DockerTagApiCall.class);
             if (response != null) {
                 tags.addAll(response.getDockerTags());
             }

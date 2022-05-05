@@ -12,7 +12,7 @@ spring:
     init:
       platform: h2
   datasource:
-    url: 'jdbc:h2:file:./.data/benchmark-service-DB'
+    url: 'jdbc:h2:file:/data/databases/services/benchmark-service-DB'
     username: basilisk
     password: password
     driver-class-name: org.h2.Driver
@@ -39,7 +39,7 @@ docker:
   containerName: 'triplestore'
 
 benchmark:
-  startInterval: 10
+  startInterval: 20
 
 iguana:
   shell: '/bin/sh'
@@ -53,7 +53,6 @@ iguana:
     configuration:
       endpoint: 'http://fuseki:3030/results/sparql'
       updateEndpoint: 'http://fuseki:3030/results/update'
-      fileName: '/home/fabian/dev/bachelor/Basilisk/.data/iguana-results.nt'
 
 rabbitmq:
   benchmarks:

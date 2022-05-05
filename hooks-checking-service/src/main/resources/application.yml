@@ -12,7 +12,7 @@ spring:
     init:
       platform: h2
   datasource:
-    url: 'jdbc:h2:file:./.data/hooks-checking-service-DB'
+    url: 'jdbc:h2:file:/data/databases/services/hooks-checking-service-DB'
     username: basilisk
     password: password
     driver-class-name: org.h2.Driver
@@ -29,7 +29,7 @@ spring:
 
 core:
   timing:
-    timeout: 10
+    timeout: 20
 
 server:
   port: '8080'

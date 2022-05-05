@@ -40,9 +40,8 @@ services:
       - "8082:8082"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./.data/iguana-configs:/iguana-configs
-      - ./example_benchmark:/benchmarks
-      - ./.data/:/.data/
+      - /data/iguana-configs:/iguana-configs
+      - /data/benchmarks:/benchmarks
     networks:
       - basilisk
 
@@ -60,8 +59,8 @@ services:
     ports:
       - "3030:3030"
     volumes:
-      - ./.data/fuseki/logs:/fuseki/logs
-      - ./.data/fuseki/databases:/fuseki/databases
+      - /data/logs/fuseki:/fuseki/logs
+      - /data/databases/fuseki:/fuseki/databases
     networks:
       - basilisk
 

@@ -2,7 +2,6 @@ package org.dicegroup.basilisk.benchmarkService.model.benchmark;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.dicegroup.basilisk.benchmarkService.model.BaseEntity;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -21,8 +20,9 @@ public class Benchmark {
     @ManyToOne(cascade = CascadeType.ALL)
     private DataSet dataSet;
 
-    private Integer taskTimeLimit;
+    private Long taskTimeLimit;
+    private Integer noOfQueryMixes;
     private Integer workerThreadCount;
-    private Integer workerTimeOut;
+    private Long workerTimeOut;
 
 }

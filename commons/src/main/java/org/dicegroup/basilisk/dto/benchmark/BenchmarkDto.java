@@ -29,12 +29,15 @@ public class BenchmarkDto extends BaseDto {
 
     @JsonProperty("task_time_limit")
     @JsonView(Views.Api.class)
-    private Integer taskTimeLimit;
+    private Long taskTimeLimit;
+    @JsonProperty("no_of_query_mixes")
+    @JsonView(Views.Api.class)
+    private Integer noOfQueryMixes;
     @JsonProperty("worker_thread_count")
     @JsonView(Views.Api.class)
     private Integer workerThreadCount;
     @JsonProperty("worker_timeout")
     @JsonView(Views.Api.class)
-    private Integer workerTimeOut;
+    private Long workerTimeOut;
 
 }

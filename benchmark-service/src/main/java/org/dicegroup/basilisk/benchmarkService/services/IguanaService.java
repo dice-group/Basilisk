@@ -117,6 +117,7 @@ public class IguanaService {
     private TaskConfiguration createTaskConfig(Benchmark bm) {
         return TaskConfiguration.builder()
                 .timeLimit(bm.getTaskTimeLimit())
+                .noOfQueryMixes(bm.getNoOfQueryMixes())
                 .queryHandler(new QueryHandler("InstancesQueryHandler"))
                 .workers(List.of(createWorker(bm)))
                 .build();

@@ -24,8 +24,9 @@ public class Benchmark extends BaseEntity {
     @ManyToOne
     private DataSet dataSet;
 
-    private Integer taskTimeLimit;
+    private Long taskTimeLimit;
+    private Integer noOfQueryMixes;
     private Integer workerThreadCount;
-    private Integer workerTimeOut;
+    private Long workerTimeOut;
 
 }

@@ -15,6 +15,6 @@ public class Worker {
 
     private Integer fixedLatency;
 
-    private Integer timeOut;
+    private Long timeOut;
 
 }

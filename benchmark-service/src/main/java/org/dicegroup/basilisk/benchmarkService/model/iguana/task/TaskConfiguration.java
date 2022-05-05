@@ -12,7 +12,8 @@ import java.util.List;
 @Builder
 public class TaskConfiguration {
 
-    private Integer timeLimit;
+    private Long timeLimit;
+    private Integer noOfQueryMixes;
 
     private QueryHandler queryHandler;
 

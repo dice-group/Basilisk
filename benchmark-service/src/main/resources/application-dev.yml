@@ -4,6 +4,8 @@ docker:
 spring:
   rabbitmq:
     host: localhost
+  datasource:
+    url: 'jdbc:h2:file:/mnt/d/Development/Bachelor/data/benchmark-service-DB'
 
 iguana:
   shell: '/usr/bin/bash'
@@ -15,7 +17,3 @@ iguana:
       endpoint: 'http://localhost:3030/results/sparql'
       updateEndpoint: 'http://localhost:3030/results/update'
       fileName: '/home/fabian/dev/bachelor/Basilisk/.data/iguana-results2.nt'
-
-test:
-  datasetPath: '/home/fabian/dev/bachelor/Basilisk/example_benchmark/swdf.nt'
-  queryFilePath: '/home/fabian/dev/bachelor/Basilisk/example_benchmark/swdf-queries_short.txt'

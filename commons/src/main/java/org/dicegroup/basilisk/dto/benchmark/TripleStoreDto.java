@@ -51,4 +51,8 @@ public class TripleStoreDto extends BaseDto {
     @JsonView(Views.Api.class)
     private String entryPoint;
 
+    @JsonProperty("pre_script_hook")
+    @JsonView(Views.Api.class)
+    private String preScriptHook;
+
 }

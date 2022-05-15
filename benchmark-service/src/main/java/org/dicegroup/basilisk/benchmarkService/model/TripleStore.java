@@ -31,4 +31,6 @@ public class TripleStore {
 
     private String entryPoint;
 
+    private String preScriptHook;
+
 }

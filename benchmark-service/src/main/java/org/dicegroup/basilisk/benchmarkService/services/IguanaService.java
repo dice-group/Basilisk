@@ -2,6 +2,8 @@ package org.dicegroup.basilisk.benchmarkService.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.text.StringSubstitutor;
+import org.dicegroup.basilisk.benchmarkService.model.TripleStore;
 import org.dicegroup.basilisk.benchmarkService.model.benchmark.Benchmark;
 import org.dicegroup.basilisk.benchmarkService.model.benchmark.BenchmarkJob;
 import org.dicegroup.basilisk.benchmarkService.model.dockerContainer.DockerContainer;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -48,6 +51,12 @@ public class IguanaService {
     @Value("${docker.hostPort}")
     private int hostPort;
 
+    @Value("${iguana.placeholders.dataSetName}")
+    private String dataSetNamePlaceholder;
+
+    @Value("${iguana.placeholders.dataSetPath}")
+    private String dataSetPathPlaceholder;
+
     public IguanaService(ObjectMapper mapper, DockerContainerService containerService) {
         this.mapper = mapper;
         this.containerService = containerService;
@@ -75,6 +84,7 @@ public class IguanaService {
         config.setConnections(List.of(createConnection(container, job.getRepo())));
         config.setTasks(List.of(createTask(job)));
         config.setStorages(List.of(createStorage()));
+        config.setPreScriptHook(getPreScriptHook(job));
 
         return config;
     }
@@ -150,6 +160,19 @@ public class IguanaService {
 
     private NTFileStorage createNTFileStorage() {
         return new NTFileStorage(new FileStorageConfiguration(this.resultsFile));
+    }
+
+    private String getPreScriptHook(BenchmarkJob job) {
+        TripleStore ts = job.getRepo().getTripleStore();
+        String formatString = ts.getPreScriptHook();
+
+        if (formatString == null) {
+            return null;
+        }
+
+        String dataSetname = new File(job.getBenchmark().getDataSet().getFilePath()).getName();
+        Map<String, String> valueMap = Map.of(this.dataSetPathPlaceholder, ts.getDataSetPath(), this.dataSetNamePlaceholder, dataSetname);
+        return new StringSubstitutor(valueMap).replace(formatString);
     }
 
 }

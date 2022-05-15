@@ -29,4 +29,6 @@ public class TripleStore extends BaseEntity {
     private int exposedPort;
     private String dataSetPath;
     private String entryPoint;
+
+    private String preScriptHook;
 }

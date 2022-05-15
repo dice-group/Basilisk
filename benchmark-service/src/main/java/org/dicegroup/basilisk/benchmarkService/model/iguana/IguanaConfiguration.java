@@ -19,6 +19,8 @@ public class IguanaConfiguration {
 
     private List<Connection> connections;
 
+    private String preScriptHook;
+
     private List<Task> tasks;
 
     private List<Storage> storages;

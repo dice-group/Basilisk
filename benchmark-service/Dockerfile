@@ -1,6 +1,8 @@
 FROM openjdk:17-jdk-alpine
 MAINTAINER dice-research.org
 
+RUN apt-get update && apt-get install curl
+
 RUN wget https://github.com/dice-group/IGUANA/releases/download/v3.3.0/iguana-3.3.0.zip && \
     unzip iguana-3.3.0.zip
 

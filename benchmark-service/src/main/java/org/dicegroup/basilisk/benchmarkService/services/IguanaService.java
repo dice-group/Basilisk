@@ -15,7 +15,6 @@ import org.dicegroup.basilisk.benchmarkService.model.iguana.task.QueryHandler;
 import org.dicegroup.basilisk.benchmarkService.model.iguana.task.Task;
 import org.dicegroup.basilisk.benchmarkService.model.iguana.task.TaskConfiguration;
 import org.dicegroup.basilisk.benchmarkService.model.iguana.task.Worker;
-import org.dicegroup.basilisk.benchmarkService.model.repo.Repo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -81,7 +80,7 @@ public class IguanaService {
         IguanaConfiguration config = new IguanaConfiguration();
 
         config.setDataSets(List.of(new DataSet(job.getBenchmark().getDataSet().getName())));
-        config.setConnections(List.of(createConnection(container, job.getRepo())));
+        config.setConnections(List.of(createConnection(container, job)));
         config.setTasks(List.of(createTask(job)));
         config.setStorages(List.of(createStorage()));
         config.setPreScriptHook(getPreScriptHook(job));
@@ -100,7 +99,7 @@ public class IguanaService {
         return tempFile;
     }
 
-    private Connection createConnection(DockerContainer container, Repo repo) {
+    private Connection createConnection(DockerContainer container, BenchmarkJob job) {
         String endpoint = "http://";
 
         if (this.containerService.isLocalhost()) {
@@ -109,10 +108,10 @@ public class IguanaService {
             endpoint += container.getContainerName() + ":" + container.getExposedPort();
         }
 
-        endpoint += repo.getTripleStore().getEndpoint();
+        endpoint += job.getRepo().getTripleStore().getEndpoint();
 
         return Connection.builder()
-                .name(repo.getRepoName())
+                .name(job.getIguanaConnectionName())
                 .endpoint(endpoint)
                 .build();
     }

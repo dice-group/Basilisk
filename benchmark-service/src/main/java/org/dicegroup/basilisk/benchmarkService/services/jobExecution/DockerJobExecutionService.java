@@ -41,6 +41,8 @@ public class DockerJobExecutionService implements ExecutionService {
     public void executeBenchmarkJob(BenchmarkJob benchmarkJob) throws IOException, InterruptedException {
         DockerBenchmarkJob job = (DockerBenchmarkJob) benchmarkJob;
 
+        job.setIguanaConnectionName(getImageName(job));
+
         DockerContainer container = this.containerService.getDockerContainer(job.getRepo().getRepoOwner(), job.getRepo().getRepoName(), job.getTagName());
         setContainerArguments(container, job);
 
@@ -85,6 +87,10 @@ public class DockerJobExecutionService implements ExecutionService {
         Map<String, String> valueMap = Map.of(this.dataSetPathPlaceholder, tripleStore.getDataSetPath(), this.dataSetNamePlaceholder, dataSetName);
 
         return new StringSubstitutor(valueMap).replace(tripleStore.getEntryPoint());
+    }
+
+    private String getImageName(DockerBenchmarkJob job) {
+        return job.getRepo().getRepoOwner() + "/" + job.getRepo().getRepoName() + ":" + job.getTagName();
     }
 
 }

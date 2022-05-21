@@ -1,13 +1,10 @@
 package org.dicegroup.basilisk.jobsManagingService.web.controllers.benchmarking;
 
 import com.sun.istack.NotNull;
-import org.dicegroup.basilisk.dto.benchmark.BenchmarkJobDto;
-import org.dicegroup.basilisk.dto.benchmark.DockerBenchmarkJobDto;
 import org.dicegroup.basilisk.jobsManagingService.dto.ManualJobStartDto;
 import org.dicegroup.basilisk.jobsManagingService.model.benchmarking.BenchmarkJob;
 import org.dicegroup.basilisk.jobsManagingService.model.benchmarking.DockerBenchmarkJob;
 import org.dicegroup.basilisk.jobsManagingService.model.benchmarking.GitBenchmarkJob;
-import org.dicegroup.basilisk.jobsManagingService.model.repo.DockerRepo;
 import org.dicegroup.basilisk.jobsManagingService.services.benchmarking.BenchmarkJobService;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +25,11 @@ public class BenchmarkJobsController {
     @GetMapping
     public List<BenchmarkJob> getAllJobs() {
         return this.benchmarkJobService.getAllBenchmarkJobs();
+    }
+
+    @GetMapping("/pending")
+    public List<BenchmarkJob> getAllPendingJobs() {
+        return this.benchmarkJobService.getAllPendingJobs();
     }
 
     @GetMapping("/docker")

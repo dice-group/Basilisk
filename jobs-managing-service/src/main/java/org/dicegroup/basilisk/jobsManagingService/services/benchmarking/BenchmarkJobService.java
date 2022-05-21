@@ -2,7 +2,6 @@ package org.dicegroup.basilisk.jobsManagingService.services.benchmarking;
 
 import lombok.extern.slf4j.Slf4j;
 import org.dicegroup.basilisk.dto.benchmark.BenchmarkDto;
-import org.dicegroup.basilisk.dto.benchmark.DockerBenchmarkJobDto;
 import org.dicegroup.basilisk.dto.benchmark.JobStatus;
 import org.dicegroup.basilisk.dto.repo.DockerRepoDto;
 import org.dicegroup.basilisk.dto.repo.GitRepoDto;
@@ -58,6 +57,10 @@ public class BenchmarkJobService {
 
     public List<BenchmarkJob> getAllBenchmarkJobs() {
         return (List<BenchmarkJob>) this.benchmarkJobRepository.findAll();
+    }
+
+    public List<BenchmarkJob> getAllPendingJobs() {
+        return this.benchmarkJobRepository.findAllByStatus(JobStatus.CREATED);
     }
 
     public List<DockerBenchmarkJob> getAllDockerBenchmarkJobs() {

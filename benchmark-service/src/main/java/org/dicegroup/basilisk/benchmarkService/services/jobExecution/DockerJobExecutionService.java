@@ -63,6 +63,9 @@ public class DockerJobExecutionService implements ExecutionService {
 
         this.containerService.stopContainer(container);
         log.info("Container stoppend and removed");
+
+        this.containerService.deleteImage(container);
+        log.info("Container image removed: {}", container);
     }
 
     private void setContainerArguments(DockerContainer container, DockerBenchmarkJob job) {

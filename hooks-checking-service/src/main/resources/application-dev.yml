@@ -1,5 +1,0 @@
-spring:
-  rabbitmq:
-    host: localhost
-  datasource:
-    url: 'jdbc:h2:file:/mnt/d/Development/Bachelor/data/hooks-checking-service-DB'

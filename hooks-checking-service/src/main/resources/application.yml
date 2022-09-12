@@ -33,6 +33,8 @@ core:
 
 server:
   port: '8080'
+  user: 'admin'
+  password: '$2y$08$yrbEY7O0.WjYnGolNmHJN.ymasX5ETmidei162v87yhygZFoEcLHu'
 
 rabbitmq:
   hooks:

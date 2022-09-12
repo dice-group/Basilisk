@@ -3,7 +3,6 @@ package org.dicegroup.basilisk.benchmarkService.web.controllers;
 import org.dicegroup.basilisk.benchmarkService.model.benchmark.BenchmarkJob;
 import org.dicegroup.basilisk.benchmarkService.services.BenchmarkJobService;
 import org.dicegroup.basilisk.benchmarkService.services.jobExecution.JobExecutionService;
-import org.dicegroup.basilisk.dto.benchmark.BenchmarkJobDto;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

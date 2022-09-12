@@ -29,6 +29,8 @@ spring:
 
 server:
   port: '8081'
+  user: 'admin'
+  password: '$2y$08$yrbEY7O0.WjYnGolNmHJN.ymasX5ETmidei162v87yhygZFoEcLHu'
 
 rabbitmq:
   hooks:

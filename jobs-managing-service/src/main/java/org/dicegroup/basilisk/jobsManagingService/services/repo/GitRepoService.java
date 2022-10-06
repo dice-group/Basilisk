@@ -1,11 +1,8 @@
 package org.dicegroup.basilisk.jobsManagingService.services.repo;
 
 import org.dicegroup.basilisk.dto.repo.GitRepoType;
-import org.dicegroup.basilisk.events.hooks.repo.GitRepoAddEvent;
-import org.dicegroup.basilisk.events.hooks.repo.GitRepoDeleteEvent;
-import org.dicegroup.basilisk.jobsManagingService.model.repo.GitRepo;
+import org.dicegroup.basilisk.jobsManagingService.model.repo.git.GitRepo;
 import org.dicegroup.basilisk.jobsManagingService.repositories.repo.GitRepoRepository;
-import org.dicegroup.basilisk.jobsManagingService.web.messaging.hooks.HooksMessageSender;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +14,10 @@ import java.util.Optional;
 public class GitRepoService {
 
     private final GitRepoRepository gitRepoRepository;
-    private final HooksMessageSender messageSender;
     private final ModelMapper mapper;
 
-    public GitRepoService(GitRepoRepository repository, HooksMessageSender sender, ModelMapper mapper) {
+    public GitRepoService(GitRepoRepository repository, ModelMapper mapper) {
         this.gitRepoRepository = repository;
-        this.messageSender = sender;
         this.mapper = mapper;
     }
 
@@ -51,18 +46,10 @@ public class GitRepoService {
             }
         }
 
-        GitRepo createdRepo = this.gitRepoRepository.save(repo);
-
-        GitRepoAddEvent event = this.mapper.map(repo, GitRepoAddEvent.class);
-        this.messageSender.send(event);
-
-        return createdRepo;
+        return this.gitRepoRepository.save(repo);
     }
 
     public void deleteRepo(GitRepo repo) {
-        GitRepoDeleteEvent event = new GitRepoDeleteEvent(repo.getId());
-        this.messageSender.send(event);
-
         this.gitRepoRepository.delete(repo);
     }
 }

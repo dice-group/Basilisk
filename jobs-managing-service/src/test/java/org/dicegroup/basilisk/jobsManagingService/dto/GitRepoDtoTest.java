@@ -1,7 +1,7 @@
 package org.dicegroup.basilisk.jobsManagingService.dto;
 
 import org.dicegroup.basilisk.dto.repo.GitRepoDto;
-import org.dicegroup.basilisk.jobsManagingService.model.repo.GitRepo;
+import org.dicegroup.basilisk.jobsManagingService.model.repo.git.GitRepo;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;

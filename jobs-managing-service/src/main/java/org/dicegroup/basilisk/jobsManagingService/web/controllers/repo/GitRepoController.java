@@ -6,7 +6,7 @@ import org.dicegroup.basilisk.dto.Views;
 import org.dicegroup.basilisk.dto.repo.GitRepoDto;
 import org.dicegroup.basilisk.dto.repo.GitRepoType;
 import org.dicegroup.basilisk.jobsManagingService.model.benchmarking.TripleStore;
-import org.dicegroup.basilisk.jobsManagingService.model.repo.GitRepo;
+import org.dicegroup.basilisk.jobsManagingService.model.repo.git.GitRepo;
 import org.dicegroup.basilisk.jobsManagingService.services.benchmarking.TripleStoreService;
 import org.dicegroup.basilisk.jobsManagingService.services.repo.GitRepoService;
 import org.modelmapper.ModelMapper;

@@ -27,19 +27,14 @@ spring:
     username: guest
     password: guest
 
+core:
+  timing:
+    timeout: 20
+
 server:
-  port: '8081'
+  port: '8080'
 
 rabbitmq:
-  hooks:
-    exchange: hooksExchange
-
-    repoQueue: repoQueue
-    repoRoutingKey: repoRoutingKey
-
-    hookEventQueue: hookEventQueue
-    hookEventRoutingKey: hookEventRoutingKey
-
   benchmarks:
     exchange: benchmarkExchange
     jobQueue: jobQueue
@@ -47,3 +42,7 @@ rabbitmq:
     routingKeys:
       job: jobKey
       result: resultKey
+
+proxies:
+  docker:
+    registryUrl: https://registry.hub.docker.com

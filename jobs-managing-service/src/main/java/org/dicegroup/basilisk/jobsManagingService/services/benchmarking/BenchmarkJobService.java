@@ -11,12 +11,12 @@ import org.dicegroup.basilisk.events.benchmark.GitBenchmarkJobCreateEvent;
 import org.dicegroup.basilisk.events.hooks.hook.DockerTagEvent;
 import org.dicegroup.basilisk.events.hooks.hook.GitCommitEvent;
 import org.dicegroup.basilisk.jobsManagingService.model.benchmarking.*;
-import org.dicegroup.basilisk.jobsManagingService.model.repo.DockerRepo;
+import org.dicegroup.basilisk.jobsManagingService.model.repo.docker.DockerRepo;
 import org.dicegroup.basilisk.jobsManagingService.repositories.benchmarking.BenchmarkJobRepository;
 import org.dicegroup.basilisk.jobsManagingService.repositories.benchmarking.DockerBenchmarkJobRepository;
 import org.dicegroup.basilisk.jobsManagingService.repositories.benchmarking.GitBenchmarkJobRepository;
 import org.dicegroup.basilisk.jobsManagingService.services.repo.DockerRepoService;
-import org.dicegroup.basilisk.jobsManagingService.web.messaging.benchmarking.BenchmarkMessageSender;
+import org.dicegroup.basilisk.jobsManagingService.web.messaging.BenchmarkMessageSender;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -98,7 +98,7 @@ public class BenchmarkJobService {
 
     public void generateBenchmarkingJobs(GitCommitEvent event) {
 
-        List<GitBenchmarkJob> jobs = generateGitBenchmarkingJobsConfigs(event);
+        List<GitBenchmarkJob> jobs = generateGitBenchmarkJobsConfigs(event);
         jobs.forEach(job -> {
             this.gitBenchmarkJobRepository.save(job);
             // send created job to message queue
@@ -183,7 +183,7 @@ public class BenchmarkJobService {
     }
 
 
-    private List<GitBenchmarkJob> generateGitBenchmarkingJobsConfigs(GitCommitEvent gitCommitAddedEvent) {
+    private List<GitBenchmarkJob> generateGitBenchmarkJobsConfigs(GitCommitEvent gitCommitAddedEvent) {
         List<GitBenchmarkJob> jobs = new ArrayList<>();
         //get all active query and dataset configs
         List<DataSet> dataSets = this.dataSetService.getAllDataSets();

@@ -1,10 +1,7 @@
 package org.dicegroup.basilisk.jobsManagingService.services.repo;
 
-import org.dicegroup.basilisk.events.hooks.repo.DockerRepoAddEvent;
-import org.dicegroup.basilisk.events.hooks.repo.DockerRepoDeleteEvent;
-import org.dicegroup.basilisk.jobsManagingService.model.repo.DockerRepo;
+import org.dicegroup.basilisk.jobsManagingService.model.repo.docker.DockerRepo;
 import org.dicegroup.basilisk.jobsManagingService.repositories.repo.DockerRepoRepository;
-import org.dicegroup.basilisk.jobsManagingService.web.messaging.hooks.HooksMessageSender;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -16,12 +13,10 @@ import java.util.Optional;
 public class DockerRepoService {
 
     private final DockerRepoRepository repoRepository;
-    private final HooksMessageSender messageSender;
     private final ModelMapper mapper;
 
-    public DockerRepoService(DockerRepoRepository repository, HooksMessageSender sender, ModelMapper mapper) {
+    public DockerRepoService(DockerRepoRepository repository, ModelMapper mapper) {
         this.repoRepository = repository;
-        this.messageSender = sender;
         this.mapper = mapper;
     }
 
@@ -43,18 +38,11 @@ public class DockerRepoService {
                 repo = or;
             }
         }
-        DockerRepo createdRepo = this.repoRepository.save(repo);
 
-        DockerRepoAddEvent event = this.mapper.map(repo, DockerRepoAddEvent.class);
-        this.messageSender.send(event);
-
-        return createdRepo;
+        return this.repoRepository.save(repo);
     }
 
     public void deleteRepo(DockerRepo repo) {
-        DockerRepoDeleteEvent event = new DockerRepoDeleteEvent(repo.getId());
-        this.messageSender.send(event);
-
         this.repoRepository.delete(repo);
     }
 }

@@ -1,7 +1,7 @@
 package org.dicegroup.basilisk.repositoryService.services.repo.checkingService;
 
 import lombok.extern.slf4j.Slf4j;
-import org.dicegroup.basilisk.events.hooks.hook.DockerTagEvent;
+import org.dicegroup.basilisk.events.hook.DockerTagEvent;
 import org.dicegroup.basilisk.repositoryService.core.exception.DockerhubException;
 import org.dicegroup.basilisk.repositoryService.model.repo.docker.DockerImage;
 import org.dicegroup.basilisk.repositoryService.model.repo.docker.DockerRepo;

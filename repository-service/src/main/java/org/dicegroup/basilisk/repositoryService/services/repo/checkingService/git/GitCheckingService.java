@@ -1,6 +1,6 @@
 package org.dicegroup.basilisk.repositoryService.services.repo.checkingService.git;
 
-import org.dicegroup.basilisk.events.hooks.hook.GitCommitEvent;
+import org.dicegroup.basilisk.events.hook.GitCommitEvent;
 import org.dicegroup.basilisk.repositoryService.core.exception.GithubException;
 import org.dicegroup.basilisk.repositoryService.model.repo.git.GitHook;
 import org.dicegroup.basilisk.repositoryService.model.repo.git.GitRepo;

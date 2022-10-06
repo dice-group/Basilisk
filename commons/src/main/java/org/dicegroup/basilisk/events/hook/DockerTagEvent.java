@@ -1,4 +1,4 @@
-package org.dicegroup.basilisk.events.hooks.hook;
+package org.dicegroup.basilisk.events.hook;
 
 import lombok.*;
 

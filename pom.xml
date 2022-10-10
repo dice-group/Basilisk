@@ -11,8 +11,7 @@
     <version>0.1</version>
 
     <modules>
-        <module>hooks-checking-service</module>
-        <module>jobs-managing-service</module>
+        <module>repository-service</module>
         <module>benchmark-service</module>
         <module>commons</module>
     </modules>
